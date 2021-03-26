@@ -1,4 +1,4 @@
-MODULES=pieces command state main author
+MODULES=pieces command state main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
