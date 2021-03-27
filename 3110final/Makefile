@@ -1,4 +1,4 @@
-MODULES=pieces command state main authors
+MODULES=board command piece state ai main author
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -25,21 +25,21 @@ finalcheck:
 	@bash check.sh final
 
 zip:
-	zip 3110.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
+	zip xiangqi.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
 	
 docs: docs-public docs-private
 	
 docs-public: build
 	mkdir -p _doc.public
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+	ocamlfind ocamldoc -I _build -package ANSITerminal \
 		-html -stars -d _doc.public $(MLIS)
 
 docs-private: build
 	mkdir -p _doc.private
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+	ocamlfind ocamldoc -I _build -package ANSITerminal \
 		-html -stars -d _doc.private \
 		-inv-merge-ml-mli -m A $(MLIS) $(MLS)
 
 clean:
 	ocamlbuild -clean
-	rm -rf _doc.public _doc.private 3110.zip
+	rm -rf _doc.public _doc.private xiangqi.zip

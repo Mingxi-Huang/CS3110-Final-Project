@@ -1,1 +1,1 @@
-command.ml: List Pieces State String
+command.ml: List Piece State String

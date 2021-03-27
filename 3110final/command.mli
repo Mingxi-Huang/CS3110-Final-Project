@@ -18,7 +18,7 @@
 
    val parse : string -> command *)
 open State
-open Pieces
+open Piece
 
 (**Returns the selected piece given the user input message*)
 val selected_piece : string -> piece list -> piece

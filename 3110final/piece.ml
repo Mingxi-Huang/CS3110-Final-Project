@@ -20,10 +20,17 @@
 
     id: string representation of character, number, and side of a
     specific piece*)
-open State
+type rank =
+  | General
+  | Advisor
+  | Elephant
+  | Horse
+  | Rook
+  | Cannon
+  | Soldier
 
 type piece = {
-  character : string;
+  character : rank;
   number : string;
   side : string;
   id : string;

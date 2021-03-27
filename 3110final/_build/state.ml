@@ -1,5 +1,3 @@
-open Pieces
-
 type point = int * int
 
 type state = {

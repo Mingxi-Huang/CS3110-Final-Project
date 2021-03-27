@@ -5,7 +5,7 @@
   into a state with another player piece occupied*)
 
 open State
-open Pieces
+open Piece
 
 (**Input: message, current piecelist; Output: selected piece*)
 let selected_piece message plist =

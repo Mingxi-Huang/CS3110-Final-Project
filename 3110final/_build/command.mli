@@ -1,3 +1,5 @@
+(**--->---> Footprint: Init pieces and init states to be done*)
+
 (**The type [piece_phrase] represents the piece phrase that can be part
    of a player command.*)
 
@@ -16,7 +18,7 @@
 
    val parse : string -> command *)
 open State
-open Pieces
+open Piece
 
 (**Returns the selected piece given the user input message*)
 val selected_piece : string -> piece list -> piece
