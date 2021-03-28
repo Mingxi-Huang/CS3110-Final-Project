@@ -31,23 +31,16 @@ type rank =
 
 type piece = {
   character : rank;
-  number : string;
   side : string;
-  id : string;
-  plabel : string;
+  coordinate : int * int;
 }
 
 let get_c piece = piece.character
 
-let get_n piece = piece.number
-
 let get_side piece = piece.side
 
-let get_id piece = piece.id
-
-let get_plabel piece = piece.plabel
+let get_coord piece = piece.coordinate
 
 let init_pieces = []
 
-let create_piece c n side i p =
-  { character = c; number = n; side; id = i; plabel = p }
+let create_piece r s c = { character = r; side = s; coordinate = c }

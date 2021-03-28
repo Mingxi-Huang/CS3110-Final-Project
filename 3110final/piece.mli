@@ -16,14 +16,10 @@ type piece
 
 val get_c : piece -> rank
 
-val get_n : piece -> string
+val get_coord : piece -> int * int
 
 val get_side : piece -> string
 
-val get_id : piece -> string
-
-val get_plabel : piece -> string
-
-val create_piece : rank -> string -> string -> string -> string -> piece
+val create_piece : rank -> string -> int * int -> piece
 
 val init_pieces : piece list
