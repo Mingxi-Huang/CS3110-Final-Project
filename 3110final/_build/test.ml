@@ -28,12 +28,12 @@ let pp_list pp_elt lst =
   in
   "[" ^ pp_elts lst ^ "]"
 
-let advisor = Piece.create_piece Advisor "number" "side" "id" "plable"
+let advisor = create_piece Advisor Red (9, 3)
 
 let piece_tests =
   [
     ("get advisor" >:: fun _ -> assert_equal (get_c advisor) Advisor);
-    ("get side" >:: fun _ -> assert_equal (get_side advisor) "side");
+    ("get side" >:: fun _ -> assert_equal (get_side advisor) Red);
   ]
 
 let state_tests =

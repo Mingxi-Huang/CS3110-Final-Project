@@ -20,6 +20,10 @@
 
     id: string representation of character, number, and side of a
     specific piece*)
+type side =
+  | Red
+  | Black
+
 type rank =
   | General
   | Advisor
@@ -29,10 +33,12 @@ type rank =
   | Cannon
   | Soldier
 
+type coord = int * int
+
 type piece = {
   character : rank;
-  side : string;
-  coordinate : int * int;
+  side : side;
+  coordinate : coord;
 }
 
 let get_c piece = piece.character
@@ -40,6 +46,22 @@ let get_c piece = piece.character
 let get_side piece = piece.side
 
 let get_coord piece = piece.coordinate
+
+let extract = function
+  | Some x -> x
+  | None -> raise (Invalid_argument "extract None")
+
+let char_of_piece piece =
+  if piece = None then '+'
+  else
+    match (extract piece).character with
+    | General -> 'G'
+    | Advisor -> 'A'
+    | Elephant -> 'E'
+    | Horse -> 'H'
+    | Rook -> 'R'
+    | Cannon -> 'C'
+    | Soldier -> 'S'
 
 let init_pieces = []
 

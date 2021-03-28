@@ -2,6 +2,9 @@
 
     This module represents the data stored in adventure files, including
     the states and moving rules. *)
+type side =
+  | Red
+  | Black
 
 type rank =
   | General
@@ -12,18 +15,18 @@ type rank =
   | Cannon
   | Soldier
 
+type coord = int * int
+
 type piece
 
 val get_c : piece -> rank
 
-val get_n : piece -> string
+val get_coord : piece -> coord
 
-val get_side : piece -> string
+val get_side : piece -> side
 
-val get_id : piece -> string
+val create_piece : rank -> side -> coord -> piece
 
-val get_plabel : piece -> string
-
-val create_piece : rank -> string -> string -> string -> string -> piece
+val char_of_piece : piece option -> char
 
 val init_pieces : piece list
