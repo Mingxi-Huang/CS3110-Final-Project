@@ -1,20 +1,29 @@
 open Board
 open Piece
 
-type turn =
-  | Red
-  | Black
+type state = {
+  current_board : Board.t;
+  turn : side;
+}
 
-let init_state = Black
+type t = state
+
+let init_state = { current_board = Board.generate_board (); turn = Red }
 
 type result =
-  | Legal
+  | Legal of t
   | Illegal
 
-let next_turn turn = function Red -> Black | Black -> Red
+let next_turn = function Red -> Black | Black -> Red
+
+let get_current_board st = st.current_board
 
 (**[non_empty_coord] evaluates if the selected coordinate have piece on
    it*)
+let get_current_turn st = st.turn
+
+let create_state board turn = { current_board = board; turn }
+
 let non_empty_coord piece_option =
   match piece_option with None -> false | Some _ -> true
 
@@ -26,12 +35,14 @@ let illegal_side board coord turn =
   else false
 
 (** [go] evaluated if the input movement is legal. *)
-let go turn start destiny board =
-  if illegal_side board start turn then
-    let piece = extract (get_piece board start) in
-    if get_side piece <> turn then (
+let go start destiny st =
+  let cur_board = get_current_board st in
+  let cur_turn = get_current_turn st in
+  if illegal_side cur_board start cur_turn then
+    let piece = extract (get_piece cur_board start) in
+    if get_side piece <> cur_turn then (
       print_int 0;
-      Illegal)
+      Illegal )
     else if
       fst destiny < 0
       || fst destiny > 9
@@ -39,14 +50,18 @@ let go turn start destiny board =
       || snd destiny > 8
     then (
       print_int 1;
-      Illegal)
+      Illegal )
     else if rules piece destiny then
-      if illegal_side board destiny turn then Illegal
-      else (*turn = next_turn turn;*)
+      if illegal_side cur_board destiny cur_turn then Illegal
+      else
         Legal
+          {
+            current_board = update_board cur_board start destiny;
+            turn = next_turn cur_turn;
+          }
     else (
       print_int 5;
-      Illegal)
+      Illegal )
   else (
     print_int 4;
-    Illegal)
+    Illegal )

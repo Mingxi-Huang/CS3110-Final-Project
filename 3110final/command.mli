@@ -1,35 +1,32 @@
-(* *--->---> Footprint: Init pieces and init states to be done
+(** The type [coords] represents the coordinates the player want to move
+    a piece from and to*)
+type coords = (int * int) list
 
-   (**The type [piece_phrase] represents the piece phrase that can be
-   part of a player command.*)
+(** The type [command] represents a player command that is decomposed
+    into a verb and possibly a pair of coordinate *)
+type command =
+  | Move of coords
+  | Quit
 
-   (* type select_phrase = string
+(** Raised when an empty command is parsed. *)
+exception Empty
 
-   type mov_phrase = string
+(** Raised when a malformed command is encountered. *)
+exception Malformed
 
-   type piece_phrase = { select_phrase : select_phrase; mov_phrase :
-   mov_phrase; }
+(** [parse str] parses a player's input into a [command], as follows.
+    The first word (i.e., consecutive sequence of non-space characters)
+    of [str] becomes the verb. The rest of the words, if any, become the
+    coordinates. Examples:
 
-   type command = | Go of piece_phrase | Quit
+    - [parse " move 2,3 4,5"] is [Move \[(2,3); (4,5)\]]
+    - [parse "quit"] is [Quit].
 
-   exception Empty
+    Raises: [Empty] if [str] is the empty string or contains only
+    spaces.
 
-   exception Malformed
-
-   val parse : string -> command *) open State open Piece
-
-   (**Returns the selected piece given the user input message*) val
-   selected_piece : string -> piece list -> piece
-
-   (**Returns the destination state given the user input message*) val
-   destination_state : string -> state list -> state
-
-   (**Update the piece information by updating the label of the piece*)
-   val update_piece : piece -> state -> piece
-
-   (**Update the state label information by updating the occupied field
-   of it*) val update_state : state -> bool -> state
-
-   val update_plist : piece list -> piece -> state -> piece list
-
-   val update_slist : state list -> piece -> state -> state list *)
+    Raises: [Malformed] if the command is malformed. A command is
+    {i malformed} if the verb is neither "quit" nor "move", or if the
+    verb is "quit" and there is a non-empty object phrase, or if the
+    verb is "move" and there is an empty object phrase.*)
+val parse : string -> command

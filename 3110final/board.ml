@@ -83,7 +83,7 @@ let print_board board =
         print_string "   ";
         if j = 8 then (
           print_int 8;
-          print_char '\n')
+          print_char '\n' )
       done
     else if (i + 1) mod 2 <> 0 then
       for j = 0 to 8 do
@@ -92,7 +92,7 @@ let print_board board =
           print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_char '\n'))
+            print_char '\n' ) )
         else print_string "    "
       done
     else
@@ -100,20 +100,19 @@ let print_board board =
         if j = 0 then (
           print_string "  ";
           print_int (i / 2);
-          print_string " ")
+          print_string " " )
         else (
           print_char (char_of_piece board.(i / 2).(j - 1));
           print_string "---";
           if j = 8 then (
             print_char (char_of_piece board.(i / 2).(j));
-            print_char '\n'))
+            print_char '\n' ) )
       done
   done
 
 let get_piece board coord = board.(fst coord).(snd coord)
 
-(* let set_piece board piece coord = board.(fst coord).(snd coord) <-
-   Some piece *)
+(** [matrix_copy m] is copy of the 2d array [m]*)
 let matrix_copy m = Array.map Array.copy m
 
 let update_board board start dest =

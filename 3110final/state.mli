@@ -5,13 +5,28 @@
     that cause the state to change. *)
 open Board
 
-type turn
+open Piece
 
-type result
+type t
+
+type result =
+  | Legal of t
+  | Illegal
+
+(** [get_current_board t] is the current board configuration for state
+    [t]*)
+val get_current_board : t -> Board.t
+
+(** [get current turn t] is the turn for state [t]*)
+val get_current_turn : t -> Piece.side
 
 (** [init_state] is the side that starts the game. We initializes it to
-    be the [Black] side*)
-val init_state : turn
+    be the [Red] side*)
+val init_state : t
+
+(** [create_state board turn] create a state with board config [board]
+    and current turn [side]*)
+val create_state : Board.t -> Piece.side -> t
 
 (** [go] evaluated if the input movement is legal. *)
-val go : turn -> piece -> int * int -> Board.t -> result
+val go : int * int -> int * int -> t -> result

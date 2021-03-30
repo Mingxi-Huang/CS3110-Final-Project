@@ -45,6 +45,10 @@ let start_board = generate_board ()
 
 let updated_board = update_board start_board (9, 3) (8, 4)
 
+let start_state = init_state
+
+let second_state = create_state updated_board Black
+
 let piece_tests =
   [
     ("get advisor" >:: fun _ -> assert_equal (get_c advisor) Advisor);
@@ -53,10 +57,10 @@ let piece_tests =
 
 let state_tests =
   [
-    ( "Illegal state test" >:: fun _ ->
-      assert_equal Illegal (go Black (3, 0) (1, 0) start_board) );
-    ( "Legal state test" >:: fun _ ->
-      assert_equal Illegal (go Black (3, 0) (2, 0) start_board) );
+    ( "Legal move" >:: fun _ ->
+      assert_equal (Legal second_state) (go (9, 3) (8, 4) init_state) );
+    ( "Illegal turn" >:: fun _ ->
+      assert_equal Illegal (go (3, 0) (2, 0) init_state) );
   ]
 
 let command_tests =
