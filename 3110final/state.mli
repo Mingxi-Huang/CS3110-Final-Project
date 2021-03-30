@@ -3,16 +3,15 @@
     This module represents the state of a Xiangqi game as it is being
     played, including the player's current coordinates, and functions
     that cause the state to change. *)
-type state
+open Board
 
-type point
+type turn
 
-val get_label : state -> string
+type result
 
-val get_coord : state -> point
+(** [init_state] is the side that starts the game. We initializes it to
+    be the [Black] side*)
+val init_state : turn
 
-val get_occupy : state -> bool
-
-val init_states : state list
-
-val create_state : string -> point -> bool -> state
+(** [go] evaluated if the input movement is legal. *)
+val go : turn -> piece -> int * int -> Board.t -> result

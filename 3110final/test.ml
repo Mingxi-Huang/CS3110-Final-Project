@@ -52,7 +52,12 @@ let piece_tests =
   ]
 
 let state_tests =
-  [ (* TODO: add tests for the Adventure module here *) ]
+  [
+    ( "Illegal state test" >:: fun _ ->
+      assert_equal Illegal (go Black (3, 0) (1, 0) start_board) );
+    ( "Legal state test" >:: fun _ ->
+      assert_equal Illegal (go Black (3, 0) (2, 0) start_board) );
+  ]
 
 let command_tests =
   [ (* TODO: add tests for the Command module here *) ]
