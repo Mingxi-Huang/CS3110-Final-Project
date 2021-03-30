@@ -2,4 +2,4 @@
 
     @authors Simon Huang (mh954) Zhaojiahong Zhu (zz264) Emily Bai
     (sb875) Qingyang Ren (qr23) *)
-val hours_worked : int
+val hours_worked : int list

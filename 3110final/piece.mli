@@ -17,16 +17,20 @@ type rank =
 
 type coord = int * int
 
-type piece
+type t
 
-val get_c : piece -> rank
+val create_piece : rank -> side -> coord -> t
 
-val get_coord : piece -> coord
+val change_coord : t -> coord -> t
 
-val get_side : piece -> side
+val extract : t option -> t
 
-val create_piece : rank -> side -> coord -> piece
+val get_c : t -> rank
 
-val char_of_piece : piece option -> char
+val get_coord : t -> coord
 
-val init_pieces : piece list
+val get_side : t -> side
+
+val char_of_piece : t option -> char
+
+val init_pieces : t list

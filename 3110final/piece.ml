@@ -41,9 +41,16 @@ type piece = {
   coordinate : coord;
 }
 
+type t = piece
+
+let create_piece r s c = { character = r; side = s; coordinate = c }
+
 let get_c piece = piece.character
 
 let get_side piece = piece.side
+
+let change_coord piece coord =
+  create_piece (get_c piece) (get_side piece) coord
 
 let get_coord piece = piece.coordinate
 
@@ -64,5 +71,3 @@ let char_of_piece piece =
     | Soldier -> 'S'
 
 let init_pieces = []
-
-let create_piece r s c = { character = r; side = s; coordinate = c }

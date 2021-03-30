@@ -55,8 +55,12 @@ let cannon_row side =
   row.(7) <- Some cannon2;
   row
 
+type board = Piece.t option array array
+
+type t = board
+
 (* [board_array] is the initial state of board *)
-let board_array =
+let generate_board () =
   [|
     bottom_row Black;
     Array.make 9 None;
@@ -105,16 +109,16 @@ let print_board board =
       done
   done
 
-(*update board array according to last step; input: barray is the
-  current board; position is a tuple that records the change of update:
-  first term be the previous position vector and the second term be the
-  updated position vector; name is the name of the piece that is moved.
-  updated board array and returns unit*)
-let update_board
-    (barray : 'a array)
-    (position : (int * int) * (int * int))
-    (name : char) : unit =
-  barray.(position |> fst |> fst |> ( - ) 1).(position |> fst |> snd
-                                              |> ( - ) 1) <- '+';
-  barray.(position |> snd |> fst |> ( - ) 1).((position |> snd |> snd)
-                                              - 1) <- name
+let get_piece board coord = board.(fst coord).(snd coord)
+
+(* let set_piece board piece coord = board.(fst coord).(snd coord) <-
+   Some piece *)
+let matrix_copy m = Array.map Array.copy m
+
+let update_board board start dest =
+  let new_board = matrix_copy board in
+  let cur_piece = get_piece new_board start in
+  new_board.(fst start).(snd start) <- None;
+  new_board.(fst dest).(snd dest) <-
+    Some (change_coord (extract cur_piece) dest);
+  new_board

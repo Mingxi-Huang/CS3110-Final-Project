@@ -2,6 +2,7 @@ open OUnit2
 open Piece
 open Command
 open State
+open Board
 
 let cmp_set_like_lists lst1 lst2 =
   let uniq1 = List.sort_uniq compare lst1 in
@@ -28,7 +29,21 @@ let pp_list pp_elt lst =
   in
   "[" ^ pp_elts lst ^ "]"
 
+let string_of_piece_op piece_op =
+  let rank = Char.escaped (char_of_piece piece_op) in
+  let coord = piece_op |> extract |> Piece.get_coord in
+  rank ^ " at "
+  ^ string_of_int (fst coord)
+  ^ ","
+  ^ string_of_int (snd coord)
+
 let advisor = create_piece Advisor Red (9, 3)
+
+let moved_advisor = create_piece Advisor Red (8, 4)
+
+let start_board = generate_board ()
+
+let updated_board = update_board start_board (9, 3) (8, 4)
 
 let piece_tests =
   [
@@ -42,7 +57,17 @@ let state_tests =
 let command_tests =
   [ (* TODO: add tests for the Command module here *) ]
 
-let board_tests = [ (* TODO: add tests for the State module here *) ]
+let board_tests =
+  [
+    ( "get piece test" >:: fun _ ->
+      assert_equal (Some advisor)
+        (get_piece start_board (9, 3))
+        ~printer:string_of_piece_op );
+    ( "update board test" >:: fun _ ->
+      assert_equal (Some moved_advisor)
+        (get_piece updated_board (8, 4))
+        ~printer:string_of_piece_op );
+  ]
 
 let ai_tests = [ (* TODO: add tests for the State module here *) ]
 
