@@ -71,3 +71,21 @@ let char_of_piece piece =
     | Soldier -> 'S'
 
 let init_pieces = []
+
+let get_i (a,_) = a
+
+let get_j (_, a) = a
+
+(** assume currently only moving red side pieces upwards*)
+let rules p c1 c2 =
+match get_c p with 
+| General -> if (get_i c2) = (get_i c1) - 1 then true else false
+| Advisor -> if (get_i c2) = (get_i c1) - 1 then true else false
+| Elephant -> if (get_i c2) = (get_i c1) - 2 && ((get_j c2) = (get_j c1) - 2 
+  || (get_j c2) = (get_j c1) + 2) then true else false
+| Horse -> if (get_i c2) = (get_i c1) - 2 && ((get_j c2) = (get_j c1) - 1 
+  || (get_j c2) = (get_j c1) + 1) then true else false
+| Rook -> if (get_i c2) = (get_i c1) - 1 then true else false
+| Cannon -> if (get_i c2) = (get_i c1) - 2 then true else false
+| Soldier -> if ((get_i c2) = (get_i c1) - 1 && (get_i c2) = (get_i c1)) 
+  then true else false
