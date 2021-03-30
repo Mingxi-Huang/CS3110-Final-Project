@@ -83,29 +83,30 @@ let print_board board =
         print_string "   ";
         if j = 8 then (
           print_int 8;
-          print_char '\n' )
+          print_char '\n')
       done
     else if (i + 1) mod 2 <> 0 then
       for j = 0 to 8 do
         if j <> 0 then (
-          print_char '|';
+          print_string "|";
           print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_char '\n' ) )
+            print_char '\n'))
         else print_string "    "
       done
     else
       for j = 0 to 8 do
         if j = 0 then (
+          print_string "  ";
           print_int (i / 2);
-          if i = 19 then print_string "   " else print_string "   " )
+          print_string " ")
         else (
           print_char (char_of_piece board.(i / 2).(j - 1));
           print_string "---";
           if j = 8 then (
             print_char (char_of_piece board.(i / 2).(j));
-            print_char '\n' ) )
+            print_char '\n'))
       done
   done
 

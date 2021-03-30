@@ -1,3 +1,3 @@
 (** Order: Simon Huang (mh954), Zhaojiahong Zhu (zz264), Emily Bai
     (sb875), Qingyang Ren (qr23) *)
-let hours_worked = [ 8; -1; -1; -1 ]
+let hours_worked = [ 8; -1; 12; 12 ]

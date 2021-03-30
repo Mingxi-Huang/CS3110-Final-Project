@@ -33,6 +33,4 @@ val get_side : t -> side
 
 val char_of_piece : t option -> char
 
-val init_pieces : t list
-
-val rules : t -> coord -> coord -> bool
+val rules : t -> coord -> bool

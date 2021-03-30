@@ -33,6 +33,7 @@ type rank =
   | Cannon
   | Soldier
 
+(** coord (2, 3) means the i (y-coordinate) is 2 and j (x-coordinate) is 3. *)
 type coord = int * int
 
 type piece = {
@@ -70,22 +71,41 @@ let char_of_piece piece =
     | Cannon -> 'C'
     | Soldier -> 'S'
 
-let init_pieces = []
-
+(** [get_i] extract y-coordinate of the coordinate tuple*)
 let get_i (a,_) = a
 
+(** [get_j] extract x-coordinate of the coordinate tuple*)
 let get_j (_, a) = a
 
-(** assume currently only moving red side pieces upwards*)
-let rules p c1 c2 =
+(** [rules] is a bool, judging whether a move of piece [p] to
+    destination coordinate [c] is legal, currently for player's red side, 
+    without eating pieces, before acrossing the river. *)
+let rules p c2 =
+  let c1_i = get_i p.coordinate in
+  let c1_j = get_j p.coordinate in
+  let c2_i = get_i c2 in
+  let c2_j = get_j c2 in
 match get_c p with 
-| General -> if (get_i c2) = (get_i c1) - 1 then true else false
-| Advisor -> if (get_i c2) = (get_i c1) - 1 then true else false
-| Elephant -> if (get_i c2) = (get_i c1) - 2 && ((get_j c2) = (get_j c1) - 2 
-  || (get_j c2) = (get_j c1) + 2) then true else false
-| Horse -> if (get_i c2) = (get_i c1) - 2 && ((get_j c2) = (get_j c1) - 1 
-  || (get_j c2) = (get_j c1) + 1) then true else false
-| Rook -> if (get_i c2) = (get_i c1) - 1 then true else false
-| Cannon -> if (get_i c2) = (get_i c1) - 2 then true else false
-| Soldier -> if ((get_i c2) = (get_i c1) - 1 && (get_i c2) = (get_i c1)) 
+
+| General -> if (c2 = (c1_i,c1_j-1) || c2 = (c1_i,c1_j+1) || c2 = (c1_i-1,c1_j)
+|| c2 = (c1_i+1,c1_j)) then true else false
+
+| Advisor -> if (c2 = (c1_i + 1, c1_j + 1) || c2 = (c1_i - 1, c1_j + 1) 
+  || c2 = (c1_i + 1 , c1_j - 1) || c2 = (c1_i - 1 , c1_j - 1)) 
   then true else false
+  
+| Elephant -> if (c2 = (c1_i + 2, c1_j + 2) || c2 = (c1_i - 2, c1_j + 2) 
+  || c2 = (c1_i + 2, c1_j - 2) || c2 = (c1_i - 2, c1_j - 2)) 
+  then true else false
+  
+| Horse -> if (c2 = (c1_i + 2, c1_j + 1) || c2 = (c1_i - 2, c1_j + 1) 
+  || c2 = (c1_i + 2, c1_j - 1) || c2 = (c1_i - 2, c1_j - 1) || 
+  c2 = (c1_i + 1, c1_j + 2) || c2 = (c1_i + 1, c1_j + -2) ||
+  c2 = (c1_i + -1, c1_j + 2) || c2 = (c1_i + -1, c1_j + -2) )  
+  then true else false
+  
+| Rook -> if ((c2_i = c1_i || c2_j = c1_j) && (c1_i,c1_j) <> c2) then true else false
+
+| Cannon -> if ((c2_i = c1_i || c2_j = c1_j) && (c1_i,c1_j) <> c2) then true else false
+
+| Soldier -> if (c2 = (c1_i - 1, c1_j)) then true else false 
