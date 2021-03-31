@@ -28,7 +28,7 @@ let str_to_tuple str =
 let rec check_coords_in_range tuple_lst =
   match tuple_lst with
   | [] -> true
-  | h :: t -> fst h > 0 && snd h > 0 && check_coords_in_range t
+  | h :: t -> fst h >= 0 && snd h >= 0 && check_coords_in_range t
 
 let check_good_coords tuple_lst =
   List.length tuple_lst = 2 && check_coords_in_range tuple_lst

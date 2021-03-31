@@ -1,78 +1,78 @@
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Runner: sequential
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Chooser: simple
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration suite_name = "test suite forProject"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration cache_filename = "/Users/huangmingxi/Desktop/Academic/2021sp/CS3110/CS3110-project/3110final/_build/oUnit-$(suite_name).cache"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration run_gc_full_major = "true"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration display = "true"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration results_style_1_X = "false"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration testdata_dir = "none"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration health_check_interval = "1."
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration verbose = "false"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration chooser = "simple"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration output_html_dir = "none"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration processes_kill_period = "5."
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration runner = "sequential"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration shards = "2"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration processes_grace_period = "5."
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration log_encoding = "utf-8"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration output_junit_file = "none"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration ci = "false"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Configuration output_file = "/Users/huangmingxi/Desktop/Academic/2021sp/CS3110/CS3110-project/3110final/_build/oUnit-$(suite_name)-$(shard_id).log"
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:0:Legal move.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:0:Legal move is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:0:Legal move.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:1:Illegal turn.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:1:Illegal turn is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:1:Illegal turn.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:2:quit.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:2:quit is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:2:quit.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:3:move good.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:3:move good is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:3:move good.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:4:empty.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:4:empty is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:4:empty.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:5:coordinate wrong.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:5:coordinate wrong is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:5:coordinate wrong.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:6:coordinate space.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:6:coordinate space is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:6:coordinate space.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:7:coordinate length wrong.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:7:coordinate length wrong is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:7:coordinate length wrong.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:8:get advisor.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:8:get advisor is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:8:get advisor.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:9:get side.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:9:get side is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:9:get side.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:10:get piece test.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:10:get piece test is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:10:get piece test.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Start test test suite forProject:11:update board test.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:11:update board test is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: End test test suite forProject:11:update board test.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: ==============
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Summary:
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:11:update board test is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:10:get piece test is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:9:get side is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:8:get advisor is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:7:coordinate length wrong is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:6:coordinate space is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:5:coordinate wrong is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:4:empty is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:3:move good is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:2:quit is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:1:Illegal turn is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Test test suite forProject:0:Legal move is successful.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Ran: 12 tests in: 0.02 seconds.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Cases: 12.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Tried: 12.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Errors: 0.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Failures: 0.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Skip: 0.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Todo: 0.
-2021-03-30T21:21:07+00:00 huangmigxideMBP#00 I: Timeout: 0.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Runner: sequential
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Chooser: simple
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration suite_name = "test suite forProject"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration cache_filename = "/Users/huangmingxi/Desktop/Academic/2021sp/CS3110/CS3110-project/3110final/_build/oUnit-$(suite_name).cache"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration run_gc_full_major = "true"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration display = "true"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration results_style_1_X = "false"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration testdata_dir = "none"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration health_check_interval = "1."
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration verbose = "false"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration chooser = "simple"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration output_html_dir = "none"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration processes_kill_period = "5."
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration runner = "sequential"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration shards = "2"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration processes_grace_period = "5."
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration log_encoding = "utf-8"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration output_junit_file = "none"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration ci = "false"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Configuration output_file = "/Users/huangmingxi/Desktop/Academic/2021sp/CS3110/CS3110-project/3110final/_build/oUnit-$(suite_name)-$(shard_id).log"
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:0:Legal move.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:0:Legal move is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:0:Legal move.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:1:Illegal turn.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:1:Illegal turn is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:1:Illegal turn.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:2:quit.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:2:quit is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:2:quit.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:3:move good.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:3:move good is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:3:move good.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:4:empty.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:4:empty is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:4:empty.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:5:coordinate wrong.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:5:coordinate wrong is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:5:coordinate wrong.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:6:coordinate space.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:6:coordinate space is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:6:coordinate space.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:7:coordinate length wrong.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:7:coordinate length wrong is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:7:coordinate length wrong.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:8:get advisor.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:8:get advisor is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:8:get advisor.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:9:get side.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:9:get side is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:9:get side.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:10:get piece test.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:10:get piece test is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:10:get piece test.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Start test test suite forProject:11:update board test.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:11:update board test is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: End test test suite forProject:11:update board test.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: ==============
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Summary:
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:11:update board test is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:10:get piece test is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:9:get side is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:8:get advisor is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:7:coordinate length wrong is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:6:coordinate space is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:5:coordinate wrong is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:4:empty is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:3:move good is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:2:quit is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:1:Illegal turn is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Test test suite forProject:0:Legal move is successful.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Ran: 12 tests in: 0.01 seconds.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Cases: 12.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Tried: 12.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Errors: 0.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Failures: 0.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Skip: 0.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Todo: 0.
+2021-03-31T15:14:20+00:00 huangmigxideMBP#00 I: Timeout: 0.

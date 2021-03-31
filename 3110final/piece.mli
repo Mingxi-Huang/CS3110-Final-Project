@@ -21,6 +21,8 @@ type t
 
 val create_piece : rank -> side -> coord -> t
 
+val string_of_side : side -> string
+
 val change_coord : t -> coord -> t
 
 val extract : t option -> t
