@@ -12,11 +12,6 @@ let get_result_state result =
   | State.Legal t -> t
   | State.Illegal -> raise Illegal_state
 
-let get_result_state result =
-  match result with
-  | State.Legal t -> t
-  | State.Illegal -> raise Illegal_state
-
 (** [valid_command] is an recursive function that handles exceptions
     with mal inputs. If the input is legal, return parse command, else
     return a warning message and ask for new input. This step is
@@ -25,11 +20,17 @@ let rec valid_command command =
   try parse command with
   | Empty -> (
       print_endline "Command is Empty";
+
       match read_line () with input -> valid_command input )
   | Malformed -> (
       print_endline
-        "Command is Malformed, should be: 'quit' or 'move\n\
-        \   x1,y1 x2,y2'";
+        "Command is Malformed, should be: 'quit' or 'move x1,y1 x2,y2' \
+         Please try again";
+      print_string "> ";
+      match read_line () with input -> valid_command input )
+  | Illegal_state -> (
+      print_endline "This is an illegal move, try again! \n";
+      print_string "> ";
       match read_line () with input -> valid_command input )
 
 (** [play_game_help] is the helper function that updates each move
@@ -39,8 +40,11 @@ let rec play_game_help st =
   let cur_turn = State.get_current_turn st in
   print_string "\nCurrent Board:\n ";
   Board.print_board cur_board;
-  print_string "\nCurrent Turn: ";
-  print_string ("\n" ^ Piece.string_of_side cur_turn ^ "\n");
+  print_endline "\nCurrent Turn: ";
+  print_endline ("\n" ^ Piece.string_of_side cur_turn);
+  print_endline
+    "\nWhat do you want to do next('move a,b c,d' or 'quit')?";
+  print_string "> ";
   let msg = read_line () in
   let command = valid_command msg in
   try
@@ -54,11 +58,18 @@ let rec play_game_help st =
         print_endline "bye bye";
         exit 0
     | _ ->
-        print_string "unknown state";
-        exit 0
-  with Illegal_state ->
-    print_endline "This is an illegal move, try again! \n";
-    play_game_help st
+        print_endline "unknown command!";
+        play_game_help st
+  with
+  | Illegal_state ->
+      print_endline "This is an illegal move, try again! \n";
+      play_game_help st
+  | Invalid_argument _ ->
+      print_endline
+        "please enter the coordinate within the board, Please try \
+         again!";
+      print_string "> ";
+      play_game_help st
 
 (* let commands = ref valid_command input in while commands <> Quit do
    play_game_help st; Board.print_board (State.get_current_board st
