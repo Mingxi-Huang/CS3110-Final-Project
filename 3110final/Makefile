@@ -25,7 +25,7 @@ finalcheck:
 	@bash check.sh final
 
 zip:
-	zip xiangqi.zip *.ml* *.json *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
+	zip xiangqi.zip *.ml* *.json *.txt *.sh _tags .merlin .ocamlformat .ocamlinit LICENSE Makefile	
 	
 docs: docs-public docs-private
 	

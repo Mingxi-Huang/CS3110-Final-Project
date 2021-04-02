@@ -43,7 +43,9 @@ let rec play_game_help st =
   print_endline "\nCurrent Turn: ";
   print_endline ("\n" ^ Piece.string_of_side cur_turn);
   print_endline
-    "\nWhat do you want to do next('move a,b c,d' or 'quit')?";
+    "\n\
+     What do you want to do next?\n\
+     Example: 'move 9,4 8,4' moves the red General up one step.";
   print_string "> ";
   let msg = read_line () in
   let command = valid_command msg in
