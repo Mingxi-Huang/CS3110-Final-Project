@@ -16,10 +16,7 @@
     colour along the path of attack; Soldier: move and capture by
     advancing one point;
 
-    Side of pieces: Red: Go first Black: Wait for red to Go
-
-    id: string representation of character, number, and side of a
-    specific piece*)
+    Side of pieces: Red: Go first; Black: Wait for red to Go *)
 type side =
   | Red
   | Black
@@ -73,6 +70,17 @@ let char_of_piece piece =
     | Rook -> 'R'
     | Cannon -> 'C'
     | Soldier -> 'S'
+
+let string_of_piece piece =
+  let col = if get_side piece = Red then "Red" else "Black" in
+  match get_c piece with
+  | General -> col ^ " General"
+  | Advisor -> col ^ " Advisor"
+  | Elephant -> col ^ " Elephant"
+  | Horse -> col ^ " Horse"
+  | Rook -> col ^ " Rook"
+  | Cannon -> col ^ " Cannon"
+  | Soldier -> col ^ " Soldier"
 
 (** [get_i] extract y-coordinate of the coordinate tuple*)
 let get_i (a, _) = a

@@ -20,13 +20,13 @@ val get_current_board : t -> Board.t
 (** [get current turn t] is the turn for state [t]*)
 val get_current_turn : t -> Piece.side
 
+val get_current_black_g : t -> Piece.t list
+
+val get_current_red_g : t -> Piece.t list
+
 (** [init_state] is the side that starts the game. We initializes it to
     be the [Red] side*)
 val init_state : t
 
-(** [create_state board turn] create a state with board config [board]
-    and current turn [side]*)
-val create_state : Board.t -> Piece.side -> t
-
-(** [go] evaluated if the input movement is legal. *)
+(** [move] evaluated if the input movement is legal. *)
 val move : int * int -> int * int -> t -> result

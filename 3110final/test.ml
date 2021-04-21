@@ -4,12 +4,22 @@ open Command
 open State
 open Board
 
+exception Illegal_state
+
 let cmp_set_like_lists lst1 lst2 =
   let uniq1 = List.sort_uniq compare lst1 in
   let uniq2 = List.sort_uniq compare lst2 in
   List.length lst1 = List.length uniq1
   && List.length lst2 = List.length uniq2
   && uniq1 = uniq2
+
+(** [get_result_state result] is the state from result [result], if
+    result is legal, then gives state; otherwise, raise Illegal_state
+    exception *)
+let get_result_state result =
+  match result with
+  | State.Legal t -> t
+  | State.Illegal -> raise Illegal_state
 
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = "\"" ^ s ^ "\""
@@ -37,6 +47,14 @@ let string_of_piece_op piece_op =
   ^ ","
   ^ string_of_int (snd coord)
 
+let string_of_piece piece =
+  let coord = Piece.get_coord piece in
+  Piece.string_of_piece piece
+  ^ " at "
+  ^ string_of_int (fst coord)
+  ^ ","
+  ^ string_of_int (snd coord)
+
 let advisor = create_piece Advisor Red (9, 3)
 
 let moved_advisor = create_piece Advisor Red (8, 4)
@@ -45,9 +63,13 @@ let start_board = generate_board ()
 
 let updated_board = update_board start_board (9, 3) (8, 4)
 
-let start_state = init_state
+let start_state = State.init_state
 
-let second_state = create_state updated_board Black
+let rcannon_capture_bhorse =
+  get_result_state (State.move (7, 1) (0, 1) start_state)
+
+let brook_cap_rcannon =
+  get_result_state (State.move (0, 0) (0, 1) rcannon_capture_bhorse)
 
 let piece_tests =
   [
@@ -57,11 +79,18 @@ let piece_tests =
 
 let state_tests =
   [
-    ( "Legal move" >:: fun _ ->
-      assert_equal (Legal second_state) (move (9, 3) (8, 4) init_state)
-    );
     ( "Illegal turn" >:: fun _ ->
       assert_equal Illegal (move (3, 0) (2, 0) init_state) );
+    ( "black graveyard" >:: fun _ ->
+      assert_equal
+        [ create_piece Horse Black (0, 1) ]
+        (State.get_current_black_g rcannon_capture_bhorse)
+        ~printer:(pp_list string_of_piece) );
+    ( "red graveyard" >:: fun _ ->
+      assert_equal
+        [ create_piece Cannon Red (0, 1) ]
+        (State.get_current_red_g brook_cap_rcannon)
+        ~printer:(pp_list string_of_piece) );
   ]
 
 let command_err name str excep =
