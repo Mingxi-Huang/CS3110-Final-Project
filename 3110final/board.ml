@@ -59,6 +59,7 @@ type board = Piece.t option array array
 
 type t = board
 
+(** an empty board with all slots initialized to None*)
 let empty_board = Array.make 10 (Array.make 9 None)
 
 (* [board_array] is the initial state of board *)
@@ -131,7 +132,10 @@ let board_to_list (board : Piece.t option array array) =
   board_to_list_helper arr_list []
 
 (** [reverse_board_list piece_list acc] is the list with every piece in
-    [piece_list] has its coord reverse*)
+    [piece_list] has its coord reverse, as if looking from the other
+    side of the board.
+
+    For example: red general in black player's eye: (9,4) -> (0,4) *)
 let rec reverse_board_list piece_list acc =
   match piece_list with
   | [] -> acc
@@ -159,6 +163,7 @@ let rec create_board_from_list piece_lst board =
         copy_board.(x).(y) <- Some piece;
         create_board_from_list t copy_board
 
+(**[turned_board board] is [board] rotate 180 degree*)
 let turned_board board =
   let piece_lst = board_to_list board in
   let reversed_lst = reverse_board_list piece_lst [] in

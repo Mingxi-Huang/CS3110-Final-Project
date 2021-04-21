@@ -47,6 +47,8 @@ let is_legal_side board coord turn =
   if non_empty_coord p && p |> extract |> get_side = turn then true
   else false
 
+(** [inbound destiny] is whether the coordinate [destiny] is on the
+    board or not*)
 let inbound destiny =
   if
     fst destiny < 0
@@ -56,6 +58,7 @@ let inbound destiny =
   then false
   else true
 
+(** get the opponent's color*)
 let oppo_turn turn = if turn = Red then Black else Red
 
 (** [go] evaluated if the input movement is legal. *)
