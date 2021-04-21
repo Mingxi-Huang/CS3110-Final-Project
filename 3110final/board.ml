@@ -59,6 +59,8 @@ type board = Piece.t option array array
 
 type t = board
 
+let empty_board = Array.make 10 (Array.make 9 None)
+
 (* [board_array] is the initial state of board *)
 let generate_board () =
   [|
@@ -110,10 +112,57 @@ let print_board board =
       done
   done
 
+let extract = function
+  | Some x -> x
+  | None -> raise (Invalid_argument "extract None")
+
 let get_piece board coord = board.(fst coord).(snd coord)
+
+(**[board_to_list_helper list_of_array acc] is a flattened list of all
+   element in [list_of_array]*)
+let rec board_to_list_helper list_of_array acc =
+  match list_of_array with
+  | [] -> acc
+  | h :: t -> board_to_list_helper t (Array.to_list h @ acc)
+
+(**[board_to_list] is a list of all pieces on the board *)
+let board_to_list (board : Piece.t option array array) =
+  let arr_list = Array.to_list board in
+  board_to_list_helper arr_list []
+
+(** [reverse_board_list piece_list acc] is the list with every piece in
+    [piece_list] has its coord reverse*)
+let rec reverse_board_list piece_list acc =
+  match piece_list with
+  | [] -> acc
+  | h :: t ->
+      if h = None then reverse_board_list t (None :: acc)
+      else
+        let old_piece = extract h in
+        let x, y = get_coord old_piece in
+        let new_piece = change_coord old_piece (9 - x, 8 - y) in
+        reverse_board_list t (Some new_piece :: acc)
 
 (** [matrix_copy m] is copy of the 2d array [m]*)
 let matrix_copy m = Array.map Array.copy m
+
+(** create a board from a piece option list [piece_lst] *)
+let rec create_board_from_list piece_lst board =
+  match piece_lst with
+  | [] -> matrix_copy board
+  | h :: t ->
+      let copy_board = matrix_copy board in
+      if h = None then create_board_from_list t copy_board
+      else
+        let piece = extract h in
+        let x, y = get_coord piece in
+        copy_board.(x).(y) <- Some piece;
+        create_board_from_list t copy_board
+
+let turned_board board =
+  let piece_lst = board_to_list board in
+  let reversed_lst = reverse_board_list piece_lst [] in
+  create_board_from_list reversed_lst empty_board
 
 let update_board board start dest =
   let new_board = matrix_copy board in
