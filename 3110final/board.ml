@@ -92,13 +92,13 @@ let print_board board =
       for j = 0 to 8 do
         if j <> 0 then (
           if i <> 10 then print_string "|"
-          else if j <> 1 then print_string "<"
+          else if j <> 1 then print_string "\027[36m<\027[0m"
           else print_string "|";
           (*Changed*)
-          if (i = 18 || i = 4) && j = 4 then print_string " / "
-          else if (i = 18 || i = 4) && j = 5 then print_string " \\ "
-          else if (i = 16 || i = 2) && j = 4 then print_string " \\ "
-          else if (i = 16 || i = 2) && j = 5 then print_string " / "
+          if (i = 18 || i = 4) && j = 4 then print_string "\027[33m / \027[0m"
+          else if (i = 18 || i = 4) && j = 5 then print_string "\027[33m \\ \027[0m"
+          else if (i = 16 || i = 2) && j = 4 then print_string "\027[33m \\ \027[0m"
+          else if (i = 16 || i = 2) && j = 5 then print_string "\027[33m / \027[0m"
           else print_string "   ";
           if j = 8 then (
             print_char '|';
