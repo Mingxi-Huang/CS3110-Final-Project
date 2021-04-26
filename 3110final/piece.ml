@@ -75,12 +75,13 @@ let rules p c2 =
   let c2_i = get_i c2 in
   let c2_j = get_j c2 in
   match get_c p with
+  (** General and Advisor cannot move outside the 2x2 palace. *)
   | General ->
       if
         c2 = (c1_i, c1_j - 1)
         || c2 = (c1_i, c1_j + 1)
         || c2 = (c1_i - 1, c1_j)
-        || c2 = (c1_i + 1, c1_j)
+        || c2 = (c1_i + 1, c1_j) && c2_i > 14 && (c2_j > 4 && c2_j < 6)
       then true
       else false
   | Advisor ->
@@ -88,27 +89,30 @@ let rules p c2 =
         c2 = (c1_i + 1, c1_j + 1)
         || c2 = (c1_i - 1, c1_j + 1)
         || c2 = (c1_i + 1, c1_j - 1)
-        || c2 = (c1_i - 1, c1_j - 1)
+        || c2 = (c1_i - 1, c1_j - 1) && c2_i > 14 && (c2_j > 4 || c2_j < 6)
       then true
       else false
+  (** Elephant cannot cross the river. *)
   | Elephant ->
-      if
+      if 
         c2 = (c1_i + 2, c1_j + 2)
         || c2 = (c1_i - 2, c1_j + 2)
         || c2 = (c1_i + 2, c1_j - 2)
-        || c2 = (c1_i - 2, c1_j - 2)
+        || c2 = (c1_i - 2, c1_j - 2) && c2_i > 10
       then true
       else false
+  (** Tripping horse: illegal move if the coord one step towards the moving direction of horse is occupied. *)
   | Horse ->
       if
         c2 = (c1_i + 2, c1_j + 1)
-        || c2 = (c1_i - 2, c1_j + 1)
-        || c2 = (c1_i + 2, c1_j - 1)
+        || c2 = (c1_i - 2, c1_j + 1) 
+        || c2 = (c1_i + 2, c1_j - 1) 
         || c2 = (c1_i - 2, c1_j - 1)
-        || c2 = (c1_i + 1, c1_j + 2)
+        || c2 = (c1_i + 1, c1_j + 2) 
         || c2 = (c1_i + 1, c1_j + -2)
         || c2 = (c1_i + -1, c1_j + 2)
-        || c2 = (c1_i + -1, c1_j + -2)
+        || c2 = (c1_i + -1, c1_j + -2) 
+        (* (occupied_coord (get_current_board st) (c1_i, c1_j - 1))) *)
       then true
       else false
   | Rook ->
@@ -117,4 +121,10 @@ let rules p c2 =
   | Cannon ->
       if (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2 then true
       else false
-  | Soldier -> if c2 = (c1_i - 1, c1_j) then true else false
+  (** Before crossing the river: Soldier can move one step forward;
+    * After crossing the riverL Soldier can move one step forward, leftward, or rightward;
+    * Soldier can never move backwards. *)
+  | Soldier ->     
+    if c1_i > 10 && c2 = (c1_i - 1, c1_j) then true
+    else if c1_i < 10 && c2 = (c1_i - 1, c1_j) || c2 = (c1_i, c1_j + 1) || c2 = (c1_i, c1_j - 1) then true 
+    else false

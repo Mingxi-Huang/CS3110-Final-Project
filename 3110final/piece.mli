@@ -39,6 +39,7 @@ type coord = int * int
 
 type t
 
+
 val create_piece : rank -> side -> coord -> t
 
 val string_of_side : side -> string

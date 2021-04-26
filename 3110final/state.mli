@@ -30,3 +30,7 @@ val init_state : t
 
 (** [move] evaluated if the input movement is legal. *)
 val move : int * int -> int * int -> t -> result
+
+val non_empty_coord : Piece.t option -> bool
+
+val occupied_coord :  Board.t -> int * int -> bool
