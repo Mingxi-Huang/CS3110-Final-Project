@@ -82,7 +82,7 @@ let print_board board =
   for i = 0 to 19 do
     if i = 0 then
       for j = 0 to 8 do
-        if j = 0 then print_string " " else print_int (j - 1);
+        if j = 0 then print_string "" else print_int (j - 1);
         print_string "   ";
         if j = 8 then (
           print_int 8;
