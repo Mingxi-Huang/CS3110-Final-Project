@@ -1,8 +1,7 @@
-#require "ounit2";;
 #require "ANSITerminal";;
+#require "ounit2";;
 #directory "_build";;
-#load "piece.cmo";;
-#load "command.cmo";;
-#load "state.cmo";;
-#load "board.cmo";;
-#load "ai.cmo";;
+#load_rec "piece.cmo";;
+#load_rec "command.cmo";;
+#load_rec "state.cmo";;
+#load_rec "board.cmo";;
