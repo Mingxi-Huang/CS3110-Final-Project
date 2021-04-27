@@ -69,38 +69,50 @@ let get_i (a, _) = a
 (* [get_j] extract x-coordinate of the coordinate tuple*)
 let get_j (_, a) = a
 
+(*Currently general, advisor, elephant, soldier moving rules solid and
+  completed; horse, rook, canon involves checking whether other pieces
+  block the way, which includes another parameter state [st], and
+  currently causes circular reference issue; --> to be fixed*)
 let rules p c2 =
   let c1_i = get_i p.coordinate in
   let c1_j = get_j p.coordinate in
   let c2_i = get_i c2 in
   let c2_j = get_j c2 in
   match get_c p with
-  (* General and Advisor cannot move outside the 2x2 palace. *)
+  (* General and Advisor cannot move outside the 2x2 palace, customized
+     for both sides*)
   | General ->
       if
-        c2 = (c1_i, c1_j - 1)
+        (c2 = (c1_i, c1_j - 1)
         || c2 = (c1_i, c1_j + 1)
         || c2 = (c1_i - 1, c1_j)
-        || (c2 = (c1_i + 1, c1_j) && c2_i > 14 && c2_j > 4 && c2_j < 6)
+        || c2 = (c1_i + 1, c1_j))
+        && c2_j >= 3 && c2_j <= 5
+        &&
+        if p.side = Red then c2_i >= 7 && c2_i <= 9
+        else c2_i >= 0 && c2_i <= 2
       then true
       else false
   | Advisor ->
       if
-        c2 = (c1_i + 1, c1_j + 1)
+        (c2 = (c1_i + 1, c1_j + 1)
         || c2 = (c1_i - 1, c1_j + 1)
         || c2 = (c1_i + 1, c1_j - 1)
-        || c2 = (c1_i - 1, c1_j - 1)
-           && c2_i > 14
-           && (c2_j > 4 || c2_j < 6)
+        || c2 = (c1_i - 1, c1_j - 1))
+        && c2_j >= 3 && c2_j <= 5
+        &&
+        if p.side = Red then c2_i >= 7 && c2_i <= 9
+        else c2_i >= 0 && c2_i <= 2
       then true
       else false
-  (* Elephant cannot cross the river. *)
+  (* Elephant cannot cross the river, customized for both sides*)
   | Elephant ->
       if
-        c2 = (c1_i + 2, c1_j + 2)
+        (c2 = (c1_i + 2, c1_j + 2)
         || c2 = (c1_i - 2, c1_j + 2)
         || c2 = (c1_i + 2, c1_j - 2)
-        || (c2 = (c1_i - 2, c1_j - 2) && c2_i > 10)
+        || c2 = (c1_i - 2, c1_j - 2))
+        && if p.side = Red then c2_i >= 5 else c2_i <= 4
       then true
       else false
   (* Tripping horse: illegal move if the coord one step towards the
@@ -132,8 +144,7 @@ let rules p c2 =
   | Soldier -> (
       match p.side with
       | Red ->
-          if c1_i > 10 then
-            if c2 = (c1_i - 1, c1_j) then true else false
+          if c1_i >= 5 then c2 = (c1_i - 1, c1_j)
           else if
             (*Crossing the river*)
             c2 = (c1_i - 1, c1_j)
@@ -142,8 +153,7 @@ let rules p c2 =
           then true
           else false
       | Black ->
-          if c1_i < 10 then
-            if c2 = (c1_i + 1, c1_j) then true else false
+          if c1_i <= 4 then c2 = (c1_i + 1, c1_j)
           else if
             (*Crossing the river*)
             c2 = (c1_i + 1, c1_j)

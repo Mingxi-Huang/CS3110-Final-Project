@@ -13,7 +13,7 @@ type t = state
 let init_state =
   {
     current_board = Board.generate_board ();
-    turn = Red; 
+    turn = Red;
     red_graveyard = [];
     black_graveyard = [];
   }
@@ -35,14 +35,14 @@ let get_current_black_g st = st.black_graveyard
 
 let get_current_turn st = st.turn
 
-(**[non_empty_coord] evaluates if the selected piece have actual piece on
-   it*)
+(**[non_empty_coord] evaluates if the selected piece have actual piece
+   on it*)
 let non_empty_coord piece_option =
   match piece_option with None -> false | Some _ -> true
-  
+
 let occupied_coord board coord =
   match get_piece board coord with None -> false | Some _ -> true
-  
+
 (**[illegal_side] evaluates if the piece on the selected coordinate is
    of same side with [turn]*)
 let is_legal_side board coord turn =
@@ -75,14 +75,14 @@ let move start destiny st =
     (* don't move out of the board *)
     if inbound destiny = false then (
       print_int 1;
-      Illegal )
-    else if rules piece destiny then (*!!! inserted st parameter*)
+      Illegal)
+    else if rules piece destiny then
       (* don't move your other piece *)
       if is_legal_side cur_board destiny cur_turn then Illegal
       else if is_legal_side cur_board destiny opponent_turn then
         let captured_piece = extract (get_piece cur_board destiny) in
         if get_side captured_piece = Red then
-          Legal 
+          Legal
             {
               current_board = update_board cur_board start destiny;
               turn = next_turn cur_turn;
@@ -107,7 +107,7 @@ let move start destiny st =
           }
     else (
       print_int 5;
-      Illegal )
+      Illegal)
   else (
     print_int 4;
-    Illegal )
+    Illegal)
