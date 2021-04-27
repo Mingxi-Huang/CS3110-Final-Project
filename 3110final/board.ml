@@ -123,8 +123,7 @@ let print_board board =
             (*Another fatal error fixed here, coloring of the pieces
               should be dependent upon side specific to the piece, but
               not the static coordinates of the pieces here; otherwise
-              crossing the river means switching the color thus
-              switching the side*)
+              crossing the river means switching the color*)
             if get_side (Option.get p_opt1) = Black then
               Printf.printf "\027[44;1m%c\027[0m" cha1
             else Printf.printf "\027[41;1m%c\027[0m" cha1

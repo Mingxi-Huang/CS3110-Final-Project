@@ -21,27 +21,33 @@ let rec valid_command command =
   | Empty -> (
       print_endline "Command is Empty";
 
-      match read_line () with input -> valid_command input )
+      match read_line () with input -> valid_command input)
   | Malformed -> (
       print_endline
         "Command is Malformed, should be: 'quit' or 'move x1,y1 x2,y2' \
          Please try again";
       print_string "> ";
-      match read_line () with input -> valid_command input )
+      match read_line () with input -> valid_command input)
   | Illegal_state -> (
       print_endline "This is an illegal move, try again! \n";
       print_string "> ";
-      match read_line () with input -> valid_command input )
+      match read_line () with input -> valid_command input)
 
 (** [play_game_help] is the helper function that updates each move
     according to the command and pass the turn to the other side*)
 let rec play_game_help st =
   let cur_board = State.get_current_board st in
   let cur_turn = State.get_current_turn st in
-  print_string "\nCurrent Board:\n ";
+  Printf.printf "\027[36;1m%s\027[0m" "\nCurrent Board:\n ";
   Board.print_board cur_board;
-  print_endline "\nCurrent Turn: ";
-  print_endline ("\n" ^ Piece.string_of_side cur_turn);
+  print_endline "\027[36;1m\nCurrent Turn: \027[0m";
+  if Piece.string_of_side cur_turn = "Red" then
+    Printf.printf "\027[31;1m\n%s\n\027[0m"
+      (Piece.string_of_side cur_turn)
+  else
+    Printf.printf "\027[34;1m\n%s\n\027[0m"
+      (Piece.string_of_side cur_turn);
+  (* print_endline ("\n" ^ Piece.string_of_side cur_turn); *)
   print_endline
     "\n\
      What do you want to do next?\n\

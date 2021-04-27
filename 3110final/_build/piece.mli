@@ -39,7 +39,6 @@ type coord = int * int
 
 type t
 
-
 val create_piece : rank -> side -> coord -> t
 
 val string_of_side : side -> string
@@ -62,8 +61,3 @@ val char_of_piece : t option -> char
 (** [string_of_piece piece] is the string containing information about
     its rank, color, and coordinate *)
 val string_of_piece : t -> string
-
-(** [rules] is a bool, judging whether a move of piece [p] to
-    destination coordinate [c] is legal, currently for player's red
-    side, without eating pieces, before acrossing the river. *)
-val rules : t -> coord -> bool

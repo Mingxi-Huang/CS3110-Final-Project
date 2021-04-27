@@ -44,7 +44,7 @@ let occupied_coord board coord =
   match get_piece board coord with None -> false | Some _ -> true
 
 (**[illegal_side] evaluates if the piece on the selected coordinate is
-   of same side with [turn]*)
+   of same side with [turn] and p is non empty*)
 let is_legal_side board coord turn =
   let p = get_piece board coord in
   if non_empty_coord p && p |> extract |> get_side = turn then true
@@ -64,6 +64,123 @@ let inbound destiny =
 (** get the opponent's color*)
 let oppo_turn turn = if turn = Red then Black else Red
 
+(* [get_i] extract y-coordinate of the coordinate tuple*)
+let get_i (a, _) = a
+
+(* [get_j] extract x-coordinate of the coordinate tuple*)
+let get_j (_, a) = a
+
+(*no_barricade takes a [start] and [destiny] coordinate (which has
+  either the same i or j coordinate); the state [st]; and outputs
+  whether there is occupied piece between the two coordinates on the
+  board *)
+(* let no_barricade start destiny st = if get_i start = get_i destiny
+   then for int i = get_i start to get_i destiny else *)
+
+(*Currently general, advisor, elephant, soldier moving rules solid and
+  completed; horse, rook, canon involves checking whether other pieces
+  block the way, which includes another parameter state [st], and
+  currently causes circular reference issue; --> to be fixed*)
+let rules p c2 st =
+  let c1_i = get_i (get_coord p) in
+  let c1_j = get_j (get_coord p) in
+  let c2_i = get_i c2 in
+  let c2_j = get_j c2 in
+  match get_c p with
+  (* General and Advisor cannot move outside the 2x2 palace, customized
+     for both sides*)
+  | General ->
+      if
+        (c2 = (c1_i, c1_j - 1)
+        || c2 = (c1_i, c1_j + 1)
+        || c2 = (c1_i - 1, c1_j)
+        || c2 = (c1_i + 1, c1_j))
+        && c2_j >= 3 && c2_j <= 5
+        &&
+        if get_side p = Red then c2_i >= 7 && c2_i <= 9
+        else c2_i >= 0 && c2_i <= 2
+      then true
+      else false
+  | Advisor ->
+      if
+        (c2 = (c1_i + 1, c1_j + 1)
+        || c2 = (c1_i - 1, c1_j + 1)
+        || c2 = (c1_i + 1, c1_j - 1)
+        || c2 = (c1_i - 1, c1_j - 1))
+        && c2_j >= 3 && c2_j <= 5
+        &&
+        if get_side p = Red then c2_i >= 7 && c2_i <= 9
+        else c2_i >= 0 && c2_i <= 2
+      then true
+      else false
+  (* Elephant cannot cross the river, customized for both sides*)
+  | Elephant ->
+      if
+        (c2 = (c1_i + 2, c1_j + 2)
+        || c2 = (c1_i - 2, c1_j + 2)
+        || c2 = (c1_i + 2, c1_j - 2)
+        || c2 = (c1_i - 2, c1_j - 2))
+        && if get_side p = Red then c2_i >= 5 else c2_i <= 4
+      then true
+      else false
+  (* Tripping horse: illegal move if the coord one step towards the
+     moving direction of horse is occupied; rules integrated and fixed
+     here!*)
+  | Horse ->
+      if
+        c2 = (c1_i + 2, c1_j + 1)
+        && occupied_coord st.current_board (c1_i + 1, c1_j) = false
+        || c2 = (c1_i - 2, c1_j + 1)
+           && occupied_coord st.current_board (c1_i - 1, c1_j) = false
+        || c2 = (c1_i + 2, c1_j - 1)
+           && occupied_coord st.current_board (c1_i + 1, c1_j) = false
+        || c2 = (c1_i - 2, c1_j - 1)
+           && occupied_coord st.current_board (c1_i - 1, c1_j) = false
+        || c2 = (c1_i + 1, c1_j + 2)
+           && occupied_coord st.current_board (c1_i, c1_j + 1) = false
+        || c2 = (c1_i + 1, c1_j + -2)
+           && occupied_coord st.current_board (c1_i, c1_j - 1) = false
+        || c2 = (c1_i + -1, c1_j + 2)
+           && occupied_coord st.current_board (c1_i, c1_j + 1) = false
+        || c2 = (c1_i + -1, c1_j + -2)
+           && occupied_coord st.current_board (c1_i, c1_j - 1) = false
+      then true
+      else false
+  | Rook ->
+      if (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2 then true
+      else false
+  | Cannon ->
+      if
+        (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2
+        (*&& no_barricade && (c1_i, c1_j) (c2_i, c2_j) st*)
+      then true
+      else false
+  (* Before crossing the river: Soldier can move one step forward; *
+     After crossing the riverL Soldier can move one step forward,
+     leftward, or rightward; * Soldier can never move backwards.
+
+     *Soldier rule for both sides, individualized, fixed*)
+  | Soldier -> (
+      match get_side p with
+      | Red ->
+          if c1_i >= 5 then c2 = (c1_i - 1, c1_j)
+          else if
+            (*Crossing the river*)
+            c2 = (c1_i - 1, c1_j)
+            || c2 = (c1_i, c1_j + 1)
+            || c2 = (c1_i, c1_j - 1)
+          then true
+          else false
+      | Black ->
+          if c1_i <= 4 then c2 = (c1_i + 1, c1_j)
+          else if
+            (*Crossing the river*)
+            c2 = (c1_i + 1, c1_j)
+            || c2 = (c1_i, c1_j + 1)
+            || c2 = (c1_i, c1_j - 1)
+          then true
+          else false)
+
 (** [go] evaluated if the input movement is legal. *)
 let move start destiny st =
   let cur_board = get_current_board st in
@@ -76,7 +193,7 @@ let move start destiny st =
     if inbound destiny = false then (
       print_int 1;
       Illegal)
-    else if rules piece destiny then
+    else if rules piece destiny st then
       (* don't move your other piece *)
       if is_legal_side cur_board destiny cur_turn then Illegal
       else if is_legal_side cur_board destiny opponent_turn then

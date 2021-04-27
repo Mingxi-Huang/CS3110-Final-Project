@@ -33,4 +33,9 @@ val move : int * int -> int * int -> t -> result
 
 val non_empty_coord : Piece.t option -> bool
 
-val occupied_coord :  Board.t -> int * int -> bool
+val occupied_coord : Board.t -> int * int -> bool
+
+(** [rules] is a bool, judging whether a move of piece [p] to
+    destination coordinate [c] is legal, currently for player's red
+    side, without eating pieces, before acrossing the river. *)
+val rules : Piece.t -> Piece.coord -> t -> bool
