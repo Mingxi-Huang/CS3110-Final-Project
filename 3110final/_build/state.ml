@@ -40,6 +40,8 @@ let get_current_turn st = st.turn
 let non_empty_coord piece_option =
   match piece_option with None -> false | Some _ -> true
 
+(**[occupied_coord] evaluates if the coordinate of the specific board is
+   occipied or not; if there is piece on it, then [true] else [false]*)
 let occupied_coord board coord =
   match get_piece board coord with None -> false | Some _ -> true
 
@@ -72,10 +74,55 @@ let get_j (_, a) = a
 
 (*no_barricade takes a [start] and [destiny] coordinate (which has
   either the same i or j coordinate); the state [st]; and outputs
-  whether there is occupied piece between the two coordinates on the
-  board *)
-(* let no_barricade start destiny st = if get_i start = get_i destiny
-   then for int i = get_i start to get_i destiny else *)
+  whether there is no lying-there piece between the two coordinates on
+  the board *)
+let no_barricade c1 c2 st =
+  let no_barr = ref true in
+  if get_i c1 = get_i c2 then
+    (*Same i, Diff j*)
+    for
+      j = min (get_j c1) (get_j c2) + 1 to max (get_j c1) (get_j c2) - 1
+    do
+      (*for the between route if there is piece on it --> occupied, set
+        no_barr to false*)
+      if occupied_coord st.current_board (get_i c1, j) then
+        no_barr := false
+    done
+  else
+    (*Diff i, Same j*)
+    for
+      i = min (get_i c1) (get_i c2) + 1 to max (get_i c1) (get_i c2) - 1
+    do
+      if occupied_coord st.current_board (i, get_j c1) then
+        no_barr := false
+    done;
+  !no_barr
+
+(*one_barricade takes a [start] and [destiny] coordinate (which has
+  either the same i or j coordinate); the state [st]; and outputs
+  whether there is exactly on occupied piece between the two coordinates
+  on the board *)
+let one_barricade c1 c2 st =
+  let counter = ref 0 in
+  if get_i c1 = get_i c2 then
+    (*Same i, Diff j*)
+    for
+      j = min (get_j c1) (get_j c2) + 1 to max (get_j c1) (get_j c2) - 1
+    do
+      (*for the between route if there is piece on it --> occupied, set
+        no_barr to false*)
+      if occupied_coord st.current_board (get_i c1, j) then
+        counter := !counter + 1
+    done
+  else
+    (*Diff i, Same j*)
+    for
+      i = min (get_i c1) (get_i c2) + 1 to max (get_i c1) (get_i c2) - 1
+    do
+      if occupied_coord st.current_board (i, get_j c1) then
+        counter := !counter + 1
+    done;
+  !counter = 1
 
 (*Currently general, advisor, elephant, soldier moving rules solid and
   completed; horse, rook, canon involves checking whether other pieces
@@ -113,13 +160,21 @@ let rules p c2 st =
         else c2_i >= 0 && c2_i <= 2
       then true
       else false
-  (* Elephant cannot cross the river, customized for both sides*)
+  (* Elephant cannot cross the river, customized for both sides, no
+     barricade present in mid point of the diagonal*)
   | Elephant ->
       if
         (c2 = (c1_i + 2, c1_j + 2)
+         && occupied_coord st.current_board (c1_i + 1, c1_j + 1) = false
         || c2 = (c1_i - 2, c1_j + 2)
+           && occupied_coord st.current_board (c1_i - 1, c1_j + 1)
+              = false
         || c2 = (c1_i + 2, c1_j - 2)
-        || c2 = (c1_i - 2, c1_j - 2))
+           && occupied_coord st.current_board (c1_i + 1, c1_j - 1)
+              = false
+        || c2 = (c1_i - 2, c1_j - 2)
+           && occupied_coord st.current_board (c1_i - 1, c1_j - 1)
+              = false)
         && if get_side p = Red then c2_i >= 5 else c2_i <= 4
       then true
       else false
@@ -147,19 +202,45 @@ let rules p c2 st =
       then true
       else false
   | Rook ->
-      if (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2 then true
+      (*Must have no_barricade between*)
+      if
+        let h_aline =
+          c2_i = c1_i && c2_j <> c1_j && no_barricade (c1_i, c1_j) c2 st
+        in
+        let v_aline =
+          c2_j = c1_j && c2_i <> c1_i && no_barricade (c1_i, c1_j) c2 st
+        in
+        h_aline || v_aline
+      then true
       else false
   | Cannon ->
+      (*either no_barricade between and destination emty, or exactly
+        one_barricade between, and destination occupied*)
       if
-        (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2
-        (*&& no_barricade && (c1_i, c1_j) (c2_i, c2_j) st*)
+        let h_aline =
+          c2_i = c1_i && c2_j <> c1_j
+          && no_barricade (c1_i, c1_j) c2 st
+          && occupied_coord st.current_board c2 = false
+          || c2_i = c1_i && c2_j <> c1_j
+             && one_barricade (c1_i, c1_j) c2 st
+             && occupied_coord st.current_board c2 = true
+        in
+        let v_aline =
+          c2_j = c1_j && c2_i <> c1_i
+          && no_barricade (c1_i, c1_j) c2 st
+          && occupied_coord st.current_board c2 = false
+          || c2_j = c1_j && c2_i <> c1_i
+             && one_barricade (c1_i, c1_j) c2 st
+             && occupied_coord st.current_board c2 = true
+        in
+        h_aline || v_aline
       then true
       else false
   (* Before crossing the river: Soldier can move one step forward; *
      After crossing the riverL Soldier can move one step forward,
      leftward, or rightward; * Soldier can never move backwards.
 
-     *Soldier rule for both sides, individualized, fixed*)
+     *Soldier rule customized for both sides*)
   | Soldier -> (
       match get_side p with
       | Red ->

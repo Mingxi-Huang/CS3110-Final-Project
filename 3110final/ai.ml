@@ -4,7 +4,7 @@ open Board
 
 type piece = Piece.t
 
-let s = match Random.int 1 with 0 -> Black | 1 -> Red
+let s () = match Random.int 1 with 0 -> Black | 1 -> Red
 
 let get_side = s
 
@@ -16,7 +16,7 @@ let available_piece (board : Board.t) : Piece.t list =
       match piece with
       | None -> ()
       | Some x ->
-          if Piece.get_side x = s then list := x :: !list else ()
+          if Piece.get_side x = s () then list := x :: !list else ()
     done
   done;
   !list
