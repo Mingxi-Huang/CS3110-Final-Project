@@ -4,8 +4,12 @@ open Board
 
 type piece = Piece.t
 
-val get_side : unit -> Piece.side
+val available_piece : Board.t -> Piece.t list
 
-val make_command : piece -> string
+val choose_piece : Board.t -> Piece.t
+
+val get_coordinate : Piece.t -> Piece.coord * (int * int)
+
+val make_command : State.t -> string
 
 (**1. 楚河汉界 2. 米字格 3. 马腿，相腿*)

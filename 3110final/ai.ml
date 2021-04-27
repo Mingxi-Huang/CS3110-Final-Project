@@ -4,9 +4,7 @@ open Board
 
 type piece = Piece.t
 
-let s = match Random.int 1 with 0 -> Black | 1 -> Red
-
-let get_side = s
+let s = Black
 
 let available_piece (board : Board.t) : Piece.t list =
   let list = ref [] in
@@ -26,33 +24,81 @@ let choose_piece board =
   list_piece |> List.length |> ( - ) 1 |> Random.int
   |> List.nth list_piece
 
-let make_command = failwith "unimplemented"
-
 let get_coordinate piece =
-  let current_coord = get_coord piece in
+  let c = get_coord piece in
   match get_c piece with
-  | Soldier ->
-      (current_coord, (fst current_coord - 1, snd current_coord))
-  | Cannon -> failwith "unimplemented"
-  | Rook -> failwith "unimplemented"
-  | Horse -> failwith "unimplemented"
-  | Elephant -> failwith "unimplemented"
-  | Advisor -> failwith "unimplemented"
-  | General -> failwith "unimplemented"
+  | Soldier -> (c, (fst c - 1, snd c))
+  | Cannon ->
+      ( c,
+        List.nth
+          [
+            (fst c, snd c + Random.int (8 - snd c));
+            (fst c + Random.int (8 - fst c), snd c);
+          ]
+          (Random.int 1) )
+  | Rook ->
+      ( c,
+        List.nth
+          [
+            (fst c, snd c + Random.int (8 - snd c));
+            (fst c + Random.int (8 - fst c), snd c);
+          ]
+          (Random.int 1) )
+  | Horse ->
+      ( c,
+        List.nth
+          [
+            (fst c + 2, snd c + 1);
+            (fst c - 2, snd c + 1);
+            (fst c + 2, snd c - 1);
+            (fst c - 2, snd c - 1);
+            (fst c + 1, snd c + 2);
+            (fst c + 1, snd c - 2);
+            (fst c - 1, snd c + 2);
+            (fst c - 1, snd c - 2);
+          ]
+          (Random.int 7) )
+  | Elephant ->
+      ( c,
+        List.nth
+          [
+            (fst c + 2, snd c + 2);
+            (fst c - 2, snd c + 2);
+            (fst c + 2, snd c - 2);
+            (fst c - 2, snd c - 2);
+          ]
+          (Random.int 3) )
+  | Advisor ->
+      ( c,
+        List.nth
+          [
+            (fst c + 1, snd c + 1);
+            (fst c - 1, snd c + 1);
+            (fst c + 1, snd c - 1);
+            (fst c - 1, snd c - 1);
+          ]
+          (Random.int 3) )
+  | General ->
+      ( c,
+        List.nth
+          [
+            (fst c, snd c - 1);
+            (fst c, snd c + 1);
+            (fst c + 1, snd c);
+            (fst c - 1, snd c);
+          ]
+          (Random.int 3) )
 
-(* let rules p c2 = let c1_i = get_i p.coordinate in let c1_j = get_j
-   p.coordinate in let c2_i = get_i c2 in let c2_j = get_j c2 in match
-   get_c p with | General -> if c2 = (c1_i, c1_j - 1) || c2 = (c1_i,
-   c1_j + 1) || c2 = (c1_i - 1, c1_j) || c2 = (c1_i + 1, c1_j) then true
-   else false | Advisor -> if c2 = (c1_i + 1, c1_j + 1) || c2 = (c1_i -
-   1, c1_j + 1) || c2 = (c1_i + 1, c1_j - 1) || c2 = (c1_i - 1, c1_j -
-   1) then true else false | Elephant -> if c2 = (c1_i + 2, c1_j + 2) ||
-   c2 = (c1_i - 2, c1_j + 2) || c2 = (c1_i + 2, c1_j - 2) || c2 = (c1_i
-   - 2, c1_j - 2) then true else false | Horse -> if c2 = (c1_i + 2,
-   c1_j + 1) || c2 = (c1_i - 2, c1_j + 1) || c2 = (c1_i + 2, c1_j - 1)
-   || c2 = (c1_i - 2, c1_j - 1) || c2 = (c1_i + 1, c1_j + 2) || c2 =
-   (c1_i + 1, c1_j + -2) || c2 = (c1_i + -1, c1_j + 2) || c2 = (c1_i +
-   -1, c1_j + -2) then true else false | Rook -> if (c2_i = c1_i || c2_j
-   = c1_j) && (c1_i, c1_j) <> c2 then true else false | Cannon -> if
-   (c2_i = c1_i || c2_j = c1_j) && (c1_i, c1_j) <> c2 then true else
-   false *)
+let rec make_legal_move state =
+  let piece = choose_piece (State.get_current_board state) in
+  let coord = get_coordinate piece in
+  match State.move (fst coord) (snd coord) state with
+  | Illegal -> make_legal_move state
+  | Legal _ -> coord
+
+let make_command state =
+  let coord = make_legal_move state in
+  match coord with
+  | (x, y), (x', y') ->
+      "move " ^ string_of_int x ^ "," ^ string_of_int y ^ " "
+      ^ string_of_int x' ^ "," ^ string_of_int y'
