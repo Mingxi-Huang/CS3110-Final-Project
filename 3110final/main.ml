@@ -1,5 +1,6 @@
 open Stdlib
 open Printf
+open State
 open Command
 
 exception Illegal_state

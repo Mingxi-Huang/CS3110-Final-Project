@@ -8,8 +8,8 @@ let s = Black
 
 let available_piece (board : Board.t) : Piece.t list =
   let list = ref [] in
-  for i = 0 to 9 do
-    for j = 0 to 9 do
+  for i = 0 to 8 do
+    for j = 0 to 8 do
       let piece = get_piece board (i, j) in
       match piece with
       | None -> ()
@@ -21,7 +21,7 @@ let available_piece (board : Board.t) : Piece.t list =
 
 let choose_piece board =
   let list_piece = available_piece board in
-  list_piece |> List.length |> ( - ) 1 |> Random.int
+  list_piece |> List.length |> ( + ) (-1) |> Random.int
   |> List.nth list_piece
 
 let get_coordinate piece =
@@ -102,3 +102,7 @@ let make_command state =
   | (x, y), (x', y') ->
       "move " ^ string_of_int x ^ "," ^ string_of_int y ^ " "
       ^ string_of_int x' ^ "," ^ string_of_int y'
+
+(* let init_st = State.init_state
+
+   let b = State.get_current_board init_st *)
