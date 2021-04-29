@@ -35,6 +35,16 @@ let get_current_black_g st = st.black_graveyard
 
 let get_current_turn st = st.turn
 
+let is_general piece =
+  if Piece.get_c piece = General then true else false
+
+let check_winner st =
+  let blk_g = get_current_black_g st in
+  let red_g = get_current_red_g st in
+  if List.exists is_general red_g then Some Black
+  else if List.exists is_general blk_g then Some Red
+  else None
+
 (**[non_empty_coord] evaluates if the selected piece have actual piece
    on it*)
 let non_empty_coord piece_option =
@@ -138,10 +148,10 @@ let rules p c2 st =
      for both sides*)
   | General ->
       if
-        (c2 = (c1_i, c1_j - 1)
+        ( c2 = (c1_i, c1_j - 1)
         || c2 = (c1_i, c1_j + 1)
         || c2 = (c1_i - 1, c1_j)
-        || c2 = (c1_i + 1, c1_j))
+        || c2 = (c1_i + 1, c1_j) )
         && c2_j >= 3 && c2_j <= 5
         &&
         if get_side p = Red then c2_i >= 7 && c2_i <= 9
@@ -150,10 +160,10 @@ let rules p c2 st =
       else false
   | Advisor ->
       if
-        (c2 = (c1_i + 1, c1_j + 1)
+        ( c2 = (c1_i + 1, c1_j + 1)
         || c2 = (c1_i - 1, c1_j + 1)
         || c2 = (c1_i + 1, c1_j - 1)
-        || c2 = (c1_i - 1, c1_j - 1))
+        || c2 = (c1_i - 1, c1_j - 1) )
         && c2_j >= 3 && c2_j <= 5
         &&
         if get_side p = Red then c2_i >= 7 && c2_i <= 9
@@ -164,8 +174,9 @@ let rules p c2 st =
      barricade present in mid point of the diagonal*)
   | Elephant ->
       if
-        (c2 = (c1_i + 2, c1_j + 2)
-         && occupied_coord st.current_board (c1_i + 1, c1_j + 1) = false
+        ( c2 = (c1_i + 2, c1_j + 2)
+          && occupied_coord st.current_board (c1_i + 1, c1_j + 1)
+             = false
         || c2 = (c1_i - 2, c1_j + 2)
            && occupied_coord st.current_board (c1_i - 1, c1_j + 1)
               = false
@@ -174,7 +185,7 @@ let rules p c2 st =
               = false
         || c2 = (c1_i - 2, c1_j - 2)
            && occupied_coord st.current_board (c1_i - 1, c1_j - 1)
-              = false)
+              = false )
         && if get_side p = Red then c2_i >= 5 else c2_i <= 4
       then true
       else false
@@ -260,7 +271,7 @@ let rules p c2 st =
             || c2 = (c1_i, c1_j + 1)
             || c2 = (c1_i, c1_j - 1)
           then true
-          else false)
+          else false )
 
 (** [go] evaluated if the input movement is legal. *)
 let move start destiny st =
@@ -271,9 +282,8 @@ let move start destiny st =
   if is_legal_side cur_board start cur_turn then
     let piece = extract (get_piece cur_board start) in
     (* don't move out of the board *)
-    if inbound destiny = false then (
-      print_int 1;
-      Illegal)
+    if inbound destiny = false then (* print_int 1; *)
+      Illegal
     else if rules piece destiny st then
       (* don't move your other piece *)
       if is_legal_side cur_board destiny cur_turn then Illegal
@@ -303,9 +313,7 @@ let move start destiny st =
             red_graveyard = get_current_red_g st;
             black_graveyard = get_current_black_g st;
           }
-    else (
-      print_int 5;
-      Illegal)
-  else (
-    print_int 4;
-    Illegal)
+    else (* print_int 5; *)
+      Illegal
+  else (* print_int 4; *)
+    Illegal
