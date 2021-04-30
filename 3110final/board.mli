@@ -13,6 +13,8 @@ val get_piece : t -> coord -> Piece.t option
 
 val print_board : t -> unit
 
+val print_rev_board : t -> unit
+
 (** [turned_board board] is the resulting board after rotating the board
     [board] for 180 degree *)
 val turned_board : t -> t

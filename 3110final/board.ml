@@ -87,7 +87,7 @@ let print_board board =
         print_string "   ";
         if j = 8 then (
           print_int 8;
-          print_char '\n')
+          print_char '\n' )
       done
     else if (i + 1) mod 2 <> 0 then
       for j = 0 to 8 do
@@ -107,7 +107,7 @@ let print_board board =
           else print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_char '\n'))
+            print_char '\n' ) )
         else print_string "    "
       done
     else
@@ -115,7 +115,7 @@ let print_board board =
         if j = 0 then (
           print_string "  ";
           Printf.printf "\027[37;1m%d\027[0m" (i / 2);
-          print_string " ")
+          print_string " " )
         else
           let p_opt1 = board.(i / 2).(j - 1) in
           let cha1 = char_of_piece p_opt1 in
@@ -137,7 +137,7 @@ let print_board board =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_char '\n')
+            print_char '\n' )
       done
   done
 
@@ -204,3 +204,68 @@ let update_board board start dest =
   new_board.(fst dest).(snd dest) <-
     Some (change_coord (extract cur_piece) dest);
   new_board
+
+(**[print_rev_board board] prints the representation of the board from
+   other side[board] *)
+let print_rev_board board =
+  for i = 0 to 19 do
+    if i = 0 then
+      for j = 0 to 8 do
+        if j = 0 then print_string ""
+        else Printf.printf "\027[37;1m%d\027[0m" (9 - j);
+        print_string "   ";
+        if j = 8 then (
+          print_int 0;
+          print_char '\n' )
+      done
+    else if (i + 1) mod 2 <> 0 then
+      for j = 0 to 8 do
+        if j <> 0 then (
+          if i <> 10 then print_string "|"
+          else if j <> 1 then print_string "\027[36;1m>\027[0m"
+          else print_string "|";
+          (*Changed*)
+          if (i = 18 || i = 4) && j = 4 then
+            print_string "\027[33;1m / \027[0m"
+          else if (i = 18 || i = 4) && j = 5 then
+            print_string "\027[33;1m \\ \027[0m"
+          else if (i = 16 || i = 2) && j = 4 then
+            print_string "\027[33;1m \\ \027[0m"
+          else if (i = 16 || i = 2) && j = 5 then
+            print_string "\027[33;1m / \027[0m"
+          else print_string "   ";
+          if j = 8 then (
+            print_char '|';
+            print_char '\n' ) )
+        else print_string "    "
+      done
+    else
+      for j = 0 to 8 do
+        if j = 0 then (
+          print_string "  ";
+          Printf.printf "\027[37;1m%d\027[0m" (9 - (i / 2));
+          print_string " " )
+        else
+          let p_opt1 = board.(i / 2).(j - 1) in
+          let cha1 = char_of_piece p_opt1 in
+          if cha1 <> '+' then
+            (*Another fatal error fixed here, coloring of the pieces
+              should be dependent upon side specific to the piece, but
+              not the static coordinates of the pieces here; otherwise
+              crossing the river means switching the color*)
+            if get_side (Option.get p_opt1) = Black then
+              Printf.printf "\027[44;1m%c\027[0m" cha1
+            else Printf.printf "\027[41;1m%c\027[0m" cha1
+          else print_char cha1;
+          print_string "---";
+          if j = 8 then (
+            let p_opt2 = board.(i / 2).(j) in
+            let cha2 = char_of_piece p_opt2 in
+            if cha2 <> '+' then
+              if get_side (Option.get p_opt2) = Black then
+                Printf.printf "\027[44;1m%c\027[0m" cha2
+              else Printf.printf "\027[41;1m%c\027[0m" cha2
+            else print_char cha2;
+            print_char '\n' )
+      done
+  done

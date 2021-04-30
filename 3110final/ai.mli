@@ -28,5 +28,3 @@ val get_coordinate : Piece.t -> Piece.coord * (int * int)
     generate a legal move for the computer side, converting the move
     into a string that is identical to user input*)
 val make_command : State.t -> string
-
-(**1. 楚河汉界 2. 米字格 3. 马腿，相腿*)

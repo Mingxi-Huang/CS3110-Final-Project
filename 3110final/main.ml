@@ -2,6 +2,7 @@ open Stdlib
 open Printf
 open State
 open Command
+open Board
 
 exception Illegal_state
 
@@ -41,7 +42,8 @@ let rec play_game_help st mode =
   let cur_board = State.get_current_board st in
   let cur_turn = State.get_current_turn st in
   Printf.printf "\027[36;1m%s\027[0m" "\nCurrent Board:\n ";
-  Board.print_board cur_board;
+  if cur_turn = Red then Board.print_board cur_board
+  else Board.print_rev_board (Board.turned_board cur_board);
   print_endline "\027[36;1m\nCurrent Turn: \027[0m";
   if mode = 2 || (mode = 1 && cur_turn = Red) then (
     if Piece.string_of_side cur_turn = "Red" then
@@ -53,7 +55,7 @@ let rec play_game_help st mode =
     (* print_endline ("\n" ^ Piece.string_of_side cur_turn); *)
     print_endline
       "\n\
-       What do you want to do next?\n\
+       What do you want to do next? (you can move or quit)\n\
        Example: 'move 9,4 8,4' moves the red General up one step.";
     print_string "> ";
     let msg = read_line () in
@@ -64,7 +66,15 @@ let rec play_game_help st mode =
           let start = (x1, y1) in
           let dest = (x2, y2) in
           let new_st_result = State.move start dest st in
-          play_game_help (get_result_state new_st_result) mode
+          let new_st = get_result_state new_st_result in
+          let win_cond = State.check_winner new_st in
+          if win_cond <> None then
+            let winner = Option.get win_cond |> Piece.string_of_side in
+            let () =
+              print_endline ("Congratulations! " ^ winner ^ " win!")
+            in
+            exit 0
+          else play_game_help new_st mode
       | Quit ->
           print_endline "bye bye";
           exit 0
@@ -81,24 +91,21 @@ let rec play_game_help st mode =
            again!";
         print_string "> ";
         play_game_help st mode)
-  else (
-    print_endline "1";
-    let c = Ai.make_command st in
-    print_endline "2";
-    print_endline c;
-    let command = Command.parse c in
-
-    match command with
-    | Move [ (x1, y1); (x2, y2) ] ->
-        let start = (x1, y1) in
-        let dest = (x2, y2) in
-        let new_st_result = State.move start dest st in
-        play_game_help (get_result_state new_st_result) mode
-    | _ -> failwith "ai module error")
-
-(* let commands = ref valid_command input in while commands <> Quit do
-   play_game_help st; Board.print_board (State.get_current_board st
-   commands); commands := valid_command read_line () done; p *)
+  else
+    Printf.printf "\027[34;1m\n%s\n\027[0m"
+      (Piece.string_of_side cur_turn);
+  (* print_endline "1"; *)
+  let c = Ai.make_command st in
+  (* print_endline "2"; *)
+  (* print_endline c; *)
+  let command = Command.parse c in
+  match command with
+  | Move [ (x1, y1); (x2, y2) ] ->
+      let start = (x1, y1) in
+      let dest = (x2, y2) in
+      let new_st_result = State.move start dest st in
+      play_game_help (get_result_state new_st_result) mode
+  | _ -> failwith "ai module error"
 
 (** [play_game f] starts the adventure in file [f]. *)
 let play_game mode =
@@ -115,7 +122,6 @@ let main () =
   let mode = ref 1 in
   if msg = string_of_int 1 then mode := 1 else mode := 2;
   print_string "Start playing, You are the red side\n";
-  print_string "> ";
   play_game !mode
 
 (* Execute the game engine. *)

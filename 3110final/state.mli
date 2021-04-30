@@ -13,6 +13,9 @@ type result =
   | Legal of t
   | Illegal
 
+(**[check_win t] is whether one side has win the game*)
+val check_winner : t -> Piece.side option
+
 (** [get_current_board t] is the current board configuration for state
     [t]*)
 val get_current_board : t -> Board.t
