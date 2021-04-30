@@ -17,7 +17,7 @@ val available_piece : Board.t -> Piece.t list
 (** [choose_piece] randomly picks a piece out of all available pieces of
     the computer side. We suppose the computer is always at the [Black]
     side for now *)
-val choose_piece : Board.t -> Piece.t
+val choose_piece : Board.t -> Piece.t list -> Piece.t
 
 (** [get_coordinate] takes in a coordinate and randomly generate a
     destiny coordinate of the piece on that coordinate according to its
