@@ -87,6 +87,7 @@ let rec play_game_help st mode =
     print_endline "2";
     print_endline c;
     let command = Command.parse c in
+
     match command with
     | Move [ (x1, y1); (x2, y2) ] ->
         let start = (x1, y1) in

@@ -89,15 +89,16 @@ let get_coordinate piece =
           ]
           (Random.int 3) )
 
-let rec make_legal_move state =
-  let piece = choose_piece (State.get_current_board state) in
+let rec make_legal_move state piece =
+  (* let piece = choose_piece (State.get_current_board state) in *)
   let coord = get_coordinate piece in
   match State.move (fst coord) (snd coord) state with
-  | Illegal -> make_legal_move state
+  | Illegal -> make_legal_move state piece
   | Legal _ -> coord
 
 let make_command state =
-  let coord = make_legal_move state in
+  let piece = choose_piece (State.get_current_board state) in
+  let coord = make_legal_move state piece in
   match coord with
   | (x, y), (x', y') ->
       "move " ^ string_of_int x ^ "," ^ string_of_int y ^ " "
