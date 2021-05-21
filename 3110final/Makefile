@@ -1,4 +1,4 @@
-MODULES=board command piece state ai main authors
+MODULES=board command piece state ai mlearn main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

@@ -1,2 +1,8 @@
 
 make play to start the game!
+opam install csv
+opam install sklearn
+
+
+known bug: 
+1. single player mode, first move will always fail (to be fixed next time)

@@ -20,7 +20,6 @@ let available_piece (board : Board.t) : Piece.t list =
   !list
 
 let choose_piece board list_piece =
-  (* let list_piece = available_piece board in *)
   list_piece |> List.length |> ( + ) (-1) |> Random.int
   |> List.nth list_piece
 
@@ -98,7 +97,8 @@ let rec make_legal_move state list_piece =
 
 let make_command state =
   let list_piece = available_piece (State.get_current_board state) in
-  let piece = choose_piece (State.get_current_board state) list_piece in
+  (* let piece = choose_piece (State.get_current_board state) list_piece
+     in *)
   let coord = make_legal_move state list_piece in
   match coord with
   | (x, y), (x', y') ->
