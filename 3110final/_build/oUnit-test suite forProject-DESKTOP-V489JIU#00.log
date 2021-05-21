@@ -1,0 +1,82 @@
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Runner: sequential
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Chooser: simple
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration suite_name = "test suite forProject"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration cache_filename = "/home/sb875/3110/CS3110-project/3110final/_build/oUnit-$(suite_name).cache"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration run_gc_full_major = "true"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration display = "true"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration results_style_1_X = "false"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration testdata_dir = "none"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration health_check_interval = "1."
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration verbose = "false"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration chooser = "simple"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration output_html_dir = "none"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration processes_kill_period = "5."
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration runner = "sequential"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration shards = "4"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration processes_grace_period = "5."
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration log_encoding = "utf-8"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration output_junit_file = "none"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration ci = "false"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Configuration output_file = "/home/sb875/3110/CS3110-project/3110final/_build/oUnit-$(suite_name)-$(shard_id).log"
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:0:Illegal turn.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:0:Illegal turn is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:0:Illegal turn.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:1:black graveyard.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:1:black graveyard is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:1:black graveyard.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:2:red graveyard.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:2:red graveyard is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:2:red graveyard.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:3:quit.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:3:quit is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:3:quit.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:4:move good.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:4:move good is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:4:move good.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:5:empty.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:5:empty is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:5:empty.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:6:coordinate wrong.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:6:coordinate wrong is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:6:coordinate wrong.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:7:coordinate space.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:7:coordinate space is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:7:coordinate space.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:8:coordinate length wrong.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:8:coordinate length wrong is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:8:coordinate length wrong.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:9:get advisor.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:9:get advisor is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:9:get advisor.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:10:get side.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:10:get side is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:10:get side.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:11:get piece test.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:11:get piece test is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:11:get piece test.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Start test test suite forProject:12:update board test.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:12:update board test is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: End test test suite forProject:12:update board test.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: ==============
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Summary:
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:12:update board test is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:11:get piece test is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:10:get side is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:9:get advisor is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:8:coordinate length wrong is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:7:coordinate space is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:6:coordinate wrong is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:5:empty is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:4:move good is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:3:quit is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:2:red graveyard is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:1:black graveyard is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Test test suite forProject:0:Illegal turn is successful.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Ran: 13 tests in: 0.03 seconds.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Cases: 13.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Tried: 13.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Errors: 0.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Failures: 0.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Skip: 0.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Todo: 0.
+2021-05-21T15:02:28+00:00 DESKTOP-V489JIU#00 I: Timeout: 0.
