@@ -2,12 +2,30 @@ open Piece
 
 (*graveyard types and related functions*)
 type graveyard = {
-  red_graveyard_init : Piece.t list;
-  black_graveyard_init : Piece.t list;
+  red_graveyard : Piece.t list;
+  black_graveyard : Piece.t list;
 }
 
-let generate_graveyard () =
-  { red_graveyard_init = []; black_graveyard_init = [] }
+let generate_graveyard () = { red_graveyard = []; black_graveyard = [] }
+
+let get_red_g grave = grave.red_graveyard
+
+let get_black_g grave = grave.black_graveyard
+
+(*return the number of piece of the particular [rank], in the gravelist
+  specified by [grave] and [side]*)
+let count_pieces rank grave side =
+  match side with
+  | Red ->
+      List.length
+        (List.filter
+           (fun x -> rank_of_piece x = rank)
+           grave.red_graveyard)
+  | Black ->
+      List.length
+        (List.filter
+           (fun x -> rank_of_piece x = rank)
+           grave.black_graveyard)
 
 let rank_array = [| Rook; Horse; Elephant; Advisor |]
 
@@ -89,23 +107,43 @@ let generate_board () =
 (*[print_grave_line] prints single line of graveyard representation with
   specified [i]*)
 
-let print_grave_line i side =
+(*Given specific [str_key] and [rank], [side], [grave], print a S *x
+  conbination *)
+let print_grave_helper str_key rank side grave =
+  if side = Red then (
+    Printf.printf "       ";
+    Printf.printf "\027[31;1m%s\027[0m" str_key;
+    print_string "\027[33;1m *\027[0m";
+    Printf.printf "\027[31;1m%d\027[0m" (count_pieces rank grave side);
+    print_string "         ")
+  else (
+    Printf.printf "       ";
+    Printf.printf "\027[34;1m%s\027[0m" str_key;
+    print_string "\027[33;1m *\027[0m";
+    Printf.printf "\027[34;1m%d\027[0m" (count_pieces rank grave side);
+    print_string "         ")
+
+let print_grave_line i side grave =
   match i with
   (*20 spaces in total*)
-  | 2 -> print_string "    Graveyard:      "
+  | 2 ->
+      if side = Red then
+        Printf.printf "\027[31;1m%s\027[0m" "    Graveyard       "
+      else Printf.printf "\027[34;1m%s\027[0m" "    Graveyard       "
   | 4 ->
-      if side = Red then print_string "       Red          "
-      else print_string "       Black        "
-  | 6 -> Printf.printf "       S *%d         " 3
-  | 8 -> print_string "       C *          "
-  | 10 -> print_string "       R *          "
-  | 12 -> print_string "       H *          "
-  | 14 -> print_string "       E *          "
-  | 16 -> print_string "       A *          "
+      if side = Red then
+        Printf.printf "\027[31;1m%s\027[0m" "       Red          "
+      else Printf.printf "\027[34;1m%s\027[0m" "       Black        "
+  | 6 -> print_grave_helper "S" Soldier side grave
+  | 8 -> print_grave_helper "C" Cannon side grave
+  | 10 -> print_grave_helper "R" Rook side grave
+  | 12 -> print_grave_helper "H" Horse side grave
+  | 14 -> print_grave_helper "E" Elephant side grave
+  | 16 -> print_grave_helper "A" Advisor side grave
   | _ -> print_string "                    "
 
 (**[print_board board] prints the representation of the board [board] *)
-let print_board board =
+let print_board board grave =
   for i = 0 to 19 do
     if i = 0 then
       for j = 0 to 8 do
@@ -137,10 +175,10 @@ let print_board board =
           else print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_grave_line i Black;
+            print_grave_line i Black grave;
             print_char '\n'))
         else (*j = 0 case*)
-          print_grave_line i Red
+          print_grave_line i Red grave
       done
     else
       (*piece lines*)
@@ -171,7 +209,7 @@ let print_board board =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_grave_line i Black;
+            print_grave_line i Black grave;
             print_char '\n')
       done
   done
@@ -239,9 +277,6 @@ let update_board board start dest =
   new_board.(fst start).(snd start) <- None;
   new_board.(fst dest).(snd dest) <-
     Some (change_coord (extract cur_piece) dest);
-  (* if get_piece new_board dest != None then let captured = extract
-     (get_piece new_board dest) match get_side captured with | Red -> |
-     Black -> black_graveyard = captured :: black_graveyard *)
   new_board
 
 (**[print_rev_board board] prints the representation of the board from

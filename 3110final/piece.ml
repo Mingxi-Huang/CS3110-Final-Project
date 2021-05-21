@@ -40,6 +40,8 @@ let extract = function
   | Some x -> x
   | None -> raise (Invalid_argument "extract None")
 
+let rank_of_piece piece = piece.character
+
 let char_of_piece piece =
   if piece = None then '+'
   else

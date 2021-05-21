@@ -23,9 +23,7 @@ val get_current_board : t -> Board.t
 (** [get current turn t] is the turn for state [t]*)
 val get_current_turn : t -> Piece.side
 
-val get_current_black_g : t -> Piece.t list
-
-val get_current_red_g : t -> Piece.t list
+val get_current_grave : t -> Board.graveyard
 
 (** [init_state] is the side that starts the game. We initializes it to
     be the [Red] side*)

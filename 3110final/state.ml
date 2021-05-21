@@ -4,8 +4,7 @@ open Piece
 type state = {
   current_board : Board.t;
   turn : side;
-  red_graveyard : Piece.t list;
-  black_graveyard : Piece.t list;
+  current_grave : Board.graveyard;
 }
 
 type t = state
@@ -14,8 +13,7 @@ let init_state =
   {
     current_board = Board.generate_board ();
     turn = Red;
-    red_graveyard = [];
-    black_graveyard = [];
+    current_grave = Board.generate_graveyard ();
   }
 
 type result =
@@ -29,18 +27,16 @@ let next_turn = function Red -> Black | Black -> Red
 
 let get_current_board st = st.current_board
 
-let get_current_red_g st = st.red_graveyard
-
-let get_current_black_g st = st.black_graveyard
-
 let get_current_turn st = st.turn
+
+let get_current_grave st = st.current_grave
 
 let is_general piece =
   if Piece.get_c piece = General then true else false
 
 let check_winner st =
-  let blk_g = get_current_black_g st in
-  let red_g = get_current_red_g st in
+  let blk_g = get_black_g (get_current_grave st) in
+  let red_g = get_red_g (get_current_grave st) in
   if List.exists is_general red_g then Some Black
   else if List.exists is_general blk_g then Some Red
   else None
@@ -276,6 +272,7 @@ let rules p c2 st =
 let move start destiny st =
   let cur_board = get_current_board st in
   let cur_turn = get_current_turn st in
+  let cur_grave = get_current_grave st in
   let opponent_turn = oppo_turn cur_turn in
   (* don't move opponent's piece; don't move empty piece *)
   if is_legal_side cur_board start cur_turn then
@@ -293,24 +290,36 @@ let move start destiny st =
             {
               current_board = update_board cur_board start destiny;
               turn = next_turn cur_turn;
-              red_graveyard = captured_piece :: get_current_red_g st;
-              black_graveyard = get_current_black_g st;
+              current_grave =
+                {
+                  red_graveyard = captured_piece :: get_red_g cur_grave;
+                  black_graveyard = get_black_g cur_grave;
+                };
             }
         else
+          (*captured is black*)
           Legal
             {
               current_board = update_board cur_board start destiny;
               turn = next_turn cur_turn;
-              red_graveyard = get_current_red_g st;
-              black_graveyard = captured_piece :: get_current_black_g st;
+              current_grave =
+                {
+                  red_graveyard = get_red_g cur_grave;
+                  black_graveyard =
+                    captured_piece :: get_black_g cur_grave;
+                };
             }
       else
+        (*selected piece is empty*)
         Legal
           {
             current_board = update_board cur_board start destiny;
             turn = next_turn cur_turn;
-            red_graveyard = get_current_red_g st;
-            black_graveyard = get_current_black_g st;
+            current_grave =
+              {
+                red_graveyard = get_red_g cur_grave;
+                black_graveyard = get_black_g cur_grave;
+              };
           }
     else (* print_int 5; *)
       Illegal

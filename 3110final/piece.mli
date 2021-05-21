@@ -43,6 +43,8 @@ val create_piece : rank -> side -> coord -> t
 
 val string_of_side : side -> string
 
+val rank_of_piece : t -> rank
+
 val change_coord : t -> coord -> t
 
 (** [extract piece_opt] is a piece extracted from a piece option

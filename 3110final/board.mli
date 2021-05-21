@@ -5,7 +5,18 @@ open Piece
 
 type t
 
-type graveyard
+type graveyard = {
+  red_graveyard : Piece.t list;
+  black_graveyard : Piece.t list;
+}
+
+val generate_graveyard : unit -> graveyard
+
+val get_red_g : graveyard -> Piece.t list
+
+val get_black_g : graveyard -> Piece.t list
+
+val count_pieces : Piece.rank -> graveyard -> Piece.side -> int
 
 val generate_board : unit -> t
 
@@ -13,7 +24,7 @@ val generate_board : unit -> t
     [coord] on the board [board]*)
 val get_piece : t -> coord -> Piece.t option
 
-val print_board : t -> unit
+val print_board : t -> graveyard -> unit
 
 val print_rev_board : t -> unit
 

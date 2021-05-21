@@ -41,10 +41,11 @@ let rec valid_command command =
 let rec play_game_help st mode =
   let cur_board = State.get_current_board st in
   let cur_turn = State.get_current_turn st in
-  Printf.printf "\027[36;1m%s\027[0m" "\nCurrent Board:\n ";
-  if cur_turn = Red then Board.print_board cur_board
+  let cur_grave = State.get_current_grave st in
+  Printf.printf "\027[33;1m%s\027[0m" "\nCurrent Board:\n ";
+  if cur_turn = Red then Board.print_board cur_board cur_grave
   else Board.print_rev_board (Board.turned_board cur_board);
-  print_endline "\027[36;1m\nCurrent Turn: \027[0m";
+  print_endline "\027[33;1m\nCurrent Turn: \027[0m";
   if mode = 2 || (mode = 1 && cur_turn = Red) then (
     if Piece.string_of_side cur_turn = "Red" then
       Printf.printf "\027[31;1m\n%s\n\027[0m"
