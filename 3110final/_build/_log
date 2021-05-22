@@ -40,21 +40,26 @@ ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules ai.ml > ai.ml.
 # Target: ai.cmo, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:cmo, extension:ml, file:ai.cmo, file:ai.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o ai.cmo ai.ml # cached
 # Target: mlearn.mli.depends, tags: { package(ANSITerminal), package(ounit2), extension:mli, file:mlearn.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules mlearn.mli > mlearn.mli.depends
+ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules mlearn.mli > mlearn.mli.depends # cached
 # Target: mlearn.cmi, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:mli, file:mlearn.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o mlearn.cmi mlearn.mli
+ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o mlearn.cmi mlearn.mli # cached
 # Target: mlearn.ml.depends, tags: { package(ANSITerminal), package(ounit2), extension:ml, file:mlearn.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules mlearn.ml > mlearn.ml.depends # cached
+ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules mlearn.ml > mlearn.ml.depends
 # Target: mlearn.cmo, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:cmo, extension:ml, file:mlearn.cmo, file:mlearn.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o mlearn.cmo mlearn.ml
++ ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o mlearn.cmo mlearn.ml
+File "mlearn.ml", line 183, characters 4-5:
+183 |   | _ -> failwith "impossible"
+          ^
+Warning 11: this match case is unused.
 # Target: main.mli.depends, tags: { package(ANSITerminal), package(ounit2), extension:mli, file:main.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules main.mli > main.mli.depends # cached
 # Target: main.cmi, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:mli, file:main.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o main.cmi main.mli
+ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o main.cmi main.mli # cached
 # Target: main.ml.depends, tags: { package(ANSITerminal), package(ounit2), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules main.ml > main.ml.depends
+ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules main.ml > main.ml.depends # cached
 # Target: main.cmo, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o main.cmo main.ml
+ocamlfind ocamlc -c -package ounit2 -package ANSITerminal -o main.cmo main.ml # cached
 # Target: authors.mli.depends, tags: { package(ANSITerminal), package(ounit2), extension:mli, file:authors.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package ounit2 -package ANSITerminal -modules authors.mli > authors.mli.depends # cached
 # Target: authors.cmi, tags: { package(ANSITerminal), package(ounit2), byte, compile, extension:mli, file:authors.mli, interf, ocaml, quiet, traverse }
