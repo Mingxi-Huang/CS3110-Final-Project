@@ -1,0 +1,18 @@
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:1:black graveyard.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:1:black graveyard is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:1:black graveyard.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:2:red graveyard.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:2:red graveyard is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:2:red graveyard.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:4:move good.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:4:move good is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:4:move good.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:7:coordinate space.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:7:coordinate space is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:7:coordinate space.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:8:coordinate length wrong.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:8:coordinate length wrong is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:8:coordinate length wrong.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Start test test suite forProject:11:get piece test.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: Test test suite forProject:11:get piece test is successful.
+2021-04-28T15:10:32+00:00 jiahongdeMacBook.local#02 I: End test test suite forProject:11:get piece test.
