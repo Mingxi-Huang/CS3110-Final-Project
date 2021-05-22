@@ -12,6 +12,35 @@ let get_red_g grave = grave.red_graveyard
 
 let get_black_g grave = grave.black_graveyard
 
+(*score types and related functions*)
+type score = {
+  red_score : int;
+  black_score : int;
+}
+
+(*Let piece, maximum is 70 (w/o general) + 20 (general) = 90*)
+(*piece is captured piece, score_specific is the current score of the particular 
+side*)
+let update_score piece score_specific =
+  match get_c piece with 
+  | Soldier -> score_specific + 2   
+  | Cannon -> score_specific + 4
+  | Rook -> score_specific + 6
+  | Horse -> score_specific + 4
+  | Elephant -> score_specific + 8
+  | Advisor -> score_specific + 8
+  | General -> score_specific + 20
+  
+let generate_score () = {
+  red_score = 0;
+  black_score = 0;
+}
+
+let get_red_score score = score.red_score
+
+let get_black_score score = score.black_score
+
+
 (*return the number of piece of the particular [rank], in the gravelist
   specified by [grave] and [side]*)
 let count_pieces rank grave side =
@@ -123,7 +152,29 @@ let print_grave_helper str_key rank side grave =
     Printf.printf "\027[34;1m%d\027[0m" (count_pieces rank grave side);
     print_string "         ")
 
-let print_grave_line i side grave =
+let print_score_helper side score_s= 
+  match side with
+  | Red -> 
+    (*20 characters in total*)
+    if get_red_score score_s < 10 then (
+      Printf.printf "\027[31;1m%s\027[0m" "    Score: "; (*11 characters*)
+      Printf.printf "\027[33;1m%d\027[0m" (get_red_score score_s); (*1 char*)
+      print_string "        " (*8 characters*) )
+    else (
+      Printf.printf "\027[31;1m%s\027[0m" "    Score: ";
+      Printf.printf "\027[33;1m%d\027[0m" (get_red_score score_s);
+      print_string "       ")
+  | Black ->  
+    if get_black_score score_s < 10 then (
+      Printf.printf "\027[34;1m%s\027[0m" "    Score: ";
+      Printf.printf "\027[33;1m%d\027[0m" (get_black_score score_s);
+      print_string "        ")
+    else (
+      Printf.printf "\027[34;1m%s\027[0m" "    Score: ";
+      Printf.printf "\027[33;1m%d\027[0m" (get_black_score score_s);
+      print_string "       ")
+    
+let print_grave_line i side grave score=
   match i with
   (*20 spaces in total*)
   | 2 ->
@@ -140,11 +191,12 @@ let print_grave_line i side grave =
   | 12 -> print_grave_helper "H" Horse side grave
   | 14 -> print_grave_helper "E" Elephant side grave
   | 16 -> print_grave_helper "A" Advisor side grave
+  | 18 -> print_score_helper side score     
   | _ -> print_string "                    "
 
 (**[print_board board] prints the representation of the board [board],
    integrated with graveyard *)
-let print_board board grave =
+let print_board board grave score =
   for i = 0 to 19 do
     if i = 0 then
       for j = 0 to 8 do
@@ -154,7 +206,7 @@ let print_board board grave =
           Printf.printf "\027[37;1m%d\027[0m" (j - 1);
           print_string "   ");
         if j = 8 then (
-          print_int 8;
+          Printf.printf "\027[37;1m%d\027[0m" 8;
           print_char '\n')
       done
     else if (i + 1) mod 2 <> 0 then
@@ -176,10 +228,10 @@ let print_board board grave =
           else print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_grave_line i Black grave;
+            print_grave_line i Black grave score;
             print_char '\n'))
         else (*j = 0 case*)
-          print_grave_line i Red grave
+          print_grave_line i Red grave score
       done
     else
       (*piece lines*)
@@ -210,7 +262,6 @@ let print_board board grave =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_grave_line i Black grave;
             print_char '\n')
       done
   done
@@ -284,7 +335,7 @@ let update_board board start dest =
 
 (**[print_rev_board board] prints the representation of the board from
    other side[board], integrated with graveyard *)
-let print_rev_board board grave =
+let print_rev_board board grave score=
   for i = 0 to 19 do
     if i = 0 then
       for j = 0 to 8 do
@@ -294,7 +345,7 @@ let print_rev_board board grave =
           Printf.printf "\027[37;1m%d\027[0m" (9 - j);
           print_string "   ");
         if j = 8 then (
-          print_int 0;
+          Printf.printf "\027[37;1m%d\027[0m" 0;
           print_char '\n')
       done
     else if (i + 1) mod 2 <> 0 then
@@ -315,10 +366,10 @@ let print_rev_board board grave =
           else print_string "   ";
           if j = 8 then (
             print_char '|';
-            print_grave_line i Black grave;
+            print_grave_line i Black grave score;
             print_char '\n'))
         else (*j = 0 case*)
-          print_grave_line i Red grave
+          print_grave_line i Red grave score
       done
     else
       for j = 0 to 8 do
@@ -348,7 +399,6 @@ let print_rev_board board grave =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_grave_line i Black grave;
             print_char '\n')
       done
   done

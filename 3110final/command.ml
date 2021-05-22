@@ -4,6 +4,7 @@ type coords = (int * int) list
 type command =
   | Move of coords
   | Quit
+  | Help
 
 exception Empty
 
@@ -47,4 +48,5 @@ let parse str =
     | "move" ->
         if check_good_coords coords then Move coords
         else raise Malformed
+    | "help" -> if List.length coords = 0 then Help else raise Malformed
     | _ -> raise Malformed

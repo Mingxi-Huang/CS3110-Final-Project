@@ -5,6 +5,7 @@ type state = {
   current_board : Board.t;
   turn : side;
   current_grave : Board.graveyard;
+  current_score : Board.score; 
 }
 
 type t = state
@@ -14,6 +15,7 @@ let init_state =
     current_board = Board.generate_board ();
     turn = Red;
     current_grave = Board.generate_graveyard ();
+    current_score = Board.generate_score ();
   }
 
 type result =
@@ -31,9 +33,12 @@ let get_current_turn st = st.turn
 
 let get_current_grave st = st.current_grave
 
+let get_current_score st = st.current_score
+
 let is_general piece =
   if Piece.get_c piece = General then true else false
 
+(*if black wins, then return Black*)
 let check_winner st =
   let blk_g = get_black_g (get_current_grave st) in
   let red_g = get_red_g (get_current_grave st) in
@@ -273,6 +278,7 @@ let move start destiny st =
   let cur_board = get_current_board st in
   let cur_turn = get_current_turn st in
   let cur_grave = get_current_grave st in
+  let cur_score = get_current_score st in 
   let opponent_turn = oppo_turn cur_turn in
   (* don't move opponent's piece; don't move empty piece *)
   if is_legal_side cur_board start cur_turn then
@@ -290,11 +296,17 @@ let move start destiny st =
             {
               current_board = update_board cur_board start destiny;
               turn = next_turn cur_turn;
+              (*update grave 1: red piece get captured, black ++ *)
               current_grave =
                 {
                   red_graveyard = captured_piece :: get_red_g cur_grave;
                   black_graveyard = get_black_g cur_grave;
                 };
+              current_score =
+                {
+                  red_score = get_red_score cur_score;
+                  black_score = update_score captured_piece (get_black_score cur_score);
+                }
             }
         else
           (*captured is black*)
@@ -302,12 +314,18 @@ let move start destiny st =
             {
               current_board = update_board cur_board start destiny;
               turn = next_turn cur_turn;
+              (*update grave 2: black piece get captured, red ++ *)
               current_grave =
                 {
                   red_graveyard = get_red_g cur_grave;
                   black_graveyard =
-                    captured_piece :: get_black_g cur_grave;
+                  captured_piece :: get_black_g cur_grave;
                 };
+              current_score =
+                {
+                  red_score = update_score captured_piece (get_red_score cur_score);
+                  black_score = get_black_score cur_score;
+                }
             }
       else
         (*selected piece is empty*)
@@ -315,11 +333,18 @@ let move start destiny st =
           {
             current_board = update_board cur_board start destiny;
             turn = next_turn cur_turn;
+            (*update grave 3: neither get captured, got to empty spot on 
+            chessboard*)
             current_grave =
               {
                 red_graveyard = get_red_g cur_grave;
                 black_graveyard = get_black_g cur_grave;
               };
+            current_score =
+                {
+                  red_score = get_red_score cur_score;
+                  black_score = get_black_score cur_score;
+                }
           }
     else (* print_int 5; *)
       Illegal

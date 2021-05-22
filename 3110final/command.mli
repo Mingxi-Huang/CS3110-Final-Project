@@ -7,6 +7,7 @@ type coords = (int * int) list
 type command =
   | Move of coords
   | Quit
+  | Help
 
 (** Raised when an empty command is parsed. *)
 exception Empty
