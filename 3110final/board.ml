@@ -294,7 +294,7 @@ let print_rev_board board grave =
           Printf.printf "\027[37;1m%d\027[0m" (9 - j);
           print_string "   ");
         if j = 8 then (
-          print_int 8;
+          print_int 0;
           print_char '\n')
       done
     else if (i + 1) mod 2 <> 0 then

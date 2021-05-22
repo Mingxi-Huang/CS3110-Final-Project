@@ -84,12 +84,14 @@ let state_tests =
     ( "black graveyard" >:: fun _ ->
       assert_equal
         [ create_piece Horse Black (0, 1) ]
-        (State.get_current_black_g rcannon_capture_bhorse)
+        (get_black_g (get_current_grave rcannon_capture_bhorse))
+        (*Due to modification of the graveyard sytem, uss this for now *)
+        (* (State.get_current_black_g rcannon_capture_bhorse) *)
         ~printer:(pp_list string_of_piece) );
     ( "red graveyard" >:: fun _ ->
       assert_equal
         [ create_piece Cannon Red (0, 1) ]
-        (State.get_current_red_g brook_cap_rcannon)
+        (get_red_g (get_current_grave brook_cap_rcannon))
         ~printer:(pp_list string_of_piece) );
   ]
 
