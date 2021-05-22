@@ -56,6 +56,7 @@ let string_of_piece piece =
   ^ string_of_int (snd coord)
 
 let advisor = create_piece Advisor Red (9, 3)
+let general = create_piece General Black (0, 4)
 
 let moved_advisor = create_piece Advisor Red (8, 4)
 
@@ -75,6 +76,8 @@ let piece_tests =
   [
     ("get advisor" >:: fun _ -> assert_equal (get_c advisor) Advisor);
     ("get side" >:: fun _ -> assert_equal (get_side advisor) Red);
+    ("get general" >:: fun _ -> assert_equal (get_c general) General);
+    ("get black side" >:: fun _ -> assert_equal (get_side general) Black);
   ]
 
 let state_tests =
@@ -107,6 +110,18 @@ let command_tests =
     command_err "coordinate wrong" "move 1 2" Malformed;
     command_err "coordinate space" "move 1, 3 2, 5" Malformed;
     command_err "coordinate length wrong" "move 1,2 3,4 5,6" Malformed;
+    ( "move good rook" >:: fun _ ->
+      assert_equal (Move [ (9, 0); (8, 0) ]) (parse "move 9,0 8,0") );
+    ( "move good elepant" >:: fun _ ->
+      assert_equal (Move [ (9, 2); (7, 4) ]) (parse "move 9,2 7,4") );
+    ( "move good general" >:: fun _ ->
+      assert_equal (Move [ (0, 4); (1, 4) ]) (parse "move 0,4 1,4") );
+    ( "move good horse" >:: fun _ ->
+      assert_equal (Move [ (9, 7); (7, 6) ]) (parse "move 9,7 7,6") );
+    ( "move good soldier" >:: fun _ ->
+      assert_equal (Move [ (3, 8); (4, 8) ]) (parse "move 3,8 4,8") );
+    ( "move good cannon" >:: fun _ ->
+      assert_equal (Move [ (7, 1); (5, 1) ]) (parse "move 7,1 5,1") );
   ]
 
 let board_tests =
