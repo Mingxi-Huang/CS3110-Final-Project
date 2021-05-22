@@ -142,7 +142,8 @@ let print_grave_line i side grave =
   | 16 -> print_grave_helper "A" Advisor side grave
   | _ -> print_string "                    "
 
-(**[print_board board] prints the representation of the board [board] *)
+(**[print_board board] prints the representation of the board [board],
+   integrated with graveyard *)
 let print_board board grave =
   for i = 0 to 19 do
     if i = 0 then
@@ -282,7 +283,7 @@ let update_board board start dest =
   new_board
 
 (**[print_rev_board board] prints the representation of the board from
-   other side[board] *)
+   other side[board], integrated with graveyard *)
 let print_rev_board board grave =
   for i = 0 to 19 do
     if i = 0 then
