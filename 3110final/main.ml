@@ -3,12 +3,16 @@ open Printf
 open State
 open Command
 open Board
+open Piece
 
 exception Illegal_state
 
 (** [get_result_state result] is the state from result [result], if
     result is legal, then gives state; otherwise, raise Illegal_state
     exception *)
+
+type history = string list
+
 let get_result_state result =
   match result with
   | State.Legal t -> t
@@ -65,14 +69,37 @@ let rec help_user confuse =
       let confuse2 = read_line () in
       help_user confuse2
 
+let rec help_history history =
+  match history with
+  | [] -> print_endline ""
+  | h :: t ->
+      print_endline h;
+      help_history t
+
+(*[move_command] is of the form Move (coords), and is a valid command*)
+let string_of_move move_command =
+  match move_command with
+  | Move coords ->
+      let str_int1 = string_of_int (fst (List.nth coords 0)) in
+      let str_int2 = string_of_int (snd (List.nth coords 0)) in
+      let str_int3 = string_of_int (fst (List.nth coords 1)) in
+      let str_int4 = string_of_int (snd (List.nth coords 1)) in
+      let str_tuple1 = str_int1 ^ "," ^ str_int2 in
+      let str_tuple2 = str_int3 ^ "," ^ str_int4 in
+      "move " ^ str_tuple1 ^ " " ^ str_tuple2
+  | _ -> ""
+
 (** [play_game_help] is the helper function that updates each move
     according to the command and pass the turn to the other side*)
 
-let rec play_game_help st mode =
+(*history is a list of move commands, accumulating along the game*)
+let rec play_game_help st mode history =
   let cur_board = State.get_current_board st in
   let cur_turn = State.get_current_turn st in
   let cur_grave = State.get_current_grave st in
   let cur_score = State.get_current_score st in
+  (*--->not sure how to use it for now*)
+  let cur_step = State.get_current_step st in
   (*Print current board: depending on current turn direct or reversed*)
   Printf.printf "\027[33m%s\027[0m" "\nCurrent Board:\n ";
   if cur_turn = Red then Board.print_board cur_board cur_grave cur_score
@@ -104,7 +131,9 @@ let rec play_game_help st mode =
     print_string "> ";
     let msg = read_line () in
     let command = valid_command msg in
+    (*command = parsed message [command] or raises Exception*)
     try
+      (*command = Move of coords*)
       match command with
       | Move [ (x1, y1); (x2, y2) ] ->
           let start = (x1, y1) in
@@ -160,7 +189,14 @@ let rec play_game_help st mode =
             exit 0
             (*If no winning detected, continue the game with updated
               state*)
-          else play_game_help new_st mode
+          else
+            (*Command is move x1,y1 x2,y2; and no winning in next round*)
+            play_game_help new_st mode
+              (history
+              @ [
+                  string_of_side cur_turn ^ ": "
+                  ^ string_of_move command;
+                ])
       | Quit ->
           let str_bye = "~ Bye Bye ~\n" in
           Printf.printf "\027[32;1m%s\n\027[0m" str_bye;
@@ -174,21 +210,28 @@ let rec play_game_help st mode =
           (*deal with the confuse message, recursively*)
           let confuse = read_line () in
           help_user confuse;
-          play_game_help st mode
+          play_game_help st mode history
+      | History ->
+          print_endline "Wanna look back at the path you come from?";
+          if history = [] then
+            print_string "Check back later after you make a move!"
+          else help_history history;
+          play_game_help st mode history
       | _ ->
           print_endline "unknown command!";
-          play_game_help st mode
+          play_game_help st mode history
     with
     | Illegal_state ->
         print_endline "This is an illegal move, try again! \n";
-        play_game_help st mode
+        play_game_help st mode history
     | Invalid_argument _ ->
         print_endline
           "please enter the coordinate within the board, Please try \
            again!";
         print_string "> ";
-        play_game_help st mode)
+        play_game_help st mode history)
   else
+    (*mode = 1 and Side = Black*)
     Printf.printf "\027[34;1m\n%s\n\027[0m"
       (Piece.string_of_side cur_turn);
   (* print_endline "1"; *)
@@ -201,13 +244,18 @@ let rec play_game_help st mode =
       let start = (x1, y1) in
       let dest = (x2, y2) in
       let new_st_result = State.move start dest st in
-      play_game_help (get_result_state new_st_result) mode
+      play_game_help
+        (get_result_state new_st_result)
+        mode
+        (history
+        @ [ string_of_side cur_turn ^ ": " ^ string_of_move command ])
   | _ -> failwith "ai module error"
 
 (** [play_game f] starts the adventure in file [f]. *)
 let play_game mode =
   let init_st = State.init_state in
-  play_game_help init_st mode
+  let init_history = [] in
+  play_game_help init_st mode init_history
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =

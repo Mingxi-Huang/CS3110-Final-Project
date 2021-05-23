@@ -8,6 +8,7 @@ type command =
   | Move of coords
   | Quit
   | Help
+  | History
 
 (** Raised when an empty command is parsed. *)
 exception Empty

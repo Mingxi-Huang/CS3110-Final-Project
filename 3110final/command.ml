@@ -5,6 +5,9 @@ type command =
   | Move of coords
   | Quit
   | Help
+  | History
+
+(*3 chances of withdraw*)
 
 exception Empty
 
@@ -49,4 +52,6 @@ let parse str =
         if check_good_coords coords then Move coords
         else raise Malformed
     | "help" -> if List.length coords = 0 then Help else raise Malformed
+    | "history" ->
+        if List.length coords = 0 then History else raise Malformed
     | _ -> raise Malformed
