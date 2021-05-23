@@ -1,11 +1,24 @@
 open Board
 open Piece
 
+type step = {
+  red_step : int;
+  black_step : int;
+  total_step : int;
+}
+
+let get_red_step step = step.red_step
+
+let get_black_step step = step.black_step
+
+let get_total_step step = step.total_step
+
 type state = {
   current_board : Board.t;
   turn : side;
   current_grave : Board.graveyard;
-  current_score : Board.score; 
+  current_score : Board.score;
+  current_step : step;
 }
 
 type t = state
@@ -16,6 +29,7 @@ let init_state =
     turn = Red;
     current_grave = Board.generate_graveyard ();
     current_score = Board.generate_score ();
+    current_step = { red_step = 0; black_step = 0; total_step = 0 };
   }
 
 type result =
@@ -34,6 +48,8 @@ let get_current_turn st = st.turn
 let get_current_grave st = st.current_grave
 
 let get_current_score st = st.current_score
+
+let get_current_step st = st.current_step
 
 let is_general piece =
   if Piece.get_c piece = General then true else false
@@ -278,19 +294,20 @@ let move start destiny st =
   let cur_board = get_current_board st in
   let cur_turn = get_current_turn st in
   let cur_grave = get_current_grave st in
-  let cur_score = get_current_score st in 
+  let cur_score = get_current_score st in
   let opponent_turn = oppo_turn cur_turn in
+  let cur_step = get_current_step st in
   (* don't move opponent's piece; don't move empty piece *)
   if is_legal_side cur_board start cur_turn then
     let piece = extract (get_piece cur_board start) in
     (* don't move out of the board *)
-    if inbound destiny = false then (* print_int 1; *)
-      Illegal
+    if inbound destiny = false then Illegal
     else if rules piece destiny st then
-      (* don't move your other piece *)
+      (* don't eat your other piece *)
       if is_legal_side cur_board destiny cur_turn then Illegal
       else if is_legal_side cur_board destiny opponent_turn then
         let captured_piece = extract (get_piece cur_board destiny) in
+        (*if captured is red*)
         if get_side captured_piece = Red then
           Legal
             {
@@ -305,11 +322,19 @@ let move start destiny st =
               current_score =
                 {
                   red_score = get_red_score cur_score;
-                  black_score = update_score captured_piece (get_black_score cur_score);
-                }
+                  black_score =
+                    update_score captured_piece
+                      (get_black_score cur_score);
+                };
+              current_step =
+                {
+                  red_step = get_red_step cur_step;
+                  black_step = get_black_step cur_step + 1;
+                  total_step = get_total_step cur_step + 1;
+                };
             }
         else
-          (*captured is black*)
+          (*if captured is black*)
           Legal
             {
               current_board = update_board cur_board start destiny;
@@ -319,32 +344,50 @@ let move start destiny st =
                 {
                   red_graveyard = get_red_g cur_grave;
                   black_graveyard =
-                  captured_piece :: get_black_g cur_grave;
+                    captured_piece :: get_black_g cur_grave;
                 };
               current_score =
                 {
-                  red_score = update_score captured_piece (get_red_score cur_score);
+                  red_score =
+                    update_score captured_piece
+                      (get_red_score cur_score);
                   black_score = get_black_score cur_score;
-                }
+                };
+              current_step =
+                {
+                  red_step = get_red_step cur_step + 1;
+                  black_step = get_black_step cur_step;
+                  total_step = get_total_step cur_step + 1;
+                };
             }
       else
-        (*selected piece is empty*)
+        (*no capture*)
         Legal
           {
             current_board = update_board cur_board start destiny;
             turn = next_turn cur_turn;
-            (*update grave 3: neither get captured, got to empty spot on 
-            chessboard*)
+            (*update grave 3: neither get captured, got to empty spot on
+              chessboard*)
             current_grave =
               {
                 red_graveyard = get_red_g cur_grave;
                 black_graveyard = get_black_g cur_grave;
               };
             current_score =
-                {
-                  red_score = get_red_score cur_score;
-                  black_score = get_black_score cur_score;
-                }
+              {
+                red_score = get_red_score cur_score;
+                black_score = get_black_score cur_score;
+              };
+            current_step =
+              {
+                red_step =
+                  (if cur_turn = Red then get_red_step cur_step + 1
+                  else get_red_step cur_step);
+                black_step =
+                  (if cur_turn = Red then get_black_step cur_step
+                  else get_black_step cur_step + 1);
+                total_step = get_total_step cur_step + 1;
+              };
           }
     else (* print_int 5; *)
       Illegal
