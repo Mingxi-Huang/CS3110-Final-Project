@@ -156,6 +156,9 @@ let blue_horse_out =
 let red_rook_out =
   get_result_state (State.move (9, 8) (7, 8) blue_horse_out)
 
+let r_random_move =
+  get_result_state (State.move (9, 0) (8, 0) start_state)
+
 let mlearn_tests1 =
   [
     (* ( "populate_train test" >:: fun _ -> assert_equal (Array.to_list
@@ -180,8 +183,8 @@ let mlearn_tests1 =
       assert_equal (7, 7)
         (Mlearn.get_start_coord "C" start_board "2")
         ~printer:string_of_int_tuple );
-    ( "get start coord: right cannon" >:: fun _ ->
-      assert_equal (0, 5)
+    ( "get start coord: black advisor" >:: fun _ ->
+      assert_equal (0, 3)
         (Mlearn.get_start_coord "a" start_board "4")
         ~printer:string_of_int_tuple );
     ( "get end\n       coord: red normal +" >:: fun _ ->
@@ -238,12 +241,29 @@ let string_of_move move =
   ^ string_of_int_tuple (snd move)
   ^ ")"
 
+let h23 = ref r_random_move
+
 let mlearn_tests2 =
   [
+    ( "get start coord: first black data h2+3" >:: fun _ ->
+      assert_equal (0, 1)
+        (Mlearn.get_start_coord "h"
+           (State.get_current_board r_random_move)
+           "2")
+        ~printer:string_of_int_tuple );
+    ( "get end coord: first black data h2+3" >:: fun _ ->
+      assert_equal (2, 2)
+        (Mlearn.get_end_coord (0, 1) r_random_move "+" "Black" 3)
+        ~printer:string_of_int_tuple );
     ( "translate_coord" >:: fun _ ->
       assert_equal
         ((7, 7), (7, 4))
         (Mlearn.translate_coord start_state_ref "C2.5")
+        ~printer:string_of_move );
+    ( "translate_coord: first black data\n       h2+3" >:: fun _ ->
+      assert_equal
+        ((0, 1), (2, 2))
+        (Mlearn.translate_coord h23 "h2+3")
         ~printer:string_of_move );
   ]
 
@@ -254,6 +274,7 @@ let suite =
            (* state_tests; command_tests; piece_tests; board_tests;
               mlearn_tests1; *)
            mlearn_tests2;
+           mlearn_tests1;
          ]
 
 let _ = run_test_tt_main suite

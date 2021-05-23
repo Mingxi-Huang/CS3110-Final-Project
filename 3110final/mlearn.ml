@@ -124,14 +124,19 @@ let special_treatment (str : string) : int =
   | _ -> int_of_string str
 
 let get_start_coord r board start_x =
-  let start_x = 9 - special_treatment start_x in
+  let r, s = get_rank r in
+  let start_x =
+    if s = Piece.Red then 9 - special_treatment start_x
+    else special_treatment start_x - 1
+  in
   let coord = ref (0, 0) in
   for y = 0 to 9 do
+    print_endline "debug 1";
     match Board.get_piece board (y, start_x) with
     | Some piece ->
         let rank = Piece.get_c piece in
         let side = Piece.get_side piece in
-        if (rank, side) = get_rank r then coord := (y, start_x)
+        if (rank, side) = (r, s) then coord := (y, start_x)
     | None -> ()
   done;
   (* print_int (fst !coord); print_int (snd !coord); *)
