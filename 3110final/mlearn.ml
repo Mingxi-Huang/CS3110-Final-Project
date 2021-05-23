@@ -25,7 +25,7 @@ let populate_train filename train_data =
     train_data
   with End_of_file -> train_data
 
-(* let train_data = populate_train filename dummy_array *)
+let train_data = populate_train filename dummy_array
 
 type vectorized_board_state = int array array array
 
@@ -142,9 +142,9 @@ let legal s e state =
 
 let get_end_coord start state oper side end_x =
   let coord = ref (0, 0) in
-  ( if oper = "." then
-    let end_x = 9 - end_x in
-    coord := (fst start, end_x)
+  (if oper = "." then
+   let end_x = 9 - end_x in
+   coord := (fst start, end_x)
   else if oper = "+" then
     let () = print_endline "in oper + branch" in
     let multiplier = if side = "Black" then -1 else 1 in
@@ -213,7 +213,7 @@ let get_end_coord start state oper side end_x =
             if legal start (y, end_x) state then
               let () = print_endline "in black branch legal" in
               coord := (y, end_x)
-          done );
+          done);
   !coord
 
 let translate_coord state_ref (s : string) : move =
@@ -242,29 +242,100 @@ let simulate_round (raw : string array array) :
     (vectorized_board_state * move) array =
   let state = ref State.init_state in
   let l = Array.length raw in
-  let array =
-    Array.make (l / 2)
-      ( translate_board (State.get_current_board !state),
-        translate_coord state "" )
-  in
-  try
-    for x = 0 to l - 1 do
-      let data = raw.(x) in
-      let m = translate_coord state data.(3) in
-      let result = State.move (fst m) (snd m) !state in
-      match result with
-      | Legal t ->
-          state := t;
-          let board = State.get_current_board t in
-          let vector_board = translate_board board in
-          if data.(2) == "black" then array.(x / 2) <- (vector_board, m)
-      | Illegal -> failwith "something is wrong"
-    done;
-    array
-  with e -> array
+  print_endline "part 7";
+  let list = ref [] in
+  print_endline "part 3";
+  for x = 0 to l - 1 do
+    let data = raw.(x) in
+    let m = translate_coord state data.(3) in
+    print_endline "part 4";
+    let result = State.move (fst m) (snd m) !state in
+    print_endline "part 5";
+    print_endline data.(3);
+    print_int (m |> fst |> fst);
+    print_string ",";
+    print_int (m |> fst |> snd);
+    print_endline " ";
+    print_int (m |> snd |> fst);
+    print_string ",";
+    print_int (m |> snd |> snd);
+    match result with
+    | Legal t ->
+        state := t;
+        let board = State.get_current_board t in
+        let vector_board = translate_board board in
+        print_endline "part 6";
+        list := (vector_board, m) :: !list
+  done;
+  Array.of_list !list
+
+let comp arr1 arr2 =
+  compare (int_of_string arr1.(0)) (int_of_string arr2.(0))
+
+let order_array array : string array array =
+  let r = ref 0 in
+  let b = ref 1 in
+  for i = 0 to Array.length array - 1 do
+    if array.(i).(2) = "red" then (
+      array.(i) <-
+        Array.of_list
+          [
+            Int.to_string !r;
+            array.(i).(1);
+            array.(i).(2);
+            array.(i).(3);
+          ];
+      (* print_endline ""; print_string array.(i).(0); *)
+      r := !r + 2)
+    else (
+      array.(i) <-
+        Array.of_list
+          [
+            Int.to_string !b;
+            array.(i).(1);
+            array.(i).(2);
+            array.(i).(3);
+          ];
+      (* print_endline ""; print_string array.(i).(0); *)
+      b := !b + 2)
+  done;
+  Array.sort comp array;
+  array
+
+let test = Array.sub train_data 0 100
+
+let cal_round_length array =
+  let l = ref [] in
+  let note = ref 0 in
+  let length = ref 0 in
+  for i = 0 to Array.length array - 1 do
+    if array.(i).(0) <> "" then
+      if array.(i).(0) <> string_of_int !note && !length <> 0 then (
+        l := !length :: !l;
+        note := int_of_string array.(i).(0);
+        length := 0)
+      else (
+        if !note = 0 then note := int_of_string array.(i).(0);
+        length := !length + 1)
+  done;
+  !l
+
+let l =
+  print_endline "test";
+  cal_round_length test
 
 (** [data_processing] takes in raw data and turns it into the form of
     (vectorized_board_state * move) array *)
 let data_processing (train_data : string array array) :
     (vectorized_board_state * move) array =
-  failwith "unimplemented"
+  let length_rec = cal_round_length train_data in
+  (* let data = Array.make (List.length length_rec) (Array.make 2) in *)
+  let n = 0 in
+  print_endline "part 2";
+  (* try for the first round. need to implement the whole function later*)
+  let round_1 = order_array (Array.sub train_data n 100) in
+  print_endline "part 1";
+  simulate_round round_1
+
+(* let vectorized_data = print_endline "passed test"; data_processing
+   test *)
