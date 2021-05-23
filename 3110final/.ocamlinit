@@ -5,3 +5,4 @@
 #load_rec "command.cmo";;
 #load_rec "state.cmo";;
 #load_rec "board.cmo";;
+#load_rec "mlearn.cmo";;

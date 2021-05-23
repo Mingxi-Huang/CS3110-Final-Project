@@ -11,9 +11,9 @@ let populate_train filename train_data =
   try
     let channel = open_in filename in
     let line = ref "" in
+    line := input_line channel;
     for x = 0 to Array.length train_data - 1 do
-      print_int x;
-      print_endline "";
+      (* print_int x; print_endline ""; *)
       line := input_line channel;
       let cols = String.split_on_char ',' !line in
       train_data.(x) <- Array.of_list cols
@@ -27,16 +27,11 @@ let populate_train filename train_data =
 
 (* let train_data = populate_train filename dummy_array *)
 
-(** [vectorized_board_state] is a 3D int array that represent the board
-    state: [\[0, 0, … , 1\] * 9]*9 len[0][0] = 14, and is an one-hot
-    representation of piece. *)
 type vectorized_board_state = int array array array
 
-(** [move] represent a move in a certain round. It has the form ((x1,
-    y1),(x2, y2)), the first coordinate is the start of move and the
-    second coordinate is the destiny. *)
 type move = (int * int) * (int * int)
 
+(*[G;A;E;H;R;C;S;g;a;e;h;r;c;s] red first half, black last half*)
 let vec_piece rank side =
   match rank with
   | Piece.General ->
@@ -68,19 +63,17 @@ let vec_piece rank side =
         [ 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0 ]
       else [ 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1 ]
 
-(** [translate_line] takes a single axis of board and turn it into
-    vectorized axis. *)
 let translate_lines board y_axis =
-  let array = Array.make 9 (Array.make 14 0) in
+  let parray = Array.make 9 (Array.make 14 0) in
   for x = 0 to 8 do
     match Board.get_piece board (y_axis, x) with
     | Some piece ->
         let rank = Piece.get_c piece in
         let side = Piece.get_side piece in
-        array.(x) <- Array.of_list (vec_piece rank side)
+        parray.(x) <- Array.of_list (vec_piece rank side)
     | None -> ()
   done;
-  array
+  parray
 
 (** [translate_board] takes a reference of board and turn it into
     vectorized board. *)
@@ -98,11 +91,11 @@ let b = State.get_current_board s
 let vec = translate_board b
 
 let split s =
-  let rank = String.sub s 0 1 in
-  let start_x = String.sub s 1 1 in
-  let end_x = String.sub s 3 1 in
-  let operation = String.sub s 2 1 in
-  (rank, start_x, end_x, operation)
+  let first = String.sub s 0 1 in
+  let second = String.sub s 1 1 in
+  let fourth = String.sub s 3 1 in
+  let third = String.sub s 2 1 in
+  (first, second, fourth, third)
 
 (** return (Piece.rank, Piece.side) *)
 let get_rank rank =
@@ -131,7 +124,7 @@ let special_treatment (str : string) : int =
   | _ -> int_of_string str
 
 let get_start_coord r board start_x =
-  let start_x = special_treatment start_x in
+  let start_x = 9 - special_treatment start_x in
   let coord = ref (0, 0) in
   for y = 0 to 9 do
     match Board.get_piece board (y, start_x) with
@@ -150,7 +143,7 @@ let legal s e board =
 
 let get_end_coord start board rank side oper end_x =
   let coord = ref (0, 0) in
-  (if oper == "." then coord := (snd start, end_x)
+  ( if oper == "." then coord := (snd start, end_x)
   else if oper == "+" then
     match State.move start (fst start - end_x, snd start) board with
     | Legal t -> coord := (fst start - end_x, snd start)
@@ -166,7 +159,7 @@ let get_end_coord start board rank side oper end_x =
         for y = fst start to 9 do
           if legal start (y, snd start) board then
             coord := (y, snd start)
-        done);
+        done );
   !coord
 
 let translate_coord state (s : string) : move =

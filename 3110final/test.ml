@@ -3,6 +3,7 @@ open Piece
 open Command
 open State
 open Board
+open Mlearn
 
 exception Illegal_state
 
@@ -56,6 +57,7 @@ let string_of_piece piece =
   ^ string_of_int (snd coord)
 
 let advisor = create_piece Advisor Red (9, 3)
+
 let general = create_piece General Black (0, 4)
 
 let moved_advisor = create_piece Advisor Red (8, 4)
@@ -138,9 +140,45 @@ let board_tests =
 
 let ai_tests = [ (* TODO: add tests for the State module here *) ]
 
+let dummy_array = Array.make 672374 (Array.make 4 "")
+
+let data = Mlearn.populate_train "datasource/moves.csv" dummy_array
+
+let string_of_int_tuple tp =
+  "(" ^ string_of_int (fst tp) ^ ", " ^ string_of_int (snd tp) ^ ")"
+
+let mlearn_tests =
+  [
+    (* ( "populate_train test" >:: fun _ -> assert_equal (Array.to_list
+       [| "57390689"; "36"; "black"; "h5+4" |]) (Array.to_list
+       data.(Array.length data - 1)) ~printer:(pp_list pp_string) ); *)
+    ( "translate_lines test" >:: fun _ ->
+      assert_equal
+        (Array.to_list (Mlearn.translate_lines start_board 7).(1))
+        [ 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0 ]
+        ~printer:(pp_list string_of_int) );
+    ( "translate_board test: red cannon" >:: fun _ ->
+      assert_equal
+        (Array.to_list (Mlearn.translate_board start_board).(7).(1))
+        [ 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0 ]
+        ~printer:(pp_list string_of_int) );
+    ( "translate_board test: blue general" >:: fun _ ->
+      assert_equal
+        (Array.to_list (Mlearn.translate_board start_board).(0).(4))
+        [ 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0 ]
+        ~printer:(pp_list string_of_int) );
+    ( "get start coord" >:: fun _ ->
+      assert_equal (7, 7)
+        (Mlearn.get_start_coord "C" start_board "2")
+        ~printer:string_of_int_tuple );
+  ]
+
 let suite =
   "test suite forProject"
   >::: List.flatten
-         [ state_tests; command_tests; piece_tests; board_tests ]
+         [
+           (* state_tests; command_tests; piece_tests; board_tests; *)
+           mlearn_tests;
+         ]
 
 let _ = run_test_tt_main suite
