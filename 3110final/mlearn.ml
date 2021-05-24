@@ -174,7 +174,7 @@ let special_treatment board first second =
             | None -> ()
           done
         done;
-        !final_coord)
+        !final_coord )
       else
         (*black*)
         (* let () = print_endline "in black branch" in *)
@@ -230,7 +230,7 @@ let special_treatment board first second =
             | None -> ()
           done
         done;
-        !final_coord)
+        !final_coord )
       else
         (*red*)
         let final_coord = ref (0, 0) in
@@ -283,12 +283,12 @@ let legal s e state =
 
 let get_end_coord start state oper side end_x =
   let coord = ref (0, 0) in
-  (if oper = "." then
-   let end_x =
-     if side = "Red" then 9 - int_of_string end_x
-     else int_of_string end_x - 1
-   in
-   coord := (fst start, end_x)
+  ( if oper = "." then
+    let end_x =
+      if side = "Red" then 9 - int_of_string end_x
+      else int_of_string end_x - 1
+    in
+    coord := (fst start, end_x)
   else if oper = "+" then
     (* let () = print_endline "in oper + branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
@@ -355,7 +355,7 @@ let get_end_coord start state oper side end_x =
             if legal start (y, end_x) state then
               (* let () = print_endline "in black branch legal" in *)
               coord := (y, end_x)
-          done);
+          done );
   !coord
 
 let translate_coord state_ref (s : string) : move =
@@ -425,7 +425,7 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      r := !r + 2)
+      r := !r + 2 )
     else (
       array.(i) <-
         Array.of_list
@@ -436,7 +436,7 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      b := !b + 2)
+      b := !b + 2 )
   done;
   Array.sort comp array;
   array
@@ -455,13 +455,13 @@ let cal_game_length df =
   for i = 0 to Array.length df - 1 do
     if i = Array.length df - 1 then (
       length := !length + 1;
-      result := !length :: !result)
+      result := !length :: !result )
     else if df.(i).(0) = string_of_int !gid then length := !length + 1
     else (
       (*next game*)
       result := !length :: !result;
       length := 1;
-      gid := int_of_string df.(i).(0))
+      gid := int_of_string df.(i).(0) )
   done;
   List.rev !result
 
@@ -489,13 +489,8 @@ let vectorized_data =
   (* print_endline "passed test"; *)
   data_processing test
 
-let flatten_data
-    (vectorized_data : (vectorized_board_state * move) list list) :
-    (vectorized_board_state * move) list =
-  List.flatten vectorized_data
-
 let get_x_y vectorized_data =
-  let v = flatten_data vectorized_data in
+  let v = List.flatten vectorized_data in
   let independent_variable = ref [] in
   let dependent_variable = ref [] in
   let get_x tuple =
@@ -510,31 +505,34 @@ let get_x_y vectorized_data =
 
 let x, y = get_x_y vectorized_data
 
-let train data = failwith "unimplemented"
-
-let length = List.length x - 1
-
-let flatten d3 =
+let flatten_board d3 =
+  (* let () = print_endline "in flatten_board" in *)
   let d1 = ref [] in
   for j = 0 to Array.length d3 - 1 do
     for k = 0 to Array.length d3.(0) - 1 do
-      d1 := !d1 @ Array.to_list d3.(j).(k)
+      for l = 0 to Array.length d3.(0).(0) - 1 do
+        d1 := d3.(j).(k).(l) :: !d1
+      done
     done
   done;
-  !d1
+  List.rev !d1
 
+(** [make_2d board_list] translate 3d int array to 2d int array by
+    flattening the board to be a long vector*)
 let make_2d (board_list : vectorized_board_state list) : int array array
     =
+  let () = print_endline "Loading game data... please wait" in
   let length = List.length board_list in
   let d = ref [] in
   for i = 0 to length - 1 do
     let board = List.nth board_list i in
-    d := !d @ [ Array.of_list (flatten board) ]
+    d := Array.of_list (flatten_board board) :: !d
   done;
   Array.of_list (List.rev !d)
 
 (* y is (int * int)*(int * int) list *)
 let make_2d_move (move : move list) : int array array =
+  let () = print_endline "Almost there!" in
   let length = List.length move in
   let d = ref [] in
   for i = 0 to length - 1 do
@@ -544,12 +542,10 @@ let make_2d_move (move : move list) : int array array =
     arr.(1) <- m |> fst |> snd;
     arr.(2) <- m |> snd |> fst;
     arr.(3) <- m |> snd |> snd;
-    d := !d @ [ arr ]
+    d := arr :: !d
   done;
   Array.of_list (List.rev !d)
 
 let x_vec = make_2d x
 
 let y_vec = make_2d_move y
-
-(* let open Sklearn.Linear_model in *)

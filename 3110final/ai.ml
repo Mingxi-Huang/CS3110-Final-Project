@@ -112,43 +112,53 @@ let calc_dis board1 board2 =
 
 let compare_tuple t1 t2 = compare (snd t1) (snd t2)
 
+let xvec = Mlearn.x_vec
+
+let yvec = Mlearn.y_vec
+
 (** [ml_coord] takes the state of the game, find the first 20 closest
     states from data, and returns the move of it. If no legal move is
     found, it randomly generates a move. Returns ((x1,y1),(x2,y2))*)
 let ml_coord state =
   let coordinate = ref ((0, 0), (0, 0)) in
   let vec_board = process_state state in
+  let () = print_endline "finish process state" in
   let order_dis = ref [] in
   (* for i = 0 to Array.length Mlearn.x_vec - 1 do *)
-  for i = 0 to 100 do
-    order_dis :=
-      (i, calc_dis Mlearn.x_vec.(i) vec_board.(0)) :: !order_dis
+  for i = 0 to Array.length xvec - 1 do
+    let () = print_endline "start calc dis" in
+    order_dis := (i, calc_dis xvec.(i) vec_board.(0)) :: !order_dis
   done;
+  let () = print_endline "before sort" in
   let order_dis = List.sort compare_tuple !order_dis in
-  for i = 20 downto 0 do
-    let coord = Mlearn.y_vec.(fst (List.nth order_dis i)) in
+  let () = print_endline "sorted dis" in
+  for j = 20 downto 0 do
+    let coord = yvec.(fst (List.nth order_dis j)) in
     match Array.to_list coord with
     | [ x1; y1; x2; y2 ] -> (
         let c = ((x1, y1), (x2, y2)) in
         match State.move (fst c) (snd c) state with
         | Illegal -> ()
-        | Legal _ -> coordinate := c)
+        | Legal _ -> coordinate := c )
     | _ -> failwith "something wrong"
   done;
+
   if !coordinate = ((0, 0), (0, 0)) then (
+    let () = print_endline "no matching" in
     let list_piece = available_piece (State.get_current_board state) in
-    (* let piece = choose_piece (State.get_current_board state)
-       list_piece in *)
     coordinate := make_legal_move state list_piece;
-    !coordinate)
-  else !coordinate
+    !coordinate )
+  else
+    let () = print_endline "should work" in
+    !coordinate
 
 let make_command state level =
   let coord = ref ((0, 0), (0, 0)) in
   if level = "easy" then
     let list_piece = available_piece (State.get_current_board state) in
-    (* let piece = choose_piece (State.get_current_board state)
-       list_piece in *)
+    let piece =
+      choose_piece (State.get_current_board state) list_piece
+    in
     coord := make_legal_move state list_piece
   else coord := ml_coord state;
   match !coord with

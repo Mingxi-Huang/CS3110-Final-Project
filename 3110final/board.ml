@@ -140,13 +140,13 @@ let print_grave_helper str_key rank side grave =
     Printf.printf "\027[31;1m%s\027[0m" str_key;
     print_string "\027[33;1m *\027[0m";
     Printf.printf "\027[31;1m%d\027[0m" (count_pieces rank grave side);
-    print_string "         ")
+    print_string "         " )
   else (
     Printf.printf "       ";
     Printf.printf "\027[34;1m%s\027[0m" str_key;
     print_string "\027[33;1m *\027[0m";
     Printf.printf "\027[34;1m%d\027[0m" (count_pieces rank grave side);
-    print_string "         ")
+    print_string "         " )
 
 let print_score_helper side score_s =
   match side with
@@ -157,20 +157,20 @@ let print_score_helper side score_s =
         (*11 characters*)
         Printf.printf "\027[33;1m%d\027[0m" (get_red_score score_s);
         (*1 char*)
-        print_string "        " (*8 characters*))
+        print_string "        " (*8 characters*) )
       else (
         Printf.printf "\027[31;1m%s\027[0m" "    Score: ";
         Printf.printf "\027[33;1m%d\027[0m" (get_red_score score_s);
-        print_string "       ")
+        print_string "       " )
   | Black ->
       if get_black_score score_s < 10 then (
         Printf.printf "\027[34;1m%s\027[0m" "    Score: ";
         Printf.printf "\027[33;1m%d\027[0m" (get_black_score score_s);
-        print_string "        ")
+        print_string "        " )
       else (
         Printf.printf "\027[34;1m%s\027[0m" "    Score: ";
         Printf.printf "\027[33;1m%d\027[0m" (get_black_score score_s);
-        print_string "       ")
+        print_string "       " )
 
 let print_grave_line i side grave score =
   match i with
@@ -202,10 +202,10 @@ let print_board board grave score =
           (*18 space characters reserved for graveyard*)
         else (
           Printf.printf "\027[37;1m%d\027[0m" (j - 1);
-          print_string "   ");
+          print_string "   " );
         if j = 8 then (
           Printf.printf "\027[37;1m%d\027[0m" 8;
-          print_char '\n')
+          print_char '\n' )
       done
     else if (i + 1) mod 2 <> 0 then
       (*block lines*)
@@ -227,7 +227,7 @@ let print_board board grave score =
           if j = 8 then (
             print_char '|';
             print_grave_line i Black grave score;
-            print_char '\n'))
+            print_char '\n' ) )
         else (*j = 0 case*)
           print_grave_line i Red grave score
       done
@@ -238,7 +238,7 @@ let print_board board grave score =
           print_string "                  ";
           (*18 spaces total*)
           Printf.printf "\027[37;1m%d\027[0m" (i / 2);
-          print_string " ")
+          print_string " " )
         else
           let p_opt1 = board.(i / 2).(j - 1) in
           let cha1 = char_of_piece p_opt1 in
@@ -260,7 +260,7 @@ let print_board board grave score =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_char '\n')
+            print_char '\n' )
       done
   done
 
@@ -315,8 +315,6 @@ let rec create_board_from_list piece_lst board =
         create_board_from_list t copy_board
 
 (**[turned_board board] is [board] rotate 180 degree*)
-
-(*Reverse_board_list updates the coordinates of each piece on the board, *)
 let turned_board board =
   let piece_lst = board_to_list board in
   let reversed_lst = reverse_board_list piece_lst [] in
@@ -342,10 +340,10 @@ let print_rev_board board grave score =
           (*18 space characters reserved for graveyard*)
         else (
           Printf.printf "\027[37;1m%d\027[0m" (9 - j);
-          print_string "   ");
+          print_string "   " );
         if j = 8 then (
           Printf.printf "\027[37;1m%d\027[0m" 0;
-          print_char '\n')
+          print_char '\n' )
       done
     else if (i + 1) mod 2 <> 0 then
       for j = 0 to 8 do
@@ -366,7 +364,7 @@ let print_rev_board board grave score =
           if j = 8 then (
             print_char '|';
             print_grave_line i Black grave score;
-            print_char '\n'))
+            print_char '\n' ) )
         else (*j = 0 case*)
           print_grave_line i Red grave score
       done
@@ -376,7 +374,7 @@ let print_rev_board board grave score =
           print_string "                  ";
           (*18 spaces total*)
           Printf.printf "\027[37;1m%d\027[0m" (9 - (i / 2));
-          print_string " ")
+          print_string " " )
         else
           let p_opt1 = board.(i / 2).(j - 1) in
           let cha1 = char_of_piece p_opt1 in
@@ -398,6 +396,6 @@ let print_rev_board board grave score =
                 Printf.printf "\027[44;1m%c\027[0m" cha2
               else Printf.printf "\027[41;1m%c\027[0m" cha2
             else print_char cha2;
-            print_char '\n')
+            print_char '\n' )
       done
   done

@@ -160,11 +160,9 @@ let string_of_2d_array array =
 
 let ai_tests =
   [
-    ( "vectorized start board" >:: fun _ ->
-      assert_equal 1260
-        (let state = Ai.process_state start_state in
-         Array.length state.(0))
-        ~printer:string_of_int );
+    (* ( "vectorized start board" >:: fun _ -> assert_equal 1260 (let
+       state = Ai.process_state start_state in Array.length state.(0))
+       ~printer:string_of_int ); *)
     ( "machine learning first move of start board" >:: fun _ ->
       assert_equal
         ((1, 2), (2, 3))
@@ -339,7 +337,8 @@ let suite =
     [
       (* state_tests; command_tests; piece_tests; board_tests; *)
       ai_tests;
-      (* mlearn_tests1; mlearn_tests2; *)
+      (* mlearn_tests1; *)
+      (* mlearn_tests2; *)
     ]
 
 let _ = run_test_tt_main suite
