@@ -28,3 +28,7 @@ val get_coordinate : Piece.t -> Piece.coord * (int * int)
     generate a legal move for the computer side, converting the move
     into a string that is identical to user input*)
 val make_command : State.t -> string -> string
+
+val process_state : State.t -> int array array
+
+val ml_coord : State.t -> (int * int) * (int * int)

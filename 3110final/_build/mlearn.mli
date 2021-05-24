@@ -40,3 +40,9 @@ val cal_game_length : string array array -> int list
 
 val simulate_round :
   string array array -> (vectorized_board_state * move) array
+
+val make_2d : vectorized_board_state list -> int array array
+
+val x_vec : int array array
+
+val y_vec : int array array
