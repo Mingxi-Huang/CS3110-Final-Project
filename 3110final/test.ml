@@ -142,7 +142,7 @@ let ai_tests = [ (* TODO: add tests for the State module here *) ]
 
 let dummy_array = Array.make 672374 (Array.make 4 "")
 
-(* let data = Mlearn.populate_train "datasource/moves.csv" dummy_array *)
+let data = Mlearn.populate_train "datasource/moves.csv" dummy_array
 
 let string_of_int_tuple tp =
   "(" ^ string_of_int (fst tp) ^ ", " ^ string_of_int (snd tp) ^ ")"
@@ -189,46 +189,46 @@ let mlearn_tests1 =
         ~printer:string_of_int_tuple );
     ( "get end\n       coord: red normal +" >:: fun _ ->
       assert_equal (7, 8)
-        (Mlearn.get_end_coord (9, 8) start_state "+" "Red" 2)
+        (Mlearn.get_end_coord (9, 8) start_state "+" "Red" "2")
         ~printer:string_of_int_tuple );
     ( "get end coord: red normal ." >:: fun _ ->
       assert_equal (7, 4)
-        (Mlearn.get_end_coord (7, 7) start_state "." "Red" 5)
+        (Mlearn.get_end_coord (7, 7) start_state "." "Red" "5")
         ~printer:string_of_int_tuple );
     ( "get\n       end coord: red horse +" >:: fun _ ->
       assert_equal (7, 6)
-        (Mlearn.get_end_coord (9, 7) start_state "+" "Red" 3)
+        (Mlearn.get_end_coord (9, 7) start_state "+" "Red" "3")
         ~printer:string_of_int_tuple );
     ( "get end coord: blue normal +" >:: fun _ ->
       assert_equal (2, 0)
         (Mlearn.get_end_coord (0, 0) rcannon_capture_bhorse "+" "Black"
-           2)
+           "2")
         ~printer:string_of_int_tuple );
     ( "get end coord: blue normal ." >:: fun _ ->
       assert_equal (2, 4)
         (Mlearn.get_end_coord (2, 1) rcannon_capture_bhorse "." "Black"
-           5)
+           "5")
         ~printer:string_of_int_tuple );
     ( "get end coord: blue horse +" >:: fun _ ->
       assert_equal (2, 6)
         (Mlearn.get_end_coord (0, 7) rcannon_capture_bhorse "+" "Black"
-           7)
+           "7")
         ~printer:string_of_int_tuple );
     ( "get end coord: red normal -" >:: fun _ ->
       assert_equal (8, 7)
-        (Mlearn.get_end_coord (7, 7) start_state "-" "Red" 1)
+        (Mlearn.get_end_coord (7, 7) start_state "-" "Red" "1")
         ~printer:string_of_int_tuple );
     ( "get\n       end coord: red horse -" >:: fun _ ->
       assert_equal (9, 7)
-        (Mlearn.get_end_coord (7, 6) blue_horse_out "-" "Red" 2)
+        (Mlearn.get_end_coord (7, 6) blue_horse_out "-" "Red" "2")
         ~printer:string_of_int_tuple );
     ( "get end coord: blue normal -" >:: fun _ ->
       assert_equal (1, 1)
-        (Mlearn.get_end_coord (2, 1) red_horse_out "-" "Black" 1)
+        (Mlearn.get_end_coord (2, 1) red_horse_out "-" "Black" "1")
         ~printer:string_of_int_tuple );
     ( "get end coord: blue horse -" >:: fun _ ->
       assert_equal (0, 7)
-        (Mlearn.get_end_coord (2, 6) red_rook_out "-" "Black" 8)
+        (Mlearn.get_end_coord (2, 6) red_rook_out "-" "Black" "8")
         ~printer:string_of_int_tuple );
   ]
 
@@ -241,7 +241,18 @@ let string_of_move move =
   ^ string_of_int_tuple (snd move)
   ^ ")"
 
-let h23 = ref r_random_move
+let h23_ref = ref r_random_move
+
+let start_state = State.init_state
+
+let intermediate1 =
+  get_result_state (State.move (7, 1) (8, 1) start_state)
+
+let intermediate2 =
+  get_result_state (State.move (0, 4) (1, 4) intermediate1)
+
+let consecutive_cannon =
+  get_result_state (State.move (8, 1) (8, 7) intermediate2)
 
 let mlearn_tests2 =
   [
@@ -251,30 +262,57 @@ let mlearn_tests2 =
            (State.get_current_board r_random_move)
            "2")
         ~printer:string_of_int_tuple );
-    ( "get end coord: first black data h2+3" >:: fun _ ->
+    ( "get end coord: first black\n       data h2+3" >:: fun _ ->
       assert_equal (2, 2)
-        (Mlearn.get_end_coord (0, 1) r_random_move "+" "Black" 3)
+        (Mlearn.get_end_coord (0, 1) r_random_move "+" "Black" "3")
         ~printer:string_of_int_tuple );
     ( "translate_coord" >:: fun _ ->
       assert_equal
         ((7, 7), (7, 4))
         (Mlearn.translate_coord start_state_ref "C2.5")
         ~printer:string_of_move );
-    ( "translate_coord: first black data\n       h2+3" >:: fun _ ->
+    ( "translate_coord: h2+3" >:: fun _ ->
       assert_equal
         ((0, 1), (2, 2))
-        (Mlearn.translate_coord h23 "h2+3")
+        (Mlearn.translate_coord h23_ref "h2+3")
         ~printer:string_of_move );
+    ( "translate_coord: A6+5" >:: fun _ ->
+      assert_equal
+        ((9, 3), (8, 4))
+        (Mlearn.translate_coord start_state_ref "A6+5")
+        ~printer:string_of_move );
+    ( "get_start_coord: ++" >:: fun _ ->
+      assert_equal (7, 7)
+        (Mlearn.get_start_coord "C"
+           (get_current_board consecutive_cannon)
+           "+")
+        ~printer:string_of_int_tuple );
+    ( "get_start_coord: -+" >:: fun _ ->
+      assert_equal (8, 7)
+        (Mlearn.get_start_coord "C"
+           (get_current_board consecutive_cannon)
+           "-")
+        ~printer:string_of_int_tuple );
+    ( "cal_game_length: full game" >:: fun _ ->
+      assert_equal
+        [ 73; 73; 54; 100; 57; 92 ]
+        (Mlearn.cal_game_length (Array.sub data 0 449))
+        ~printer:(pp_list string_of_int) );
+    ( "cal_game_length: game not complete" >:: fun _ ->
+      assert_equal [ 73; 27 ]
+        (Mlearn.cal_game_length (Array.sub data 0 100))
+        ~printer:(pp_list string_of_int) );
   ]
 
 let suite =
   "test suite forProject"
-  >::: List.flatten
-         [
-           (* state_tests; command_tests; piece_tests; board_tests;
-              mlearn_tests1; *)
-           mlearn_tests2;
-           mlearn_tests1;
-         ]
+  >::: (* let () = print_board (get_current_board consecutive_cannon)
+          (Board.generate_graveyard ()) (Board.generate_score ()) in *)
+  List.flatten
+    [
+      (* state_tests; command_tests; piece_tests; board_tests;
+         mlearn_tests1; *)
+      mlearn_tests2;
+    ]
 
 let _ = run_test_tt_main suite

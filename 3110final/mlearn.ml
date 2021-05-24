@@ -1,9 +1,29 @@
 open Board
 open State
 
+(** [pp_string s] pretty-prints string [s]. *)
+let pp_string s = "\"" ^ s ^ "\""
+
+(** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt] to
+    pretty-print each element of [lst]. *)
+let pp_list pp_elt lst =
+  let pp_elts lst =
+    let rec loop n acc = function
+      | [] -> acc
+      | [ h ] -> acc ^ pp_elt h
+      | h1 :: (h2 :: t as t') ->
+          if n = 100 then acc ^ "..." (* stop printing long list *)
+          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
+    in
+    loop 0 "" lst
+  in
+  "[" ^ pp_elts lst ^ "]"
+
 let filename = "datasource/moves.csv"
 
-let num_rows = 672376
+let num_rows = 672374
+
+let first_gid = 57380690
 
 let dummy_array = Array.make num_rows (Array.make 4 "")
 
@@ -116,109 +136,174 @@ let get_rank rank =
   | "p" -> (Piece.Soldier, Piece.Black)
   | _ -> failwith "impossible"
 
-(** 有的第二位数是+-？？？*)
-let special_treatment (str : string) : int =
-  match str with
-  | "+" -> failwith "unimplemented"
-  | "-" -> failwith "unimplemented"
-  | _ -> int_of_string str
+let string_of_int_tuple tp =
+  "(" ^ string_of_int (fst tp) ^ ", " ^ string_of_int (snd tp) ^ ")"
+
+let special_treatment board first second =
+  match second with
+  | "+" ->
+      let r, s = get_rank first in
+      (* let () = print_endline "before if s = RED" in *)
+      if s = Piece.Red then (
+        let final_coord = ref (9, 8) in
+        for y = 9 downto 0 do
+          for x = 0 to 8 do
+            (* let () = print_endline (string_of_int_tuple (y, x)) in *)
+            let piece = Board.get_piece board (y, x) in
+            match piece with
+            | Some p ->
+                if Piece.get_c p = r && Piece.get_side p = Piece.Red
+                then final_coord := (y, x)
+            | None -> ()
+          done
+        done;
+        !final_coord )
+      else
+        (*black*)
+        (* let () = print_endline "in black branch" in *)
+        let final_coord = ref (0, 0) in
+        for y = 0 to 9 do
+          for x = 0 to 8 do
+            let piece = Board.get_piece board (y, x) in
+            match piece with
+            | Some p ->
+                if Piece.get_c p = r && Piece.get_side p = Piece.Black
+                then final_coord := (y, x)
+            | None -> ()
+          done
+        done;
+        !final_coord
+  | "-" ->
+      (* let () = print_endline "in - branch" in *)
+      let r, s = get_rank first in
+      if s = Piece.Black then (
+        let final_coord = ref (9, 8) in
+        for y = 9 downto 0 do
+          for x = 0 to 8 do
+            let piece = Board.get_piece board (y, x) in
+            match piece with
+            | Some p ->
+                if Piece.get_c p = r && Piece.get_side p = Piece.Black
+                then final_coord := (y, x)
+            | None -> ()
+          done
+        done;
+        !final_coord )
+      else
+        (*red*)
+        let final_coord = ref (0, 0) in
+        for y = 0 to 9 do
+          for x = 0 to 8 do
+            let piece = Board.get_piece board (y, x) in
+            match piece with
+            | Some p ->
+                if Piece.get_c p = r && Piece.get_side p = Piece.Red
+                then final_coord := (y, x)
+            | None -> ()
+          done
+        done;
+        !final_coord
+  | _ -> failwith "deal with this in next step"
 
 let get_start_coord r board start_x =
-  let r, s = get_rank r in
-  let start_x =
-    if s = Piece.Red then 9 - special_treatment start_x
-    else special_treatment start_x - 1
-  in
-  let coord = ref (0, 0) in
-  for y = 0 to 9 do
-    print_endline "debug 1";
-    match Board.get_piece board (y, start_x) with
-    | Some piece ->
-        let rank = Piece.get_c piece in
-        let side = Piece.get_side piece in
-        if (rank, side) = (r, s) then coord := (y, start_x)
-    | None -> ()
-  done;
-  (* print_int (fst !coord); print_int (snd !coord); *)
-  !coord
+  if start_x = "+" then special_treatment board r start_x
+  else if start_x = "-" then special_treatment board r start_x
+  else
+    let r, s = get_rank r in
+    let start_x =
+      if s = Piece.Red then 9 - int_of_string start_x
+      else int_of_string start_x - 1
+    in
+    let coord = ref (0, 0) in
+    for y = 0 to 9 do
+      match Board.get_piece board (y, start_x) with
+      | Some piece ->
+          let rank = Piece.get_c piece in
+          let side = Piece.get_side piece in
+          if (rank, side) = (r, s) then coord := (y, start_x)
+      | None -> ()
+    done;
+    (* print_int (fst !coord); print_int (snd !coord); *)
+    !coord
 
 let legal s e state =
   match State.move s e state with Legal t -> true | Illegal -> false
 
 let get_end_coord start state oper side end_x =
   let coord = ref (0, 0) in
-  (if oper = "." then
-   let end_x = 9 - end_x in
-   coord := (fst start, end_x)
+  ( if oper = "." then
+    let end_x =
+      if side = "Red" then 9 - int_of_string end_x
+      else int_of_string end_x - 1
+    in
+    coord := (fst start, end_x)
   else if oper = "+" then
-    let () = print_endline "in oper + branch" in
+    (* let () = print_endline "in oper + branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
     (* let () = print_int (fst start - (multiplier * end_x)) in let () =
        print_int (snd start) in *)
     match
       State.move start
-        (fst start - (multiplier * end_x), snd start)
+        (fst start - (multiplier * int_of_string end_x), snd start)
         state
     with
     | Legal t ->
-        let () = print_endline "legal branch" in
+        (* let () = print_endline "legal branch" in *)
         (* rook, cannon, soldier*)
-        coord := (fst start - (multiplier * end_x), snd start)
+        coord :=
+          (fst start - (multiplier * int_of_string end_x), snd start)
     | Illegal ->
         (*horse elephant advisor*)
-        let () = print_endline "illegal branch" in
-
+        (* let () = print_endline "illegal branch" in *)
         if side = "Red" then
-          let end_x = 9 - end_x in
+          let end_x = 9 - int_of_string end_x in
           for y = 0 to fst start do
             if legal start (y, end_x) state then coord := (y, end_x)
           done
         else
-          let end_x = end_x - 1 in
-          let () = print_endline "in black branch " in
+          let end_x = int_of_string end_x - 1 in
+          (* let () = print_endline "in black branch " in *)
           for y = fst start + 1 to 9 do
-            let () = print_int y in
-            let () = print_int end_x in
-            let () = print_endline "" in
+            (* let () = print_int y in let () = print_int end_x in let
+               () = print_endline "" in *)
             if legal start (y, end_x) state then
-              let () = print_endline "in black branch legal" in
+              (* let () = print_endline "in black branch legal" in *)
               coord := (y, end_x)
           done
   else
     (* - *)
-    let () = print_endline "in oper - branch" in
+    (* let () = print_endline "in oper - branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
     (* let () = print_int (fst start - (multiplier * end_x)) in let () =
        print_int (snd start) in *)
     match
       State.move start
-        (fst start + (multiplier * end_x), snd start)
+        (fst start + (multiplier * int_of_string end_x), snd start)
         state
     with
     | Legal t ->
-        let () = print_endline "legal branch" in
+        (* let () = print_endline "legal branch" in *)
         (* rook, cannon, soldier*)
-        coord := (fst start + (multiplier * end_x), snd start)
+        coord :=
+          (fst start + (multiplier * int_of_string end_x), snd start)
     | Illegal ->
         (*horse elephant advisor*)
-        let () = print_endline "illegal branch" in
-
+        (* let () = print_endline "illegal branch" in *)
         if side = "Red" then
-          let end_x = 9 - end_x in
+          let end_x = 9 - int_of_string end_x in
           for y = fst start + 1 to 9 do
             if legal start (y, end_x) state then coord := (y, end_x)
           done
         else
-          let end_x = end_x - 1 in
-          let () = print_endline "in black branch " in
+          let end_x = int_of_string end_x - 1 in
+          (* let () = print_endline "in black branch " in *)
           for y = 0 to fst start do
-            let () = print_int y in
-            let () = print_int end_x in
-            let () = print_endline "" in
+            (* let () = print_int y in let () = print_int end_x in let
+               () = print_endline "" in *)
             if legal start (y, end_x) state then
-              let () = print_endline "in black branch legal" in
+              (* let () = print_endline "in black branch legal" in *)
               coord := (y, end_x)
-          done);
+          done );
   !coord
 
 let translate_coord state_ref (s : string) : move =
@@ -234,43 +319,42 @@ let translate_coord state_ref (s : string) : move =
         let side_str =
           match side with Red -> "Red" | Black -> "Black"
         in
-        get_end_coord start !state_ref operation side_str
-          (int_of_string end_x)
+        get_end_coord start !state_ref operation side_str end_x
       in
       (start, e)
 
-(** [simulate_round] takes all data for a round of play, simulate the
-    round, and output an array of vectorized board with its move of
-    black side. Required: the raw input data must include every move in
-    the round in the correct order*)
+let string_of_move move =
+  "("
+  ^ string_of_int_tuple (fst move)
+  ^ ", "
+  ^ string_of_int_tuple (snd move)
+  ^ ")"
+
+(** [simulate_round] takes all data for a game of play, simulate the
+    game, and output an array of vectorized board with its move of black
+    side. Required: the raw input data must include every move in the
+    game in the correct order*)
 let simulate_round (raw : string array array) :
     (vectorized_board_state * move) array =
-  let state = ref State.init_state in
+  let state_ref = ref State.init_state in
   let l = Array.length raw in
-  print_endline "part 7";
+
   let list = ref [] in
-  print_endline "part 3";
+
   for x = 0 to l - 1 do
-    let data = raw.(x) in
-    let m = translate_coord state data.(3) in
-    print_endline "part 4";
-    let result = State.move (fst m) (snd m) !state in
-    print_endline "part 5";
-    print_endline data.(3);
-    print_int (m |> fst |> fst);
-    print_string ",";
-    print_int (m |> fst |> snd);
-    print_endline " ";
-    print_int (m |> snd |> fst);
-    print_string ",";
-    print_int (m |> snd |> snd);
+    let row = raw.(x) in
+    let m = translate_coord state_ref row.(3) in
+
+    let result = State.move (fst m) (snd m) !state_ref in
+    print_endline row.(3);
+    print_endline (string_of_move m);
     match result with
     | Legal t ->
-        state := t;
+        state_ref := t;
         let board = State.get_current_board t in
         let vector_board = translate_board board in
-        print_endline "part 6";
         list := (vector_board, m) :: !list
+    | _ -> failwith "something wrong"
   done;
   Array.of_list !list
 
@@ -291,7 +375,7 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      r := !r + 2)
+      r := !r + 2 )
     else (
       array.(i) <-
         Array.of_list
@@ -302,45 +386,52 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      b := !b + 2)
+      b := !b + 2 )
   done;
   Array.sort comp array;
   array
 
-let test = Array.sub train_data 0 100
+let test = Array.sub train_data 0 73
 
-let cal_round_length array =
-  let l = ref [] in
-  let note = ref 0 in
+(** return a list of game length of the dataset*)
+let cal_game_length df =
+  let result = ref [] in
+  let gid = ref first_gid in
   let length = ref 0 in
-  for i = 0 to Array.length array - 1 do
-    if array.(i).(0) <> "" then
-      if array.(i).(0) <> string_of_int !note && !length <> 0 then (
-        l := !length :: !l;
-        note := int_of_string array.(i).(0);
-        length := 0)
-      else (
-        if !note = 0 then note := int_of_string array.(i).(0);
-        length := !length + 1)
+  for i = 0 to Array.length df - 1 do
+    if i = Array.length df - 1 then (
+      length := !length + 1;
+      result := !length :: !result )
+    else if df.(i).(0) = string_of_int !gid then length := !length + 1
+    else (
+      (*next game*)
+      result := !length :: !result;
+      length := 1;
+      gid := int_of_string df.(i).(0) )
   done;
-  !l
-
-let l =
-  print_endline "test";
-  cal_round_length test
+  List.rev !result
 
 (** [data_processing] takes in raw data and turns it into the form of
     (vectorized_board_state * move) array *)
-let data_processing (train_data : string array array) :
-    (vectorized_board_state * move) array =
-  let length_rec = cal_round_length train_data in
-  (* let data = Array.make (List.length length_rec) (Array.make 2) in *)
-  let n = 0 in
-  print_endline "part 2";
-  (* try for the first round. need to implement the whole function later*)
-  let round_1 = order_array (Array.sub train_data n 100) in
-  print_endline "part 1";
-  simulate_round round_1
 
-(* let vectorized_data = print_endline "passed test"; data_processing
-   test *)
+let data_processing train_data =
+  let final_data = ref [] in
+  let lst_of_lengths = cal_game_length train_data in
+  let num_games = List.length lst_of_lengths in
+  let () = print_int num_games in
+  let () = print_endline "" in
+  let start_line = ref 0 in
+  for n = 0 to num_games - 1 do
+    let game_length = List.nth lst_of_lengths n in
+    let one_game =
+      order_array (Array.sub train_data !start_line game_length)
+    in
+    start_line := !start_line + game_length;
+    let data_for_one_game = simulate_round one_game in
+    final_data := data_for_one_game :: !final_data
+  done;
+  !final_data
+
+let vectorized_data =
+  (* print_endline "passed test"; *)
+  data_processing test

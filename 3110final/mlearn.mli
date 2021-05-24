@@ -30,11 +30,13 @@ val get_start_coord : string -> Board.t -> string -> int * int
     of the piece starting at [start] after operation [oper] and [end_x]
     on board of [state] *)
 val get_end_coord :
-  int * int -> State.t -> string -> string -> int -> int * int
+  int * int -> State.t -> string -> string -> string -> int * int
 
 (** [translate_coord state_ref move_str] is the start and end coord for
     board in [state_ref] after translating [move_str]*)
 val translate_coord : State.t ref -> string -> move
+
+val cal_game_length : string array array -> int list
 
 val simulate_round :
   string array array -> (vectorized_board_state * move) array
