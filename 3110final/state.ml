@@ -29,7 +29,7 @@ let init_state =
     turn = Red;
     current_grave = Board.generate_graveyard ();
     current_score = Board.generate_score ();
-    current_step = { red_step = 0; black_step = 0; total_step = 0 };
+    current_step = { red_step = 1; black_step = 1; total_step = 1 };
   }
 
 type result =

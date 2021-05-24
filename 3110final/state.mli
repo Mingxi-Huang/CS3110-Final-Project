@@ -15,6 +15,8 @@ type result =
   | Legal of t
   | Illegal
 
+val get_total_step : step -> int
+
 (**[check_win t] is whether one side has win the game*)
 val check_winner : t -> Piece.side option
 
