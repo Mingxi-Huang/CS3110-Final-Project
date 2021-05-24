@@ -140,7 +140,7 @@ let board_tests =
 
 let ai_tests = [ (* TODO: add tests for the State module here *) ]
 
-let dummy_array = Array.make 672374 (Array.make 4 "")
+let dummy_array = Array.make 65298 (Array.make 4 "")
 
 let data = Mlearn.populate_train "datasource/moves.csv" dummy_array
 

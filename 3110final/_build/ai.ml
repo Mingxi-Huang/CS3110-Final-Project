@@ -95,12 +95,17 @@ let rec make_legal_move state list_piece =
   | Illegal -> make_legal_move state list_piece
   | Legal _ -> coord
 
-let make_command state =
-  let list_piece = available_piece (State.get_current_board state) in
-  (* let piece = choose_piece (State.get_current_board state) list_piece
-     in *)
-  let coord = make_legal_move state list_piece in
-  match coord with
+let ml_coord state = failwith "unimplemented"
+
+let make_command state level =
+  let coord = ref ((0, 0), (0, 0)) in
+  if level = "easy" then
+    let list_piece = available_piece (State.get_current_board state) in
+    (* let piece = choose_piece (State.get_current_board state)
+       list_piece in *)
+    coord := make_legal_move state list_piece
+  else coord := ml_coord state;
+  match !coord with
   | (x, y), (x', y') ->
       "move " ^ string_of_int x ^ "," ^ string_of_int y ^ " "
       ^ string_of_int x' ^ "," ^ string_of_int y'

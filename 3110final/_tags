@@ -1,1 +1,1 @@
-true: package(ounit2),package(ANSITerminal),package(sklearn), package(np)
+true: package(ounit2),package(ANSITerminal)

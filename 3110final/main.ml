@@ -26,17 +26,17 @@ let rec valid_command command =
   try parse command with
   | Empty -> (
       print_endline "Command is Empty";
-      match read_line () with input -> valid_command input)
+      match read_line () with input -> valid_command input )
   | Malformed -> (
       print_endline
         "Command is Malformed, should be: 'quit' or 'move x1,y1 x2,y2' \
          or 'help' Please try again";
       print_string "> ";
-      match read_line () with input -> valid_command input)
+      match read_line () with input -> valid_command input )
   | Illegal_state -> (
       print_endline "This is an illegal move, try again! \n";
       print_string "> ";
-      match read_line () with input -> valid_command input)
+      match read_line () with input -> valid_command input )
 
 let rec help_user confuse =
   match confuse with
@@ -132,8 +132,8 @@ let rec play_game_help st mode history =
     let msg = read_line () in
     let command = valid_command msg in
     (*command = parsed message [command] or raises Exception*)
+    (*command = Move of coords*)
     try
-      (*command = Move of coords*)
       match command with
       | Move [ (x1, y1); (x2, y2) ] ->
           let start = (x1, y1) in
@@ -192,11 +192,11 @@ let rec play_game_help st mode history =
           else
             (*Command is move x1,y1 x2,y2; and no winning in next round*)
             play_game_help new_st mode
-              (history
+              ( history
               @ [
                   string_of_side cur_turn ^ ": "
                   ^ string_of_move command;
-                ])
+                ] )
       | Quit ->
           let str_bye = "~ Bye Bye ~\n" in
           Printf.printf "\027[32;1m%s\n\027[0m" str_bye;
@@ -229,13 +229,13 @@ let rec play_game_help st mode history =
           "please enter the coordinate within the board, Please try \
            again!";
         print_string "> ";
-        play_game_help st mode history)
+        play_game_help st mode history )
   else
     (*mode = 1 and Side = Black*)
     Printf.printf "\027[34;1m\n%s\n\027[0m"
       (Piece.string_of_side cur_turn);
   (* print_endline "1"; *)
-  let c = Ai.make_command st in
+  let c = Ai.make_command st "easy" in
   (* print_endline "2"; *)
   (* print_endline c; *)
   let command = Command.parse c in
@@ -247,8 +247,8 @@ let rec play_game_help st mode history =
       play_game_help
         (get_result_state new_st_result)
         mode
-        (history
-        @ [ string_of_side cur_turn ^ ": " ^ string_of_move command ])
+        ( history
+        @ [ string_of_side cur_turn ^ ": " ^ string_of_move command ] )
   | _ -> failwith "ai module error"
 
 (** [play_game f] starts the adventure in file [f]. *)

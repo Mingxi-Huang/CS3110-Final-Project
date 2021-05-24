@@ -22,7 +22,7 @@ let pp_list pp_elt lst =
 let filename = "datasource/moves.csv"
 
 (* let num_rows = 672374 *)
-let num_rows = 672372
+let num_rows = 65298
 
 let first_gid = 57380690
 
@@ -143,6 +143,7 @@ let string_of_int_tuple tp =
 let special_treatment board first second =
   match second with
   | "+" ->
+      let num_pawn_arr = [| 0; 0; 0; 0; 0; 0; 0; 0; 0 |] in
       let r, s = get_rank first in
       (* let () = print_endline "before if s = RED" in *)
       if s = Piece.Red then (
@@ -151,14 +152,22 @@ let special_treatment board first second =
           for x = 0 to 8 do
             (* let () = print_endline (string_of_int_tuple (y, x)) in *)
             let piece = Board.get_piece board (y, x) in
+            (* match piece with | Some piece -> if Piece.get_c piece <>
+               Piece.Soldier && num_pawn_arr.(x) = 1 then
+               num_pawn_arr.(n) <- 1; |None -> () in *)
             match piece with
             | Some p ->
-                if Piece.get_c p = r && Piece.get_side p = Piece.Red
+                if Piece.get_c p = Piece.Soldier && num_pawn_arr.(x) = 1
+                then final_coord := (y, x)
+                else if Piece.get_c p = Piece.Soldier then
+                  num_pawn_arr.(x) <- 1
+                else if
+                  Piece.get_c p = r && Piece.get_side p = Piece.Red
                 then final_coord := (y, x)
             | None -> ()
           done
         done;
-        !final_coord)
+        !final_coord )
       else
         (*black*)
         (* let () = print_endline "in black branch" in *)
@@ -168,7 +177,12 @@ let special_treatment board first second =
             let piece = Board.get_piece board (y, x) in
             match piece with
             | Some p ->
-                if Piece.get_c p = r && Piece.get_side p = Piece.Black
+                if Piece.get_c p = Piece.Soldier && num_pawn_arr.(x) = 1
+                then final_coord := (y, x)
+                else if Piece.get_c p = Piece.Soldier then
+                  num_pawn_arr.(x) <- 1
+                else if
+                  Piece.get_c p = r && Piece.get_side p = Piece.Black
                 then final_coord := (y, x)
             | None -> ()
           done
@@ -189,7 +203,7 @@ let special_treatment board first second =
             | None -> ()
           done
         done;
-        !final_coord)
+        !final_coord )
       else
         (*red*)
         let final_coord = ref (0, 0) in
@@ -232,12 +246,12 @@ let legal s e state =
 
 let get_end_coord start state oper side end_x =
   let coord = ref (0, 0) in
-  (if oper = "." then
-   let end_x =
-     if side = "Red" then 9 - int_of_string end_x
-     else int_of_string end_x - 1
-   in
-   coord := (fst start, end_x)
+  ( if oper = "." then
+    let end_x =
+      if side = "Red" then 9 - int_of_string end_x
+      else int_of_string end_x - 1
+    in
+    coord := (fst start, end_x)
   else if oper = "+" then
     (* let () = print_endline "in oper + branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
@@ -304,7 +318,7 @@ let get_end_coord start state oper side end_x =
             if legal start (y, end_x) state then
               (* let () = print_endline "in black branch legal" in *)
               coord := (y, end_x)
-          done);
+          done );
   !coord
 
 let translate_coord state_ref (s : string) : move =
@@ -348,10 +362,8 @@ let simulate_round (raw : string array array) :
     let result = State.move (fst m) (snd m) !state_ref in
     print_endline row.(3);
     print_endline (string_of_move m);
-    print_board
-      (State.get_current_board !state_ref)
-      (Board.generate_graveyard ())
-      (Board.generate_score ());
+    (* print_board (State.get_current_board !state_ref)
+       (Board.generate_graveyard ()) (Board.generate_score ()); *)
     match result with
     | Legal t ->
         state_ref := t;
@@ -377,7 +389,7 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      r := !r + 2)
+      r := !r + 2 )
     else (
       array.(i) <-
         Array.of_list
@@ -388,12 +400,16 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      b := !b + 2)
+      b := !b + 2 )
   done;
   Array.sort comp array;
   array
 
-let test = Array.sub train_data 0 73
+let test = Array.sub train_data 12736 97
+
+(* let test = train_data *)
+
+(* let test = Array.sub train_data 30820 148 *)
 
 (** return a list of game length of the dataset*)
 let cal_game_length df =
@@ -403,13 +419,13 @@ let cal_game_length df =
   for i = 0 to Array.length df - 1 do
     if i = Array.length df - 1 then (
       length := !length + 1;
-      result := !length :: !result)
+      result := !length :: !result )
     else if df.(i).(0) = string_of_int !gid then length := !length + 1
     else (
       (*next game*)
       result := !length :: !result;
       length := 1;
-      gid := int_of_string df.(i).(0))
+      gid := int_of_string df.(i).(0) )
   done;
   List.rev !result
 
@@ -497,15 +513,3 @@ let make_2d_move (move : move list) : int array array =
   Array.of_list (List.rev !d)
 
 (* let open Sklearn.Linear_model in *)
-open Sklearn.Linear_model
-open Np.Numpy
-
-let vec_x = Ndarray.matrixi (make_2d x)
-
-let vec_y = Ndarray.matrixi (make_2d_move y)
-
-let logistic_regression = LogisticRegression.create ()
-
-let model = LogisticRegression.fit vec_x vec_y logistic_regression
-
-let p = LogisticRegression.predict vec_x model

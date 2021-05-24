@@ -27,4 +27,4 @@ val get_coordinate : Piece.t -> Piece.coord * (int * int)
 (** [make_command] takes the current state of the game and randomly
     generate a legal move for the computer side, converting the move
     into a string that is identical to user input*)
-val make_command : State.t -> string
+val make_command : State.t -> string -> string

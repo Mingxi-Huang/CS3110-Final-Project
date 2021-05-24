@@ -1,7 +1,5 @@
 #require "ANSITerminal";;
 #require "ounit2";;
-#require "sklearn";;
-#require "np";;
 #directory "_build";;
 #load_rec "piece.cmo";;
 #load_rec "command.cmo";;
