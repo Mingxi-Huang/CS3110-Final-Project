@@ -158,7 +158,7 @@ let special_treatment board first second =
             | None -> ()
           done
         done;
-        !final_coord )
+        !final_coord)
       else
         (*black*)
         (* let () = print_endline "in black branch" in *)
@@ -189,7 +189,7 @@ let special_treatment board first second =
             | None -> ()
           done
         done;
-        !final_coord )
+        !final_coord)
       else
         (*red*)
         let final_coord = ref (0, 0) in
@@ -232,12 +232,12 @@ let legal s e state =
 
 let get_end_coord start state oper side end_x =
   let coord = ref (0, 0) in
-  ( if oper = "." then
-    let end_x =
-      if side = "Red" then 9 - int_of_string end_x
-      else int_of_string end_x - 1
-    in
-    coord := (fst start, end_x)
+  (if oper = "." then
+   let end_x =
+     if side = "Red" then 9 - int_of_string end_x
+     else int_of_string end_x - 1
+   in
+   coord := (fst start, end_x)
   else if oper = "+" then
     (* let () = print_endline "in oper + branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
@@ -304,7 +304,7 @@ let get_end_coord start state oper side end_x =
             if legal start (y, end_x) state then
               (* let () = print_endline "in black branch legal" in *)
               coord := (y, end_x)
-          done );
+          done);
   !coord
 
 let translate_coord state_ref (s : string) : move =
@@ -377,7 +377,7 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      r := !r + 2 )
+      r := !r + 2)
     else (
       array.(i) <-
         Array.of_list
@@ -388,12 +388,12 @@ let order_array array : string array array =
             array.(i).(3);
           ];
       (* print_endline ""; print_string array.(i).(0); *)
-      b := !b + 2 )
+      b := !b + 2)
   done;
   Array.sort comp array;
   array
 
-let test = train_data
+let test = Array.sub train_data 0 73
 
 (** return a list of game length of the dataset*)
 let cal_game_length df =
@@ -403,13 +403,13 @@ let cal_game_length df =
   for i = 0 to Array.length df - 1 do
     if i = Array.length df - 1 then (
       length := !length + 1;
-      result := !length :: !result )
+      result := !length :: !result)
     else if df.(i).(0) = string_of_int !gid then length := !length + 1
     else (
       (*next game*)
       result := !length :: !result;
       length := 1;
-      gid := int_of_string df.(i).(0) )
+      gid := int_of_string df.(i).(0))
   done;
   List.rev !result
 
@@ -429,10 +429,48 @@ let data_processing train_data =
     in
     start_line := !start_line + game_length;
     let data_for_one_game = simulate_round one_game in
-    final_data := data_for_one_game :: !final_data
+    final_data := Array.to_list data_for_one_game :: !final_data
   done;
   List.rev !final_data
 
 let vectorized_data =
   (* print_endline "passed test"; *)
   data_processing test
+
+let flatten_data
+    (vectorized_data : (vectorized_board_state * move) list list) :
+    (vectorized_board_state * move) list =
+  List.flatten vectorized_data
+
+let get_x_y vectorized_data =
+  let v = flatten_data vectorized_data in
+  let independent_variable = ref [] in
+  let dependent_variable = ref [] in
+  let get_x tuple =
+    independent_variable := fst tuple :: !independent_variable
+  in
+  let get_y tuple =
+    dependent_variable := snd tuple :: !dependent_variable
+  in
+  List.iter get_x v;
+  List.iter get_y v;
+  (List.rev !independent_variable, List.rev !dependent_variable)
+
+let x, y = get_x_y vectorized_data
+
+let train data = failwith "unimplemented"
+
+(* let open Sklearn.Linear_model in  *)
+let clf = Sklearn.Linear_model.LogisticRegression()
+    (random_state=0).fit ~ x y () in
+   LogisticRegression.predict x[:2 :] clf; LogisticRegression.score ~x y
+   clf;
+
+(* TEST TODO let%expect_test "LogisticRegression" = let open
+   Sklearn.Linear_model in let x, y = load_iris ~return_X_y:true () in
+   let clf = LogisticRegression(random_state=0).fit ~x y () in
+   print_ndarray @@ LogisticRegression.predict x[:2 :] clf; [%expect {|
+   array([0, 0]) |}] print_ndarray @@ LogisticRegression.predict_proba
+   x[:2 :] clf; [%expect {| array([[9.8...e-01, 1.8...e-02, 1.4...e-08],
+   [9.7...e-01, 2.8...e-02, ...e-08]]) |}] print_ndarray @@
+   LogisticRegression.score ~x y clf; [%expect {| |}] *)
