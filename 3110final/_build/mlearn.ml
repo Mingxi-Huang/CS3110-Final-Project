@@ -460,17 +460,52 @@ let x, y = get_x_y vectorized_data
 
 let train data = failwith "unimplemented"
 
-(* let open Sklearn.Linear_model in let x, y = load_iris
-   ~return_X_y:true () in let clf =
-   LogisticRegression(random_state=0).fit ~x y () in
-   LogisticRegression.predict x[:2 :] clf; LogisticRegression.score ~x y
-   clf; *)
+let length = List.length x - 1
 
-(* TEST TODO let%expect_test "LogisticRegression" = let open
-   Sklearn.Linear_model in let x, y = load_iris ~return_X_y:true () in
-   let clf = LogisticRegression(random_state=0).fit ~x y () in
-   print_ndarray @@ LogisticRegression.predict x[:2 :] clf; [%expect {|
-   array([0, 0]) |}] print_ndarray @@ LogisticRegression.predict_proba
-   x[:2 :] clf; [%expect {| array([[9.8...e-01, 1.8...e-02, 1.4...e-08],
-   [9.7...e-01, 2.8...e-02, ...e-08]]) |}] print_ndarray @@
-   LogisticRegression.score ~x y clf; [%expect {| |}] *)
+let flatten d3 =
+  let d1 = ref [] in
+  for j = 0 to Array.length d3 do
+    for k = 0 to Array.length d3.(0) do
+      d1 := !d1 @ Array.to_list d3.(j).(k)
+    done
+  done;
+  !d1
+
+let make_2d (board_list : vectorized_board_state list) : int array array
+    =
+  let length = List.length board_list in
+  let d = ref [] in
+  for i = 0 to length - 1 do
+    let board = List.nth board_list i in
+    d := !d @ [ Array.of_list (flatten board) ]
+  done;
+  Array.of_list (List.rev !d)
+
+(* y is (int * int)*(int * int) list *)
+let make_2d_move (move : move list) : int array array =
+  let length = List.length move in
+  let d = ref [] in
+  for i = 0 to length - 1 do
+    let m = List.nth move i in
+    let arr = Array.make 4 0 in
+    arr.(0) <- m |> fst |> fst;
+    arr.(1) <- m |> fst |> snd;
+    arr.(2) <- m |> snd |> fst;
+    arr.(3) <- m |> snd |> snd;
+    d := !d @ [ arr ]
+  done;
+  Array.of_list (List.rev !d)
+
+(* let open Sklearn.Linear_model in *)
+open Sklearn.Linear_model
+open Np.Numpy
+
+let vec_x = Ndarray.matrixi (make_2d x)
+
+let vec_y = Ndarray.matrixi (make_2d_move y)
+
+let logistic_regression = LogisticRegression.create ()
+
+let model = LogisticRegression.fit vec_x vec_y logistic_regression
+
+let p = LogisticRegression.predict vec_x model

@@ -1,1 +1,1 @@
-mlearn.ml: Array Board Int List Piece State String
+mlearn.ml: Array Board Int List LogisticRegression Ndarray Np Piece Sklearn State String
