@@ -185,12 +185,9 @@ let string_of_2d_array array =
   done;
   !str ^ ""
 
-let ai_tests =
-  [ (* ( "vectorized start board" >:: fun _ -> assert_equal 1260 (let
-       state = Ai.process_state start_state in Array.length state.(0))
-       ~printer:string_of_int ); *) ]
+let ai_tests = []
 
-let dummy_array = Array.make 65298 (Array.make 4 "")
+let dummy_array = Array.make 65299 (Array.make 4 "")
 
 let data = Mlearn.populate_train "datasource/moves.csv" dummy_array
 
