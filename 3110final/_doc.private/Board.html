@@ -26,7 +26,12 @@
 </div>
 <h1>Module <a href="type_Board.html">Board</a></h1>
 
-<pre><span id="MODULEBoard"><span class="keyword">module</span> Board</span>: <code class="code">sig</code> <a href="Board.html">..</a> <code class="code">end</code></pre><hr width="100%">
+<pre><span id="MODULEBoard"><span class="keyword">module</span> Board</span>: <code class="code">sig</code> <a href="Board.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>Representation of a static board of our game.</p>
+</div>
+</div>
+<hr width="100%">
 
 <pre><code><span id="TYPEgraveyard"><span class="keyword">type</span> <code class="type"></code>graveyard</span> = {</code></pre><table class="typetable">
 <tr>
@@ -47,9 +52,24 @@
 
 
 
-<pre><span id="VALgenerate_graveyard"><span class="keyword">val</span> generate_graveyard</span> : <code class="type">unit -> <a href="Board.html#TYPEgraveyard">graveyard</a></code></pre>
-<pre><span id="VALget_red_g"><span class="keyword">val</span> get_red_g</span> : <code class="type"><a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEt">Piece.t</a> list</code></pre>
-<pre><span id="VALget_black_g"><span class="keyword">val</span> get_black_g</span> : <code class="type"><a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEt">Piece.t</a> list</code></pre>
+<pre><span id="VALgenerate_graveyard"><span class="keyword">val</span> generate_graveyard</span> : <code class="type">unit -> <a href="Board.html#TYPEgraveyard">graveyard</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">generate_graveyard</code> is an empty graveyard initialized to be used</p>
+</div>
+</div>
+
+<pre><span id="VALget_red_g"><span class="keyword">val</span> get_red_g</span> : <code class="type"><a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEt">Piece.t</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_red_g gy</code> is list of black captured pieces from <code class="code">gy</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_black_g"><span class="keyword">val</span> get_black_g</span> : <code class="type"><a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEt">Piece.t</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_black_g gy</code> is list of black captured pieces from <code class="code">gy</code></p>
+</div>
+</div>
+
 <pre><code><span id="TYPEscore"><span class="keyword">type</span> <code class="type"></code>score</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -69,11 +89,39 @@
 
 
 
-<pre><span id="VALupdate_score"><span class="keyword">val</span> update_score</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> -> int -> int</code></pre>
-<pre><span id="VALgenerate_score"><span class="keyword">val</span> generate_score</span> : <code class="type">unit -> <a href="Board.html#TYPEscore">score</a></code></pre>
-<pre><span id="VALget_red_score"><span class="keyword">val</span> get_red_score</span> : <code class="type"><a href="Board.html#TYPEscore">score</a> -> int</code></pre>
-<pre><span id="VALget_black_score"><span class="keyword">val</span> get_black_score</span> : <code class="type"><a href="Board.html#TYPEscore">score</a> -> int</code></pre>
-<pre><span id="VALcount_pieces"><span class="keyword">val</span> count_pieces</span> : <code class="type"><a href="Piece.html#TYPErank">Piece.rank</a> -> <a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEside">Piece.side</a> -> int</code></pre>
+<pre><span id="VALupdate_score"><span class="keyword">val</span> update_score</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Let piece, maximum is 70 (w/o general) + 20 (general) = 90, piece is
+    captured piece, score_specific is the current score of the
+    particular side</p>
+</div>
+</div>
+
+<pre><span id="VALgenerate_score"><span class="keyword">val</span> generate_score</span> : <code class="type">unit -> <a href="Board.html#TYPEscore">score</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">generate_score</code> is a score value initialized to be used</p>
+</div>
+</div>
+
+<pre><span id="VALget_red_score"><span class="keyword">val</span> get_red_score</span> : <code class="type"><a href="Board.html#TYPEscore">score</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_red_score score</code> is an int value of red <code class="code">score</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_black_score"><span class="keyword">val</span> get_black_score</span> : <code class="type"><a href="Board.html#TYPEscore">score</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_black_score score</code> is an int value of black <code class="code">score</code></p>
+</div>
+</div>
+
+<pre><span id="VALcount_pieces"><span class="keyword">val</span> count_pieces</span> : <code class="type"><a href="Piece.html#TYPErank">Piece.rank</a> -> <a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Piece.html#TYPEside">Piece.side</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>return the number of piece of the particular <code class="code">rank</code>, in the
+    gravelist specified by <code class="code">grave</code> and <code class="code">side</code></p>
+</div>
+</div>
+
 <pre><span id="VALrank_array"><span class="keyword">val</span> rank_array</span> : <code class="type"><a href="Piece.html#TYPErank">Piece.rank</a> array</code></pre>
 <pre><span id="VALrev_rank_array"><span class="keyword">val</span> rev_rank_array</span> : <code class="type"><a href="Piece.html#TYPErank">Piece.rank</a> array</code></pre>
 <pre><span id="VALbottom_row"><span class="keyword">val</span> bottom_row</span> : <code class="type"><a href="Piece.html#TYPEside">Piece.side</a> -> <a href="Piece.html#TYPEt">Piece.t</a> option array</code></pre><div class="info ">
@@ -101,6 +149,12 @@
 
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Board.html#TYPEboard">board</a></code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">t</code> is a 2d array that represents the entire board, with every
+    piece's property</p>
+</div>
+</div>
 
 
 <pre><span id="VALempty_board"><span class="keyword">val</span> empty_board</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> option array array</code></pre><div class="info ">
@@ -109,7 +163,12 @@
 </div>
 </div>
 
-<pre><span id="VALgenerate_board"><span class="keyword">val</span> generate_board</span> : <code class="type">unit -> <a href="Piece.html#TYPEt">Piece.t</a> option array array</code></pre>
+<pre><span id="VALgenerate_board"><span class="keyword">val</span> generate_board</span> : <code class="type">unit -> <a href="Piece.html#TYPEt">Piece.t</a> option array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">generate_board</code> is the initial state of board</p>
+</div>
+</div>
+
 <pre><span id="VALprint_grave_helper"><span class="keyword">val</span> print_grave_helper</span> : <code class="type">string -> <a href="Piece.html#TYPErank">Piece.rank</a> -> <a href="Piece.html#TYPEside">Piece.side</a> -> <a href="Board.html#TYPEgraveyard">graveyard</a> -> unit</code></pre>
 <pre><span id="VALprint_score_helper"><span class="keyword">val</span> print_score_helper</span> : <code class="type"><a href="Piece.html#TYPEside">Piece.side</a> -> <a href="Board.html#TYPEscore">score</a> -> unit</code></pre>
 <pre><span id="VALprint_grave_line"><span class="keyword">val</span> print_grave_line</span> : <code class="type">int -> <a href="Piece.html#TYPEside">Piece.side</a> -> <a href="Board.html#TYPEgraveyard">graveyard</a> -> <a href="Board.html#TYPEscore">score</a> -> unit</code></pre>

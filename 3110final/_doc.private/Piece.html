@@ -167,17 +167,44 @@
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Piece.html#TYPEpiece">piece</a></code> </pre>
 
 
-<pre><span id="VALcreate_piece"><span class="keyword">val</span> create_piece</span> : <code class="type"><a href="Piece.html#TYPErank">rank</a> -> <a href="Piece.html#TYPEside">side</a> -> <a href="Piece.html#TYPEcoord">coord</a> -> <a href="Piece.html#TYPEpiece">piece</a></code></pre>
+<pre><span id="VALcreate_piece"><span class="keyword">val</span> create_piece</span> : <code class="type"><a href="Piece.html#TYPErank">rank</a> -> <a href="Piece.html#TYPEside">side</a> -> <a href="Piece.html#TYPEcoord">coord</a> -> <a href="Piece.html#TYPEpiece">piece</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_piece r s c</code> is a piece with rank <code class="code">r</code>, side <code class="code">s</code>, and
+    coordinate <code class="code">coord</code></p>
+</div>
+</div>
+
 <pre><span id="VALget_c"><span class="keyword">val</span> get_c</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPErank">rank</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_c piece</code> is the rank of piece <code class="code">piece</code></p>
 </div>
 </div>
 
-<pre><span id="VALget_side"><span class="keyword">val</span> get_side</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEside">side</a></code></pre>
-<pre><span id="VALstring_of_side"><span class="keyword">val</span> string_of_side</span> : <code class="type"><a href="Piece.html#TYPEside">side</a> -> string</code></pre>
-<pre><span id="VALchange_coord"><span class="keyword">val</span> change_coord</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEcoord">coord</a> -> <a href="Piece.html#TYPEpiece">piece</a></code></pre>
-<pre><span id="VALget_coord"><span class="keyword">val</span> get_coord</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEcoord">coord</a></code></pre>
+<pre><span id="VALget_side"><span class="keyword">val</span> get_side</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEside">side</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_side piece</code> is the side of piece <code class="code">piece</code></p>
+</div>
+</div>
+
+<pre><span id="VALstring_of_side"><span class="keyword">val</span> string_of_side</span> : <code class="type"><a href="Piece.html#TYPEside">side</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_of_side s</code> is a string representation of <code class="code">side</code></p>
+</div>
+</div>
+
+<pre><span id="VALchange_coord"><span class="keyword">val</span> change_coord</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEcoord">coord</a> -> <a href="Piece.html#TYPEpiece">piece</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">change_coord piece coord</code> is a new piece at <code class="code">coord</code> of the same
+    type as <code class="code">piece</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_coord"><span class="keyword">val</span> get_coord</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPEcoord">coord</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_coord piece</code> is the coordinate of piece <code class="code">piece</code></p>
+</div>
+</div>
+
 <pre><span id="VALextract"><span class="keyword">val</span> extract</span> : <code class="type">'a option -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">extract piece_opt</code> is a piece extracted from a piece option
@@ -185,8 +212,19 @@
 </div>
 </div>
 
-<pre><span id="VALrank_of_piece"><span class="keyword">val</span> rank_of_piece</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPErank">rank</a></code></pre>
-<pre><span id="VALchar_of_piece"><span class="keyword">val</span> char_of_piece</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> option -> char</code></pre>
+<pre><span id="VALrank_of_piece"><span class="keyword">val</span> rank_of_piece</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> <a href="Piece.html#TYPErank">rank</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">rank_of_piece piece</code> is the rank of <code class="code">piece</code></p>
+</div>
+</div>
+
+<pre><span id="VALchar_of_piece"><span class="keyword">val</span> char_of_piece</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> option -> char</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">char_of_piece piece_op</code> is the character representation of piece
+    <code class="code">piece</code></p>
+</div>
+</div>
+
 <pre><span id="VALstring_of_piece"><span class="keyword">val</span> string_of_piece</span> : <code class="type"><a href="Piece.html#TYPEpiece">piece</a> -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">string_of_piece piece</code> is the string containing information about

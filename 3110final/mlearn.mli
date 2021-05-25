@@ -1,8 +1,9 @@
 (** Representation of data for 1 player hard mode *)
 
-(** [vectorized_board_state] is a 3D int array that represent the board
-    state: [\[0, 0, … , 1\] * 9]*10 len[0][0] = 14, representing 14
-    unique pieces and is an one-hot representation of piece. *)
+(** [vectorized_board_state] is a 3D int array of shape 9 x 10 x 14 that
+    represent the board state. [\[vectorized_board_state\].(0).(0)]
+    representing 14 unique pieces and is an one-hot representation of
+    piece. *)
 type vectorized_board_state = int array array array
 
 (** [move] represent a move in a certain round. It has the form ((x1,
@@ -24,7 +25,7 @@ val translate_lines : Board.t -> int -> int array array
 
 (** [translate_board] takes in a complete board for one round and uses
     [translate_lines] to vectorized it, returns a
-    [vectorized_baord_state] of 9*10*14 in size*)
+    [vectorized_baord_state] of [9 x 10 x 14] in size*)
 val translate_board : Board.t -> vectorized_board_state
 
 (** [get_start_coord rank board start_x] is the coordinate of the piece
@@ -54,7 +55,7 @@ val simulate_round :
 
 (** [make_2d] flattens the 3d list of [vectorized_board_state] into a 2d
     array array, the shape of 2d array is length of
-    [vectorized_board_state list] x (9 * 10 * 14) *)
+    [vectorized_board_state list] x [1260] *)
 val make_2d : vectorized_board_state list -> int array array
 
 (** [x_vec] is a fully processed [int array array] of all board status

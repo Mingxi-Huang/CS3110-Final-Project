@@ -1,3 +1,5 @@
+(** Representation of the commmand we will parse.*)
+
 (** The type [coords] represents the coordinates the player want to move
     a piece from and to*)
 type coords = (int * int) list

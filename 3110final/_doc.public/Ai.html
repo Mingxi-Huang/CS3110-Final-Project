@@ -30,11 +30,11 @@
 
 <pre><span id="MODULEAi"><span class="keyword">module</span> Ai</span>: <code class="code">sig</code> <a href="Ai.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p>A very dumb computer player that enables 1 player mode.</p>
-
-<p>This module represents the computer player of Xiangqi game. It
-    enables 1 player mode. The very dumb ai randomly picks a move that
-    is Legal at its turn, all else act the same as human player.</p>
+<p>Representation of the computer player of Xiangqi game. It enables 1
+    player mode and have two difficulty level of easy and hard. The very
+    dumb ai randomly picks a move that is Legal at its turn, all else
+    act the same as human player. The smarter ai uses train data from
+    <code class="code">Mleanrn</code> to predict the best move for each round</p>
 </div>
 </div>
 <hr width="100%">
@@ -73,5 +73,19 @@
 </div>
 </div>
 
-<pre><span id="VALprocess_state"><span class="keyword">val</span> process_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> int array array</code></pre>
-<pre><span id="VALml_coord"><span class="keyword">val</span> ml_coord</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> (int * int) * (int * int)</code></pre></body></html>
+<pre><span id="VALprocess_state"><span class="keyword">val</span> process_state</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> int array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">process_state</code> gets the current board of <code class="code">State.t</code> and translate it
+    into the same format of train data. Returns an int array array of
+    shape 1 x 1260</p>
+</div>
+</div>
+
+<pre><span id="VALml_coord"><span class="keyword">val</span> ml_coord</span> : <code class="type"><a href="State.html#TYPEt">State.t</a> -> (int * int) * (int * int)</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">ml_coord</code> takes the state of the game, find the first 20 closest
+    states from data, and returns the move of it. If no legal move is
+    found, it randomly generates a move. Returns <code class="code">((x1,y1),(x2,y2))</code></p>
+</div>
+</div>
+</body></html>

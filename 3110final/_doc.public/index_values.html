@@ -32,11 +32,26 @@
 </td></tr>
 <tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="Mlearn.html#VALcal_game_length">cal_game_length</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">cal_game_length</code> calculates the number of total moves in each game,
+    returns an int list of size number of games</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALchange_coord">change_coord</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">change_coord piece coord</code> is a new piece at <code class="code">coord</code> of the same
+    type as <code class="code">piece</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALchar_of_piece">char_of_piece</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">char_of_piece piece_op</code> is the character representation of piece
+    <code class="code">piece</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALcheck_winner">check_winner</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">check_win t</code> is whether one side has win the game</p>
@@ -51,9 +66,19 @@
 </div>
 </td></tr>
 <tr><td><a href="Board.html#VALcount_pieces">count_pieces</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>return the number of piece of the particular <code class="code">rank</code>, in the
+    gravelist specified by <code class="code">grave</code> and <code class="code">side</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALcreate_piece">create_piece</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">create_piece r s c</code> is a piece with rank <code class="code">r</code>, side <code class="code">s</code>, and
+    coordinate <code class="code">coord</code></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>E</div></td></tr>
 <tr><td><a href="Piece.html#VALextract">extract</a> [<a href="Piece.html">Piece</a>]</td>
 <td><div class="info">
@@ -64,15 +89,35 @@
 </td></tr>
 <tr><td align="left"><div>G</div></td></tr>
 <tr><td><a href="Board.html#VALgenerate_board">generate_board</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">generate_board</code> is the initial state of board</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALgenerate_graveyard">generate_graveyard</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">generate_graveyard</code> is an empty graveyard initialized to be used</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALgenerate_score">generate_score</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">generate_score</code> is a score value initialized to be used</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALget_black_g">get_black_g</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_black_g gy</code> is list of black captured pieces from <code class="code">gy</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALget_black_score">get_black_score</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_black_score score</code> is an int value of black <code class="code">score</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALget_c">get_c</a> [<a href="Piece.html">Piece</a>]</td>
 <td><div class="info">
 <p><code class="code">get_c piece</code> is the rank of piece <code class="code">piece</code></p>
@@ -80,7 +125,11 @@
 </div>
 </td></tr>
 <tr><td><a href="Piece.html#VALget_coord">get_coord</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_coord piece</code> is the coordinate of piece <code class="code">piece</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Ai.html#VALget_coordinate">get_coordinate</a> [<a href="Ai.html">Ai</a>]</td>
 <td><div class="info">
 <p><code class="code">get_coordinate</code> takes in a coordinate and randomly generate a
@@ -97,14 +146,28 @@
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALget_current_grave">get_current_grave</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_current_grave t</code> is the graveyard content for state <code class="code">t</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALget_current_score">get_current_score</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_current_score t</code> is the current score for two players for state
+    <code class="code">t</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALget_current_step">get_current_step</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_current_step t</code> is the number of step two players at in state
+    <code class="code">t</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALget_current_turn">get_current_turn</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
-<p><code class="code">get current turn t</code> is the turn for state <code class="code">t</code></p>
+<p><code class="code">get_current_turn t</code> is the turn for state <code class="code">t</code></p>
 
 </div>
 </td></tr>
@@ -124,11 +187,23 @@
 </div>
 </td></tr>
 <tr><td><a href="Board.html#VALget_red_g">get_red_g</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_red_g gy</code> is list of black captured pieces from <code class="code">gy</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALget_red_score">get_red_score</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_red_score score</code> is an int value of red <code class="code">score</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALget_side">get_side</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_side piece</code> is the side of piece <code class="code">piece</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Mlearn.html#VALget_start_coord">get_start_coord</a> [<a href="Mlearn.html">Mlearn</a>]</td>
 <td><div class="info">
 <p><code class="code">get_start_coord rank board start_x</code> is the coordinate of the piece
@@ -137,10 +212,18 @@
 </div>
 </td></tr>
 <tr><td><a href="State.html#VALget_total_step">get_total_step</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_total_step step</code> is the int representation of number of step</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>H</div></td></tr>
 <tr><td><a href="Authors.html#VALhours_worked">hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">hours_works</code> is a list of work hours for each individual</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="State.html#VALinit_state">init_state</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
@@ -150,7 +233,13 @@
 </td></tr>
 <tr><td align="left"><div>M</div></td></tr>
 <tr><td><a href="Mlearn.html#VALmake_2d">make_2d</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">make_2d</code> flattens the 3d list of <code class="code">vectorized_board_state</code> into a 2d
+    array array, the shape of 2d array is length of
+    <code class="code">vectorized_board_state list</code> x <code class="code">1260</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Ai.html#VALmake_command">make_command</a> [<a href="Ai.html">Ai</a>]</td>
 <td><div class="info">
 <p><code class="code">make_command</code> takes the current state of the game and randomly
@@ -160,7 +249,12 @@
 </div>
 </td></tr>
 <tr><td><a href="Ai.html#VALml_coord">ml_coord</a> [<a href="Ai.html">Ai</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">ml_coord</code> takes the state of the game, find the first 20 closest
+    states from data, and returns the move of it.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALmove">move</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">move</code> evaluated if the input movement is legal.</p>
@@ -169,10 +263,20 @@
 </td></tr>
 <tr><td align="left"><div>N</div></td></tr>
 <tr><td><a href="State.html#VALnon_empty_coord">non_empty_coord</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">non_empty_coord</code> evaluates if the selected piece have actual piece
+   on it</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>O</div></td></tr>
 <tr><td><a href="State.html#VALoccupied_coord">occupied_coord</a> [<a href="State.html">State</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">occupied_coord</code> evaluates if the coordinate of the specific board is
+   occipied or not; if there is piece on it, then <code class="code">true</code> else <code class="code">false</code></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>P</div></td></tr>
 <tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
 <td><div class="info">
@@ -188,14 +292,33 @@
 </div>
 </td></tr>
 <tr><td><a href="Board.html#VALprint_board">print_board</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">print_board board</code> prints the representation of the board <code class="code">board</code>,
+   integrated with graveyard</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Board.html#VALprint_rev_board">print_rev_board</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">print_rev_board board</code> prints the representation of the board from
+   other side<code class="code">board</code>, integrated with graveyard</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Ai.html#VALprocess_state">process_state</a> [<a href="Ai.html">Ai</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">process_state</code> gets the current board of <code class="code">State.t</code> and translate it
+    into the same format of train data.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="Piece.html#VALrank_of_piece">rank_of_piece</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">rank_of_piece piece</code> is the rank of <code class="code">piece</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALrules">rules</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">rules</code> is a bool, judging whether a move of piece <code class="code">p</code> to
@@ -206,7 +329,14 @@
 </td></tr>
 <tr><td align="left"><div>S</div></td></tr>
 <tr><td><a href="Mlearn.html#VALsimulate_round">simulate_round</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">simulate_round</code> takes the input train data and translate each board
+    state and move from WXF notation to readable format, run every move
+    through <code class="code">State.move</code> to produce the corresponding board state and
+    return all information in a <code class="code">(vectorized_board_state * move) array</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Piece.html#VALstring_of_piece">string_of_piece</a> [<a href="Piece.html">Piece</a>]</td>
 <td><div class="info">
 <p><code class="code">string_of_piece piece</code> is the string containing information about
@@ -215,10 +345,20 @@
 </div>
 </td></tr>
 <tr><td><a href="Piece.html#VALstring_of_side">string_of_side</a> [<a href="Piece.html">Piece</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">string_of_side s</code> is a string representation of <code class="code">side</code></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>T</div></td></tr>
 <tr><td><a href="Mlearn.html#VALtranslate_board">translate_board</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">translate_board</code> takes in a complete board for one round and uses
+    <code class="code">translate_lines</code> to vectorized it, returns a
+    <code class="code">vectorized_baord_state</code> of <code class="code">9 x 10 x 14</code> in size</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Mlearn.html#VALtranslate_coord">translate_coord</a> [<a href="Mlearn.html">Mlearn</a>]</td>
 <td><div class="info">
 <p><code class="code">translate_coord state_ref move_str</code> is the start and end coord for
@@ -250,7 +390,13 @@
 </div>
 </td></tr>
 <tr><td><a href="Board.html#VALupdate_score">update_score</a> [<a href="Board.html">Board</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>Let piece, maximum is 70 (w/o general) + 20 (general) = 90, piece is
+    captured piece, score_specific is the current score of the
+    particular side</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>V</div></td></tr>
 <tr><td><a href="Mlearn.html#VALvec_piece">vec_piece</a> [<a href="Mlearn.html">Mlearn</a>]</td>
 <td><div class="info">
@@ -261,10 +407,20 @@
 </td></tr>
 <tr><td align="left"><div>X</div></td></tr>
 <tr><td><a href="Mlearn.html#VALx_vec">x_vec</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">x_vec</code> is a fully processed <code class="code">int array array</code> of all board status
+    from training data</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>Y</div></td></tr>
 <tr><td><a href="Mlearn.html#VALy_vec">y_vec</a> [<a href="Mlearn.html">Mlearn</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">y_vec</code> is a fully processed <code class="code">int array array</code> of all moves from
+    training data</p>
+
+</div>
+</td></tr>
 </table>
 </body>
 </html>

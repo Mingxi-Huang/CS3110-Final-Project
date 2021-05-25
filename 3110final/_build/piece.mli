@@ -39,12 +39,18 @@ type coord = int * int
 
 type t
 
+(** [create_piece r s c] is a piece with rank [r], side [s], and
+    coordinate [coord]*)
 val create_piece : rank -> side -> coord -> t
 
+(** [string_of_side s] is a string representation of [side]*)
 val string_of_side : side -> string
 
+(** [rank_of_piece piece] is the rank of [piece]*)
 val rank_of_piece : t -> rank
 
+(** [change_coord piece coord] is a new piece at [coord] of the same
+    type as [piece] *)
 val change_coord : t -> coord -> t
 
 (** [extract piece_opt] is a piece extracted from a piece option
@@ -54,10 +60,14 @@ val extract : t option -> t
 (** [get_c piece] is the rank of piece [piece]*)
 val get_c : t -> rank
 
+(** [get_coord piece] is the coordinate of piece [piece]*)
 val get_coord : t -> coord
 
+(** [get_side piece] is the side of piece [piece]*)
 val get_side : t -> side
 
+(** [char_of_piece piece_op] is the character representation of piece
+    [piece]*)
 val char_of_piece : t option -> char
 
 (** [string_of_piece piece] is the string containing information about

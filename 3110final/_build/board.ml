@@ -18,9 +18,6 @@ type score = {
   black_score : int;
 }
 
-(*Let piece, maximum is 70 (w/o general) + 20 (general) = 90*)
-(*piece is captured piece, score_specific is the current score of the
-  particular side*)
 let update_score piece score_specific =
   match get_c piece with
   | Soldier -> score_specific + 2
@@ -37,8 +34,6 @@ let get_red_score score = score.red_score
 
 let get_black_score score = score.black_score
 
-(*return the number of piece of the particular [rank], in the gravelist
-  specified by [grave] and [side]*)
 let count_pieces rank grave side =
   match side with
   | Red ->
@@ -114,7 +109,6 @@ type t = board
 (** an empty board with all slots initialized to None*)
 let empty_board = Array.make 10 (Array.make 9 None)
 
-(* [board_array] is the initial state of board *)
 let generate_board () =
   [|
     bottom_row Black;
@@ -128,9 +122,6 @@ let generate_board () =
     Array.make 9 None;
     bottom_row Red;
   |]
-
-(*[print_grave_line] prints single line of graveyard representation with
-  specified [i]*)
 
 (*Given specific [str_key] and [rank], [side], [grave], print a S *x
   conbination *)
@@ -192,8 +183,6 @@ let print_grave_line i side grave score =
   | 18 -> print_score_helper side score
   | _ -> print_string "                    "
 
-(**[print_board board] prints the representation of the board [board],
-   integrated with graveyard *)
 let print_board board grave score =
   for i = 0 to 19 do
     if i = 0 then
@@ -330,8 +319,6 @@ let update_board board start dest =
     Some (change_coord (extract cur_piece) dest);
   new_board
 
-(**[print_rev_board board] prints the representation of the board from
-   other side[board], integrated with graveyard *)
 let print_rev_board board grave score =
   for i = 0 to 19 do
     if i = 0 then

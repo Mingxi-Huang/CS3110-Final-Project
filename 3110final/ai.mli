@@ -1,8 +1,8 @@
-(** This module represents the computer player of Xiangqi game. It
-    enables 1 player mode and have two difficulty level of easy and
-    hard. The very dumb ai randomly picks a move that is Legal at its
-    turn, all else act the same as human player. The smarter ai uses
-    train data from [Mleanrn] to predict the best move for each round *)
+(** Representation of the computer player of Xiangqi game. It enables 1
+    player mode and have two difficulty level of easy and hard. The very
+    dumb ai randomly picks a move that is Legal at its turn, all else
+    act the same as human player. The smarter ai uses train data from
+    [Mleanrn] to predict the best move for each round *)
 
 open State
 open Piece
@@ -31,10 +31,10 @@ val make_command : State.t -> string -> string
 
 (** [process_state] gets the current board of [State.t] and translate it
     into the same format of train data. Returns an int array array of
-    shape 1 x (9*10*14)*)
+    shape 1 x 1260*)
 val process_state : State.t -> int array array
 
 (** [ml_coord] takes the state of the game, find the first 20 closest
     states from data, and returns the move of it. If no legal move is
-    found, it randomly generates a move. Returns ((x1,y1),(x2,y2))*)
+    found, it randomly generates a move. Returns [((x1,y1),(x2,y2))]*)
 val ml_coord : State.t -> (int * int) * (int * int)

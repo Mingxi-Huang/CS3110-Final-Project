@@ -30,14 +30,20 @@
 
 <pre><span id="MODULEMlearn"><span class="keyword">module</span> Mlearn</span>: <code class="code">sig</code> <a href="Mlearn.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p><code class="code">vectorized_board_state</code> is a 3D int array that represent the board
-    state: <code class="code">[0, 0, … , 1] * 9</code>*9 len<code class="code">0</code><code class="code">0</code> = 14, representing 14
-    unique pieces and is an one-hot representation of piece.</p>
+<p>Representation of data for 1 player hard mode</p>
 </div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEvectorized_board_state"><span class="keyword">type</span> <code class="type"></code>vectorized_board_state</span> = <code class="type">int array array array</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">vectorized_board_state</code> is a 3D int array of shape 9 x 10 x 14 that
+    represent the board state. <code class="code">[vectorized_board_state].(0).(0)</code>
+    representing 14 unique pieces and is an one-hot representation of
+    piece.</p>
+</div>
+</div>
 
 
 <pre><span id="TYPEmove"><span class="keyword">type</span> <code class="type"></code>move</span> = <code class="type">(int * int) * (int * int)</code> </pre>
@@ -71,7 +77,14 @@
 </div>
 </div>
 
-<pre><span id="VALtranslate_board"><span class="keyword">val</span> translate_board</span> : <code class="type"><a href="Board.html#TYPEt">Board.t</a> -> <a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a></code></pre>
+<pre><span id="VALtranslate_board"><span class="keyword">val</span> translate_board</span> : <code class="type"><a href="Board.html#TYPEt">Board.t</a> -> <a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">translate_board</code> takes in a complete board for one round and uses
+    <code class="code">translate_lines</code> to vectorized it, returns a
+    <code class="code">vectorized_baord_state</code> of <code class="code">9 x 10 x 14</code> in size</p>
+</div>
+</div>
+
 <pre><span id="VALget_start_coord"><span class="keyword">val</span> get_start_coord</span> : <code class="type">string -> <a href="Board.html#TYPEt">Board.t</a> -> string -> int * int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">get_start_coord rank board start_x</code> is the coordinate of the piece
@@ -94,8 +107,41 @@
 </div>
 </div>
 
-<pre><span id="VALcal_game_length"><span class="keyword">val</span> cal_game_length</span> : <code class="type">string array array -> int list</code></pre>
-<pre><span id="VALsimulate_round"><span class="keyword">val</span> simulate_round</span> : <code class="type">string array array -> (<a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a> * <a href="Mlearn.html#TYPEmove">move</a>) array</code></pre>
-<pre><span id="VALmake_2d"><span class="keyword">val</span> make_2d</span> : <code class="type"><a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a> list -> int array array</code></pre>
-<pre><span id="VALx_vec"><span class="keyword">val</span> x_vec</span> : <code class="type">int array array</code></pre>
-<pre><span id="VALy_vec"><span class="keyword">val</span> y_vec</span> : <code class="type">int array array</code></pre></body></html>
+<pre><span id="VALcal_game_length"><span class="keyword">val</span> cal_game_length</span> : <code class="type">string array array -> int list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">cal_game_length</code> calculates the number of total moves in each game,
+    returns an int list of size number of games</p>
+</div>
+</div>
+
+<pre><span id="VALsimulate_round"><span class="keyword">val</span> simulate_round</span> : <code class="type">string array array -> (<a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a> * <a href="Mlearn.html#TYPEmove">move</a>) array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">simulate_round</code> takes the input train data and translate each board
+    state and move from WXF notation to readable format, run every move
+    through <code class="code">State.move</code> to produce the corresponding board state and
+    return all information in a <code class="code">(vectorized_board_state * move) array</code></p>
+</div>
+</div>
+
+<pre><span id="VALmake_2d"><span class="keyword">val</span> make_2d</span> : <code class="type"><a href="Mlearn.html#TYPEvectorized_board_state">vectorized_board_state</a> list -> int array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">make_2d</code> flattens the 3d list of <code class="code">vectorized_board_state</code> into a 2d
+    array array, the shape of 2d array is length of
+    <code class="code">vectorized_board_state list</code> x <code class="code">1260</code></p>
+</div>
+</div>
+
+<pre><span id="VALx_vec"><span class="keyword">val</span> x_vec</span> : <code class="type">int array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">x_vec</code> is a fully processed <code class="code">int array array</code> of all board status
+    from training data</p>
+</div>
+</div>
+
+<pre><span id="VALy_vec"><span class="keyword">val</span> y_vec</span> : <code class="type">int array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">y_vec</code> is a fully processed <code class="code">int array array</code> of all moves from
+    training data</p>
+</div>
+</div>
+</body></html>

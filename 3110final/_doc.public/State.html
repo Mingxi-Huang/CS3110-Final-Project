@@ -63,7 +63,12 @@
 
 
 
-<pre><span id="VALget_total_step"><span class="keyword">val</span> get_total_step</span> : <code class="type"><a href="State.html#TYPEstep">step</a> -> int</code></pre>
+<pre><span id="VALget_total_step"><span class="keyword">val</span> get_total_step</span> : <code class="type"><a href="State.html#TYPEstep">step</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_total_step step</code> is the int representation of number of step</p>
+</div>
+</div>
+
 <pre><span id="VALcheck_winner"><span class="keyword">val</span> check_winner</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Piece.html#TYPEside">Piece.side</a> option</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">check_win t</code> is whether one side has win the game</p>
@@ -79,13 +84,30 @@
 
 <pre><span id="VALget_current_turn"><span class="keyword">val</span> get_current_turn</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Piece.html#TYPEside">Piece.side</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">get current turn t</code> is the turn for state <code class="code">t</code></p>
+<p><code class="code">get_current_turn t</code> is the turn for state <code class="code">t</code></p>
 </div>
 </div>
 
-<pre><span id="VALget_current_grave"><span class="keyword">val</span> get_current_grave</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Board.html#TYPEgraveyard">Board.graveyard</a></code></pre>
-<pre><span id="VALget_current_score"><span class="keyword">val</span> get_current_score</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Board.html#TYPEscore">Board.score</a></code></pre>
-<pre><span id="VALget_current_step"><span class="keyword">val</span> get_current_step</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEstep">step</a></code></pre>
+<pre><span id="VALget_current_grave"><span class="keyword">val</span> get_current_grave</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Board.html#TYPEgraveyard">Board.graveyard</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_current_grave t</code> is the graveyard content for state <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_current_score"><span class="keyword">val</span> get_current_score</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="Board.html#TYPEscore">Board.score</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_current_score t</code> is the current score for two players for state
+    <code class="code">t</code></p>
+</div>
+</div>
+
+<pre><span id="VALget_current_step"><span class="keyword">val</span> get_current_step</span> : <code class="type"><a href="State.html#TYPEt">t</a> -> <a href="State.html#TYPEstep">step</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_current_step t</code> is the number of step two players at in state
+    <code class="code">t</code></p>
+</div>
+</div>
+
 <pre><span id="VALinit_state"><span class="keyword">val</span> init_state</span> : <code class="type"><a href="State.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">init_state</code> is the side that starts the game. We initializes it to
@@ -99,8 +121,20 @@
 </div>
 </div>
 
-<pre><span id="VALnon_empty_coord"><span class="keyword">val</span> non_empty_coord</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> option -> bool</code></pre>
-<pre><span id="VALoccupied_coord"><span class="keyword">val</span> occupied_coord</span> : <code class="type"><a href="Board.html#TYPEt">Board.t</a> -> int * int -> bool</code></pre>
+<pre><span id="VALnon_empty_coord"><span class="keyword">val</span> non_empty_coord</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> option -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">non_empty_coord</code> evaluates if the selected piece have actual piece
+   on it</p>
+</div>
+</div>
+
+<pre><span id="VALoccupied_coord"><span class="keyword">val</span> occupied_coord</span> : <code class="type"><a href="Board.html#TYPEt">Board.t</a> -> int * int -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">occupied_coord</code> evaluates if the coordinate of the specific board is
+   occipied or not; if there is piece on it, then <code class="code">true</code> else <code class="code">false</code></p>
+</div>
+</div>
+
 <pre><span id="VALrules"><span class="keyword">val</span> rules</span> : <code class="type"><a href="Piece.html#TYPEt">Piece.t</a> -> <a href="Piece.html#TYPEcoord">Piece.coord</a> -> <a href="State.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">rules</code> is a bool, judging whether a move of piece <code class="code">p</code> to
