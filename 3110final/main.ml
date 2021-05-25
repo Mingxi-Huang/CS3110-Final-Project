@@ -187,7 +187,7 @@ let rec play_game_help diff st mode history gallery =
     (*Print first qustion*)
     let str_ins =
       "\n\
-       What do you want to do next? (you can move or quit or help)\n\
+       What do you want to do next? (you can move or quit or help or history)\n\
        Example: 'move 9,4 8,4' moves the red General up one step."
     in
     (*Asking for and Retriving command message, and executing the effect
