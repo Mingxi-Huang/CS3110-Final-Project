@@ -62,13 +62,9 @@ let check_winner st =
   else if List.exists is_general blk_g then Some Red
   else None
 
-(**[non_empty_coord] evaluates if the selected piece have actual piece
-   on it*)
 let non_empty_coord piece_option =
   match piece_option with None -> false | Some _ -> true
 
-(**[occupied_coord] evaluates if the coordinate of the specific board is
-   occipied or not; if there is piece on it, then [true] else [false]*)
 let occupied_coord board coord =
   match get_piece board coord with None -> false | Some _ -> true
 
@@ -165,10 +161,10 @@ let rules p c2 st =
      for both sides*)
   | General ->
       if
-        (c2 = (c1_i, c1_j - 1)
+        ( c2 = (c1_i, c1_j - 1)
         || c2 = (c1_i, c1_j + 1)
         || c2 = (c1_i - 1, c1_j)
-        || c2 = (c1_i + 1, c1_j))
+        || c2 = (c1_i + 1, c1_j) )
         && c2_j >= 3 && c2_j <= 5
         &&
         if get_side p = Red then c2_i >= 7 && c2_i <= 9
@@ -177,10 +173,10 @@ let rules p c2 st =
       else false
   | Advisor ->
       if
-        (c2 = (c1_i + 1, c1_j + 1)
+        ( c2 = (c1_i + 1, c1_j + 1)
         || c2 = (c1_i - 1, c1_j + 1)
         || c2 = (c1_i + 1, c1_j - 1)
-        || c2 = (c1_i - 1, c1_j - 1))
+        || c2 = (c1_i - 1, c1_j - 1) )
         && c2_j >= 3 && c2_j <= 5
         &&
         if get_side p = Red then c2_i >= 7 && c2_i <= 9
@@ -191,8 +187,9 @@ let rules p c2 st =
      barricade present in mid point of the diagonal*)
   | Elephant ->
       if
-        (c2 = (c1_i + 2, c1_j + 2)
-         && occupied_coord st.current_board (c1_i + 1, c1_j + 1) = false
+        ( c2 = (c1_i + 2, c1_j + 2)
+          && occupied_coord st.current_board (c1_i + 1, c1_j + 1)
+             = false
         || c2 = (c1_i - 2, c1_j + 2)
            && occupied_coord st.current_board (c1_i - 1, c1_j + 1)
               = false
@@ -201,7 +198,7 @@ let rules p c2 st =
               = false
         || c2 = (c1_i - 2, c1_j - 2)
            && occupied_coord st.current_board (c1_i - 1, c1_j - 1)
-              = false)
+              = false )
         && if get_side p = Red then c2_i >= 5 else c2_i <= 4
       then true
       else false
@@ -287,7 +284,7 @@ let rules p c2 st =
             || c2 = (c1_i, c1_j + 1)
             || c2 = (c1_i, c1_j - 1)
           then true
-          else false)
+          else false )
 
 (** [go] evaluated if the input movement is legal. *)
 let move start destiny st =
@@ -381,11 +378,11 @@ let move start destiny st =
             current_step =
               {
                 red_step =
-                  (if cur_turn = Red then get_red_step cur_step + 1
-                  else get_red_step cur_step);
+                  ( if cur_turn = Red then get_red_step cur_step + 1
+                  else get_red_step cur_step );
                 black_step =
-                  (if cur_turn = Red then get_black_step cur_step
-                  else get_black_step cur_step + 1);
+                  ( if cur_turn = Red then get_black_step cur_step
+                  else get_black_step cur_step + 1 );
                 total_step = get_total_step cur_step + 1;
               };
           }

@@ -19,7 +19,7 @@ let pp_list pp_elt lst =
   in
   "[" ^ pp_elts lst ^ "]"
 
-let filename = "datasource/moves.csv"
+let filename = "moves.csv"
 
 (* let num_rows = 672374 *)
 let num_rows = 65299
@@ -34,14 +34,9 @@ let populate_train filename train_data =
     let line = ref "" in
     line := input_line channel;
     for x = 0 to Array.length train_data - 1 do
-      (* print_int x; print_endline ""; *)
       line := input_line channel;
       let cols = String.split_on_char ',' !line in
       train_data.(x) <- Array.of_list cols
-      (* match cols with | [ game_id; turn_num; side; move ] ->
-         train_data.(x).(0) <- game_id; train_data.(x).(1) <- turn_num;
-         train_data.(x).(2) <- side; train_data.(x).(3) <- move | _ ->
-         failwith "impossible" *)
     done;
     train_data
   with End_of_file -> train_data
@@ -145,12 +140,11 @@ let special_treatment board first second =
   | "+" ->
       let num_pawn_arr = [| 0; 0; 0; 0; 0; 0; 0; 0; 0 |] in
       let r, s = get_rank first in
-      (* let () = print_endline "before if s = RED" in *)
+
       if s = Piece.Red then (
         let final_coord = ref (9, 8) in
         for y = 9 downto 0 do
           for x = 0 to 8 do
-            (* let () = print_endline (string_of_int_tuple (y, x)) in *)
             let piece = Board.get_piece board (y, x) in
             (* match piece with | Some piece -> if Piece.get_c piece <>
                Piece.Soldier && num_pawn_arr.(x) = 1 then
@@ -177,7 +171,6 @@ let special_treatment board first second =
         !final_coord )
       else
         (*black*)
-        (* let () = print_endline "in black branch" in *)
         let final_coord = ref (0, 0) in
         for y = 0 to 9 do
           for x = 0 to 8 do
@@ -203,7 +196,6 @@ let special_treatment board first second =
         done;
         !final_coord
   | "-" ->
-      (* let () = print_endline "in - branch" in *)
       let num_pawn_arr = [| 0; 0; 0; 0; 0; 0; 0; 0; 0 |] in
       let r, s = get_rank first in
       if s = Piece.Black then (
@@ -275,7 +267,7 @@ let get_start_coord r board start_x =
           if (rank, side) = (r, s) then coord := (y, start_x)
       | None -> ()
     done;
-    (* print_int (fst !coord); print_int (snd !coord); *)
+
     !coord
 
 let legal s e state =
@@ -290,23 +282,17 @@ let get_end_coord start state oper side end_x =
     in
     coord := (fst start, end_x)
   else if oper = "+" then
-    (* let () = print_endline "in oper + branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
-    (* let () = print_int (fst start - (multiplier * end_x)) in let () =
-       print_int (snd start) in *)
+
     match
       State.move start
         (fst start - (multiplier * int_of_string end_x), snd start)
         state
     with
     | Legal t ->
-        (* let () = print_endline "legal branch" in *)
-        (* rook, cannon, soldier*)
         coord :=
           (fst start - (multiplier * int_of_string end_x), snd start)
     | Illegal ->
-        (*horse elephant advisor*)
-        (* let () = print_endline "illegal branch" in *)
         if side = "Red" then
           let end_x = 9 - int_of_string end_x in
           for y = 0 to fst start do
@@ -314,33 +300,22 @@ let get_end_coord start state oper side end_x =
           done
         else
           let end_x = int_of_string end_x - 1 in
-          (* let () = print_endline "in black branch " in *)
+
           for y = fst start + 1 to 9 do
-            (* let () = print_int y in let () = print_int end_x in let
-               () = print_endline "" in *)
-            if legal start (y, end_x) state then
-              (* let () = print_endline "in black branch legal" in *)
-              coord := (y, end_x)
+            if legal start (y, end_x) state then coord := (y, end_x)
           done
   else
-    (* - *)
-    (* let () = print_endline "in oper - branch" in *)
     let multiplier = if side = "Black" then -1 else 1 in
-    (* let () = print_int (fst start - (multiplier * end_x)) in let () =
-       print_int (snd start) in *)
+
     match
       State.move start
         (fst start + (multiplier * int_of_string end_x), snd start)
         state
     with
     | Legal t ->
-        (* let () = print_endline "legal branch" in *)
-        (* rook, cannon, soldier*)
         coord :=
           (fst start + (multiplier * int_of_string end_x), snd start)
     | Illegal ->
-        (*horse elephant advisor*)
-        (* let () = print_endline "illegal branch" in *)
         if side = "Red" then
           let end_x = 9 - int_of_string end_x in
           for y = fst start + 1 to 9 do
@@ -348,13 +323,9 @@ let get_end_coord start state oper side end_x =
           done
         else
           let end_x = int_of_string end_x - 1 in
-          (* let () = print_endline "in black branch " in *)
+
           for y = 0 to fst start do
-            (* let () = print_int y in let () = print_int end_x in let
-               () = print_endline "" in *)
-            if legal start (y, end_x) state then
-              (* let () = print_endline "in black branch legal" in *)
-              coord := (y, end_x)
+            if legal start (y, end_x) state then coord := (y, end_x)
           done );
   !coord
 
@@ -424,7 +395,7 @@ let order_array array : string array array =
             array.(i).(2);
             array.(i).(3);
           ];
-      (* print_endline ""; print_string array.(i).(0); *)
+
       r := !r + 2 )
     else (
       array.(i) <-
@@ -435,19 +406,14 @@ let order_array array : string array array =
             array.(i).(2);
             array.(i).(3);
           ];
-      (* print_endline ""; print_string array.(i).(0); *)
+
       b := !b + 2 )
   done;
   Array.sort comp array;
   array
 
-(* let test = Array.sub train_data 51711 105 *)
-
 let test = train_data
 
-(* let test = Array.sub train_data 30820 148 *)
-
-(** return a list of game length of the dataset*)
 let cal_game_length df =
   let result = ref [] in
   let gid = ref first_gid in
@@ -467,12 +433,11 @@ let cal_game_length df =
 
 (** [data_processing] takes in raw data and turns it into the form of
     (vectorized_board_state * move) array *)
-
 let data_processing train_data =
   let final_data = ref [] in
   let lst_of_lengths = cal_game_length train_data in
   let num_games = List.length lst_of_lengths in
-  (* let () = print_int num_games in let () = print_endline "" in *)
+
   let start_line = ref 0 in
   for n = 0 to num_games - 1 do
     let game_length = List.nth lst_of_lengths n in
@@ -485,9 +450,7 @@ let data_processing train_data =
   done;
   List.rev !final_data
 
-let vectorized_data =
-  (* print_endline "passed test"; *)
-  data_processing test
+let vectorized_data = data_processing test
 
 let get_x_y vectorized_data =
   let v = List.flatten vectorized_data in

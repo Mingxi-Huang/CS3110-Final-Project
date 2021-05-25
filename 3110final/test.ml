@@ -199,7 +199,7 @@ let ai_tests = []
 
 let dummy_array = Array.make 65299 (Array.make 4 "")
 
-let data = Mlearn.populate_train "datasource/moves.csv" dummy_array
+let data = Mlearn.populate_train "moves.csv" dummy_array
 
 let red_horse_out =
   get_result_state (State.move (9, 7) (7, 6) start_state)
