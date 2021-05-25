@@ -1,7 +1,5 @@
-(** Representation of data for 1 player hard mode *)
-
 (** [vectorized_board_state] is a 3D int array that represent the board
-    state: [\[0, 0, … , 1\] * 9]*10 len[0][0] = 14, representing 14
+    state: [\[0, 0, … , 1\] * 9]*9 len[0][0] = 14, representing 14
     unique pieces and is an one-hot representation of piece. *)
 type vectorized_board_state = int array array array
 
@@ -22,9 +20,6 @@ val vec_piece : Piece.rank -> Piece.side -> int list
     and turn it into vectorized row. *)
 val translate_lines : Board.t -> int -> int array array
 
-(** [translate_board] takes in a complete board for one round and uses
-    [translate_lines] to vectorized it, returns a
-    [vectorized_baord_state] of 9*10*14 in size*)
 val translate_board : Board.t -> vectorized_board_state
 
 (** [get_start_coord rank board start_x] is the coordinate of the piece
@@ -41,26 +36,13 @@ val get_end_coord :
     board in [state_ref] after translating [move_str]*)
 val translate_coord : State.t ref -> string -> move
 
-(** [cal_game_length] calculates the number of total moves in each game,
-    returns an int list of size number of games *)
 val cal_game_length : string array array -> int list
 
-(** [simulate_round] takes the input train data and translate each board
-    state and move from WXF notation to readable format, run every move
-    through [State.move] to produce the corresponding board state and
-    return all information in a [(vectorized_board_state * move) array]*)
 val simulate_round :
   string array array -> (vectorized_board_state * move) array
 
-(** [make_2d] flattens the 3d list of [vectorized_board_state] into a 2d
-    array array, the shape of 2d array is length of
-    [vectorized_board_state list] x (9 * 10 * 14) *)
 val make_2d : vectorized_board_state list -> int array array
 
-(** [x_vec] is a fully processed [int array array] of all board status
-    from training data*)
 val x_vec : int array array
 
-(** [y_vec] is a fully processed [int array array] of all moves from
-    training data*)
 val y_vec : int array array

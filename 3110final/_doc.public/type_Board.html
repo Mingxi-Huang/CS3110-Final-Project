@@ -1,0 +1,41 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Board" rel="Chapter" href="Board.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="Piece" rel="Chapter" href="Piece.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Ai" rel="Chapter" href="Ai.html">
+<link title="Mlearn" rel="Chapter" href="Mlearn.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html"><title>Board</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;graveyard&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;red_graveyard&nbsp;:&nbsp;<span class="constructor">Piece</span>.t&nbsp;list;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;black_graveyard&nbsp;:&nbsp;<span class="constructor">Piece</span>.t&nbsp;list;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;score&nbsp;=&nbsp;{&nbsp;red_score&nbsp;:&nbsp;int;&nbsp;black_score&nbsp;:&nbsp;int;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;update_score&nbsp;:&nbsp;<span class="constructor">Piece</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_graveyard&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.graveyard<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_red_g&nbsp;:&nbsp;<span class="constructor">Board</span>.graveyard&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.t&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_black_g&nbsp;:&nbsp;<span class="constructor">Board</span>.graveyard&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.t&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_score&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.score<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_red_score&nbsp;:&nbsp;<span class="constructor">Board</span>.score&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_black_score&nbsp;:&nbsp;<span class="constructor">Board</span>.score&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;count_pieces&nbsp;:&nbsp;<span class="constructor">Piece</span>.rank&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.graveyard&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.side&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_board&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_piece&nbsp;:&nbsp;<span class="constructor">Board</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.coord&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.t&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_board&nbsp;:&nbsp;<span class="constructor">Board</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.graveyard&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.score&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_rev_board&nbsp;:&nbsp;<span class="constructor">Board</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.graveyard&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.score&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;turned_board&nbsp;:&nbsp;<span class="constructor">Board</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;update_board&nbsp;:&nbsp;<span class="constructor">Board</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.coord&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Piece</span>.coord&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.t<br>
+<span class="keyword">end</span></code></body></html>
