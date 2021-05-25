@@ -7,6 +7,33 @@ open Mlearn
 
 exception Illegal_state
 
+(** TEST PLAN *)
+
+(** Since our system is a terminal based chess game, we did Test Driven
+    Development and wrote automated tests for our basic functions to
+    make them work as expected before we proceed to larger ones. We also
+    play our game very frequently to find out what's wrong with our
+    implementation and how they are reflected to the game interface *)
+
+(** Main modules like State, Command, Piece, Board, MLearn are all
+    automatically tested by OUnit tests shown below. However, for Main
+    and AI modules, we did manual testing through "make play". We
+    interactively playtest our code through our interface. As in A2, we
+    find the drawbacks of our game, either in implementation or user
+    experience , by playing the game ourselves. *)
+
+(** This test plan is thorough and reasonable because it is very hard to
+    generate automated tests for main and ai. A state of our chess game
+    contains too much information and those information are cumulative,
+    which means one cannot generate them from nothing but can only get
+    the state you want by moving tens or hundreds of moves step by step.
+    In fact, we also have some automated tests for these game state, but
+    most of them are close to start board, and these tests work to show
+    our functions work as intended and that would be enough. As you can
+    see, it's tedious to write states for automated testing, even harder
+    than what we did in A1: Enigma. That's why we manually test them
+    through playing our games*)
+
 let cmp_set_like_lists lst1 lst2 =
   let uniq1 = List.sort_uniq compare lst1 in
   let uniq2 = List.sort_uniq compare lst2 in
@@ -159,16 +186,9 @@ let string_of_2d_array array =
   !str ^ ""
 
 let ai_tests =
-  [
-    (* ( "vectorized start board" >:: fun _ -> assert_equal 1260 (let
+  [ (* ( "vectorized start board" >:: fun _ -> assert_equal 1260 (let
        state = Ai.process_state start_state in Array.length state.(0))
-       ~printer:string_of_int ); *)
-    ( "machine learning first move of start board" >:: fun _ ->
-      assert_equal
-        ((1, 2), (2, 3))
-        (Ai.ml_coord start_state)
-        ~printer:string_of_move );
-  ]
+       ~printer:string_of_int ); *) ]
 
 let dummy_array = Array.make 65298 (Array.make 4 "")
 
@@ -335,10 +355,13 @@ let suite =
           (Board.generate_graveyard ()) (Board.generate_score ()) in *)
   List.flatten
     [
-      (* state_tests; command_tests; piece_tests; board_tests; *)
+      state_tests;
+      command_tests;
+      piece_tests;
+      board_tests;
       ai_tests;
-      (* mlearn_tests1; *)
-      (* mlearn_tests2; *)
+      mlearn_tests1;
+      mlearn_tests2;
     ]
 
 let _ = run_test_tt_main suite
