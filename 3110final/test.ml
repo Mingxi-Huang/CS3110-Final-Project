@@ -97,6 +97,8 @@ let advisor = create_piece Advisor Red (9, 3)
 
 let general = create_piece General Black (0, 4)
 
+let rook = create_piece Rook Red (9, 0)
+
 let moved_advisor = create_piece Advisor Red (8, 4)
 
 let start_board = generate_board ()
@@ -117,6 +119,9 @@ let piece_tests =
     ("get side" >:: fun _ -> assert_equal (get_side advisor) Red);
     ("get general" >:: fun _ -> assert_equal (get_c general) General);
     ("get black side" >:: fun _ -> assert_equal (get_side general) Black);
+    (*added rook tests*)
+    ("get rook1" >:: fun _ -> assert_equal (get_side rook) Red);
+    ("get rook2" >:: fun _ -> assert_equal (get_c rook) Rook);
   ]
 
 let state_tests =
@@ -161,6 +166,11 @@ let command_tests =
       assert_equal (Move [ (3, 8); (4, 8) ]) (parse "move 3,8 4,8") );
     ( "move good cannon" >:: fun _ ->
       assert_equal (Move [ (7, 1); (5, 1) ]) (parse "move 7,1 5,1") );
+    (*added tests*)
+    ( "move good cannon2" >:: fun _ ->
+      assert_equal (Move [ (7, 1); (0, 1) ]) (parse "move 7,1 0,1") );
+    ( "move good general2" >:: fun _ ->
+      assert_equal (Move [ (9, 4); (8, 4) ]) (parse "move 9,4 8,4") );
   ]
 
 let board_tests =
